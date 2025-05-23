@@ -1,1 +1,1 @@
-postgresql://neurohiredb_user:M3oVTEUWfWkL1navaoBVqzrnE7hRq7km@dpg-d0o1vnvdiees739ivqc0-a/neurohiredb
+postgresql://neurohiredb_user:M3oVTEUWfWkL1navaoBVqzrnE7hRq7km@dpg-d0o1vnvdiees739ivqc0-a.oregon-postgres.render.com/neurohiredb
