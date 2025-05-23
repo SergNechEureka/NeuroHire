@@ -1,6 +1,6 @@
-from fastembed.embedding import DefaultEmbedding
+from fastembed.embedding import TextEmbedding
 
-embedder = DefaultEmbedding()
+embedder = TextEmbedding()
 
 def embed_text(text):
     return list(embedder.embed([text]))[0]
