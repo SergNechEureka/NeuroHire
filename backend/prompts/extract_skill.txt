@@ -1,0 +1,25 @@
+Here is the candidate's CV text:
+-------------
+{cv_text}
+-------------
+Extract and return ONLY a JSON array of skills, each containing:
+- skill_name (the name of the skill; always required)
+- skill_level (the level of proficiency or certification if specified, otherwise null)
+- description (short context or details about the skill if present, otherwise null)
+
+Output a strictly valid JSON array, for example:
+[
+  {
+    "skill_name": "ABAP",
+    "skill_level": "expert",
+    "description": "10+ years experience developing SAP modules"
+  },
+  {
+    "skill_name": "Team Leadership",
+    "skill_level": null,
+    "description": null
+  }
+]
+
+If no skills are found, return an empty array [].
+Do not include any explanations, comments, or other information.

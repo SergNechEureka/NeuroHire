@@ -1,0 +1,11 @@
+Here is the candidate's CV text:
+-------------
+{cv_text}
+-------------
+Extract a JSON array "skills" of all the candidate's professional skills. Each item in the array should be an object with the following fields:
+
+- skill_name
+- skill_level
+- description
+
+If a field is not found for a particular skill, omit it from the object (do not include empty or null fields). Return ONLY the JSON array under the "skills" key and nothing else. Do not add comments or mention missing fields.
