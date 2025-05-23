@@ -20,5 +20,3 @@ venv/
 
 # Env secrets
 .env
-
-DBConnections/
