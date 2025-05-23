@@ -1,48 +1,33 @@
-from fastapi import FastAPI, File, UploadFile
-from pydantic import BaseModel
-from services.chatgpt import ask_chatgpt
-import shutil
-import os
-from services import parser
+import uvicorn
 
-# Создаём экземпляр приложения
+from fastapi import FastAPI
+from sqlmodel import SQLModel
+
+from .services import parser
+from .file_metadata.db import engine#
+from .routes.upload import router as upload_router
+from .routes.get_all_cvs import router as all_cvs_router
+from .routes.cv import router as cv_router
+from .routes.search_candidates import router as search_candidates
+
 app = FastAPI()
 
-# Простейший маршрут GET /
+app.include_router(upload_router)
+app.include_router(all_cvs_router)
+app.include_router(cv_router)
+app.include_router(search_candidates)
+
+@app.on_event("startup")
+def on_startup():
+    SQLModel.metadata.create_all(engine)
+
 @app.get("/")
 def read_root():
-    return {"message": "Добро пожаловать в API NeuroHire!"}
+    return {"message": "Welcome to API NeuroHire!"}
 
-# Проверочный маршрут GET /ping
 @app.get("/ping")
 def ping():
     return {"status": "ok"}
 
-class AskRequest(BaseModel):
-    question: str
-
-@app.post("/ask")
-def ask(request: AskRequest):
-    answer = ask_chatgpt(request.question)
-    return {"answer": answer}
-
-@app.post("/upload")
-def upload_file(file: UploadFile = File(...)):
-    file_ext = file.filename.split(".")[-1].lower()
-    temp_path = f"temp.{file_ext}"
-
-    # Сохраняем файл во временный путь
-    with open(temp_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-
-    # Обработка по типу
-    if file_ext == "pdf":
-        text = parser.extract_text_from_pdf(temp_path)
-    elif file_ext == "docx":
-        text = parser.extract_text_from_docx(temp_path)
-    else:
-        os.remove(temp_path)
-        return {"error": "Поддерживаются только PDF и DOCX"}
-
-    os.remove(temp_path)
-    return {"filename": file.filename, "text_snippet": text[:500]}
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)

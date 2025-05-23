@@ -1,0 +1,19 @@
+Here is the candidate's CV text (in English or Russian):
+-------------
+{cv_text}
+-------------
+Extract and return ONLY JSON with the following fields:
+- candidate_name
+- birth_date (in YYYY-MM-DD format)
+- email
+- phone
+- country
+- position_applied
+
+candidate_name — full name of the candidate 
+
+
+If a field is not found, set it to null. Response: JSON only.
+
+Do not report or mention missing metadata in any way. The JSON must contain only found metadata fields, and must not include any extra information, comments, or empty/null fields. Only output pure metadata as JSON.
+
