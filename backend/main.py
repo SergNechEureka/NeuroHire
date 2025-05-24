@@ -9,8 +9,18 @@ from .routes.upload import router as upload_router
 from .routes.get_all_cvs import router as all_cvs_router
 from .routes.cv import router as cv_router
 from .routes.search_candidates import router as search_candidates
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    #allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(upload_router)
 app.include_router(all_cvs_router)
