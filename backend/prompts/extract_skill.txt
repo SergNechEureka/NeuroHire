@@ -20,6 +20,7 @@ Output a strictly valid JSON array, for example:
     "description": null
   }
 ]
+If the "description" field is not present in the text, try to infer a short, relevant description for each skill using the context of the CV (for example, based on the candidate’s previous projects, roles, or responsibilities). If you cannot reasonably infer a description, set it to null.
 
 If no skills are found, return an empty array [].
 Do not include any explanations, comments, or other information.

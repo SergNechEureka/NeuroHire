@@ -7,7 +7,7 @@ from ..file_metadata.crud import get_all_cvs
 
 router = APIRouter()
 
-@router.get("/all_cvs")
+@router.get("/cvs")
 def list_cvs(session: Session = Depends(get_session)):
     cvs = get_all_cvs(session)
     return cvs

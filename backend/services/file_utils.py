@@ -4,21 +4,26 @@ import uuid
 
 from sqlmodel import Session
 from datetime import datetime
+
 from ..file_metadata.models import CVMeta
-
 from ..file_metadata.crud import search_cv
+from ..routes.upload import UploadFile
 
-def save_temp_file(file, file_ext):
-    temp_path = f"temp.{file_ext}"
-    with open(temp_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+def save_temp_file(file: UploadFile, ext: str) -> str:
+    temp_dir = "/tmp/neurohire"
+    os.makedirs(temp_dir, exist_ok=True)
+    temp_path = os.path.join(temp_dir, f"{uuid.uuid4()}.{ext}")
+    with open(temp_path, "wb") as out_file:
+        shutil.copyfileobj(file.file, out_file)
     return temp_path
 
 def remove_file(path):
     if os.path.exists(path):
         os.remove(path)
 
-def generate_file_metadata(session: Session, sem_meta, file, temp_path):
+
+
+def generate_file_metadata(session: Session, sem_meta, filename, temp_path):
     cv_meta = CVMeta(
         candidate_name=sem_meta.get("candidate_name"),
         birth_date=sem_meta.get("birth_date"),
@@ -36,8 +41,8 @@ def generate_file_metadata(session: Session, sem_meta, file, temp_path):
 
     return {
         "cv_id": cv_id,
-        "filename": file.filename,
-        "filetype": file.filename.split('.')[-1].lower(),
+        "filename": filename,
+        "filetype": filename.split('.')[-1].lower(),
         "filesize": os.path.getsize(temp_path),
         "uploaded_at": datetime.utcnow()
     }

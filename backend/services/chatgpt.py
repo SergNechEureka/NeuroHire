@@ -12,7 +12,7 @@ client = OpenAI(
     base_url="https://api.groq.com/openai/v1",
 )
 
-def ask_chatgpt(question: str, prompt_sys: str) -> str:
+def ask_llm(question: str, prompt_sys: str, temperature, top_p) -> str:
     """Send a prompt to the LLM and return the response as a string."""
     messages=[
             {"role": "user", "content": question}
@@ -24,7 +24,8 @@ def ask_chatgpt(question: str, prompt_sys: str) -> str:
     response = client.chat.completions.create(
         model="llama3-70b-8192",
         messages=messages,  
-        temperature=0.0
+        temperature=temperature,
+        top_p=top_p
     )
     
     return response.choices[0].message.content.strip()
@@ -42,9 +43,10 @@ def extract_metadata_from_cv(cv_text: str, max_retries=2) -> dict:
     """
     prompt_template = load_prompt("extract_metadata.txt")
     prompt = prompt_template.replace("{cv_text}", cv_text)
+    prompt_sys = load_prompt("extract_metadata_sys.txt")
 
     for attempt in range(1, max_retries + 1):
-        result = ask_chatgpt(prompt)
+        result = ask_llm(prompt, prompt_sys, 0.0, 0.3)
 
     # Parse only the JSON part from LLM response
         json_start = result.find('{')
@@ -64,9 +66,9 @@ def extract_metadata_from_cv(cv_text: str, max_retries=2) -> dict:
     
         time.sleep(1)
 
-def extract_data_from_cv(max_retries, prompt_sys, prompt):
+def extract_data_from_cv(max_retries, prompt_sys, prompt, temperature, top_p):
     for attempt in range(1, max_retries + 1):
-        result = ask_chatgpt(prompt, prompt_sys)
+        result = ask_llm(prompt, prompt_sys, temperature, top_p)
 
     # Parse only the JSON part from LLM response
         json_start = result.find('[')
@@ -92,14 +94,14 @@ def extract_experience_from_cv(cv_text: str, max_retries=2) -> dict:
     prompt_sys = load_prompt("extract_experience_sys.txt")
     prompt = prompt_template.replace("{cv_text}", cv_text)
 
-    return extract_data_from_cv(max_retries, prompt_sys, prompt)
+    return extract_data_from_cv(max_retries, prompt_sys, prompt, 0.3, 0.95)
 
-def extract_skill_from_cv(cv_text: str, max_retries=2) -> dict:
+def extract_skill_from_cv(cv_text: str, max_retries=2, ) -> dict:
     prompt_template = load_prompt("extract_skill.txt")
     prompt_sys = load_prompt("extract_skill_sys.txt")
     prompt = prompt_template.replace("{cv_text}", cv_text)
 
-    return extract_data_from_cv(max_retries, prompt_sys, prompt)
+    return extract_data_from_cv(max_retries, prompt_sys, prompt, 0.5, 0.9)
 
     
 

@@ -1,95 +1,120 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+import { useMetaTableData } from "./useMetaTableData";
 import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-  CircularProgress, Typography
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Checkbox, Paper, IconButton, Toolbar, Typography, Button
 } from "@mui/material";
-import "./css/dark.css";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import UploadDialog from "./UploadDialog";
 
-type CVMeta = {
-  cv_id: string;
-  filename: string;
-  filetype?: string | null;
-  filesize?: number | null;
-  candidate_name?: string | null;
-  email?: string | null;
-  phone?: string | null;
-  country?: string | null;
-  birth_date?: string | null;
-  position_applied?: string | null;
-  uploaded_at: string;
-  updated_at?: string | null;
-  status: string;
-  source?: string | null;
-  parsed_ok?: boolean | null;
-  parsing_info?: string | null;
-  language?: string | null;
-  file_path?: string | null;
-};
-
-const API_URL = process.env.REACT_APP_API_URL as string;
 
 const MetaTable: React.FC = () => {
-  const [meta, setMeta] = useState<CVMeta[]>([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    meta,
+    loading,
+    selected,
+    handleSelectAll,
+    handleSelect,
+    handleDeleteSelected,
+    handleDeleteOne,
+    handleUploadCV,
+    fetchData
+  } = useMetaTableData();
 
-  useEffect(() => {
-    let ignore = false;
-    setLoading(true);
-    axios.get<CVMeta[]>(API_URL+'all_cvs')
-      .then(res => {
-        if (!ignore) setMeta(res.data);
-      })
-      .catch(err => console.error(err))
-      .then(() => {
-        if (!ignore) setLoading(false);
-      });
-    return () => { ignore = true; };
-  }, []);
+  const [uploadOpen, setUploadOpen] = useState(false);
 
-  if (loading) return (
-    <div style={{ textAlign: "center", marginTop: "2rem" }}>
-      <CircularProgress />
-      <Typography>Loading...</Typography>
-    </div>
-  );
+  if (loading) return <div>Loading...</div>;
 
   return (
-    <TableContainer component={Paper} style={{ marginTop: "2rem" }}>
-      <Typography variant="h6" style={{ padding: "1rem" }}>CV Metadata</Typography>
-      <Table className="table-metadata">
-        <TableHead>
-          <TableRow>
-            <TableCell>cv_id</TableCell>
-            <TableCell>filename</TableCell>
-            <TableCell>candidate_name</TableCell>
-            <TableCell>email</TableCell>
-            <TableCell>phone</TableCell>
-            <TableCell>country</TableCell>
-            <TableCell>birth_date</TableCell>
-            <TableCell>position_applied</TableCell>
-            <TableCell>uploaded_at</TableCell>
-            <TableCell>status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {meta.map(row => (
-            <TableRow key={row.cv_id}>
-              <TableCell>{row.cv_id}</TableCell>
-              <TableCell>{row.filename}</TableCell>
-              <TableCell>{row.candidate_name}</TableCell>
-              <TableCell>{row.email}</TableCell>
-              <TableCell>{row.phone}</TableCell>
-              <TableCell>{row.country}</TableCell>
-              <TableCell>{row.birth_date}</TableCell>
-              <TableCell>{row.position_applied}</TableCell>
-              <TableCell>{row.uploaded_at}</TableCell>
-              <TableCell>{row.status}</TableCell>
+    <Paper sx={{ m: 3, p: 2 }}>
+      <Toolbar>
+         <Typography variant="h5" sx={{ flex: 1 }}>CV Metadata</Typography>
+        <Button
+          variant="contained"
+          onClick={() => setUploadOpen(true)}
+          startIcon={<CloudUploadIcon />}
+        >
+          Загрузить CV
+        </Button>
+        <Button
+          variant="contained"
+          color="error"
+          startIcon={<DeleteIcon />}
+          disabled={selected.length === 0}
+          onClick={handleDeleteSelected}
+        >
+          Удалить
+        </Button>
+      </Toolbar>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell padding="checkbox">
+                <Checkbox
+                  indeterminate={selected.length > 0 && selected.length < meta.length}
+                  checked={meta.length > 0 && selected.length === meta.length}
+                  onChange={handleSelectAll}
+                />
+              </TableCell>
+              <TableCell>filename</TableCell>
+              <TableCell>candidate_name</TableCell>
+              <TableCell>email</TableCell>
+              <TableCell>phone</TableCell>
+              <TableCell>country</TableCell>
+              <TableCell>birth_date</TableCell>
+              <TableCell>position_applied</TableCell>
+              <TableCell>uploaded_at</TableCell>
+              <TableCell>status</TableCell>
+              <TableCell>Удалить</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {meta.map(row => (
+              <TableRow
+                key={row.cv_id}
+                selected={selected.includes(row.cv_id)}
+                hover
+              >
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    checked={selected.includes(row.cv_id)}
+                    onChange={() => handleSelect(row.cv_id)}
+                  />
+                </TableCell>
+                <TableCell>{row.filename}</TableCell>
+                <TableCell>{row.candidate_name}</TableCell>
+                <TableCell>{row.email}</TableCell>
+                <TableCell>{row.phone}</TableCell>
+                <TableCell>{row.country}</TableCell>
+                <TableCell>{row.birth_date}</TableCell>
+                <TableCell>{row.position_applied}</TableCell>
+                <TableCell>{row.uploaded_at}</TableCell>
+                <TableCell>{row.status}</TableCell>
+                <TableCell>
+                  <IconButton
+                    aria-label="Удалить"
+                    color="error"
+                    onClick={() => handleDeleteOne(row.cv_id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <UploadDialog
+        open={uploadOpen}
+        onClose={() => setUploadOpen(false)}
+        onUploadComplete={() => {
+          setUploadOpen(false);
+          fetchData(); // обновить таблицу после загрузки
+        }}
+      />
+    </Paper>
   );
 };
 

@@ -6,7 +6,8 @@ For each skill, always extract:
 - "skill_level" (proficiency or certification if explicitly mentioned, otherwise null)
 - "description" (brief context or explanation if available, otherwise null)
 
-If a skill is repeated, include it only once, with the most complete information.  
-Never invent skill levels or descriptions that are not present or clearly implied.  
+If a skill is repeated, include it only once, with the most complete information.
+If the "description" field is not explicitly present, try to infer a brief and relevant description based on the context of the skill, the candidate's experience, or the overall content of the CV (such as the types of projects or roles where the skill was used). If you cannot reasonably infer a description, set it to null.
+Never invent skill levels that are not present or clearly implied.  
 If no skills are found, return an empty array `[]`.  
 Your output must be **strictly valid JSON**, with no comments, no extra explanations, and no other text.

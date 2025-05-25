@@ -29,14 +29,14 @@ def add_or_update_cv(session: Session, cv: CVMeta):
     return db_cv or cv
 
 def add_or_update_experience(session: Session, experiences, cv_id: str):
-    delete_experience_by_cv_id(session, cv_id)
+    delete_experience_by_cv_id(session, cv_id, False)
 
     session.add_all(experiences)
     session.commit()
     return experiences
 
 def add_or_update_skill(session: Session, skills, cv_id: str):
-    delete_skill_by_cv_id(session, cv_id)
+    delete_skill_by_cv_id(session, cv_id, False)
 
     session.add_all(skills)
     session.commit()
@@ -49,26 +49,32 @@ def delete_cv_by_id(session: Session, cv_id: str) -> bool:
     from .models import CVMeta
     obj = session.query(CVMeta).filter(CVMeta.cv_id == cv_id).first()
     if obj:
+        delete_experience_by_cv_id(session, cv_id, True)
+        delete_skill_by_cv_id(session, cv_id, True)
         session.delete(obj)
         session.commit()
         return True
     return False
 
-def delete_experience_by_cv_id(session: Session, cv_id: str) -> bool:
+def delete_experience_by_cv_id(session: Session, cv_id: str, no_commit: bool) -> bool:
     from .models import CVExperience
     obj = session.query(CVExperience).filter(CVExperience.cv_id == cv_id)
     if obj:
         obj.delete()
-        session.commit()
+
+        if not no_commit:
+            session.commit()
         return True
     return False
 
-def delete_skill_by_cv_id(session: Session, cv_id: str) -> bool:
+def delete_skill_by_cv_id(session: Session, cv_id: str, no_commit: bool) -> bool:
     from .models import CVSkill
     obj = session.query(CVSkill).filter(CVSkill.cv_id == cv_id)
     if obj:
         obj.delete()
-        session.commit()
+
+        if not no_commit:
+            session.commit()
         return True
     return False
 

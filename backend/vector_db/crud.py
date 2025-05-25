@@ -1,37 +1,40 @@
 from .db import get_collection
 from .utils import embed_text
 
-def add(cv_id, texts):
+def add(cv_id, chunks) -> None:
     collection = get_collection()
     ids = []
     embeddings = []
     metadatas = []
-    for idx, text in enumerate(texts):
+    documents = []
+
+    for idx, chunk in enumerate(chunks):
         embedding_id = str(idx)
-        embedding = embed_text(text)
+        embedding = embed_text(chunk)
         ids.append(embedding_id)
         embeddings.append(embedding)
-        metadatas.append({"cv_id": cv_id, "embedding_id": embedding_id, "text": text})
-    collection.add(ids=ids, embeddings=embeddings, metadatas=metadatas)
+        documents.append(chunk)
+        metadatas.append({"cv_id": cv_id, "embedding_id": embedding_id})
+    
+    collection.add(ids=ids, embeddings=embeddings, metadatas=metadatas, documents=documents)
 
-def delete_by_cv_id(cv_id):
+def delete_by_cv_id(cv_id) -> None:
     collection = get_collection()
-    result = collection.get(where={"cv_id": cv_id})
-    ids = result.get("ids", [])
-    if ids:
-        collection.delete(ids=ids)
+    collection.delete(where={"cv_id": cv_id})
 
 def get_by_cv_id(cv_id: str):
     collection = get_collection()
-    result = collection.get(where={"cv_id": cv_id})
+    result = collection.get(where={"cv_id": cv_id}, include=["metadatas", "embeddings", "documents"])
     ids = result.get("ids", [])
     metadatas = result.get("metadatas", [])
     embeddings = result.get("embeddings", [])
+    documents = result.get("documents", [])
     return [
         {
             "embedding_id": ids[i],
             "text": metadatas[i].get("text", ""),
             "embedding": embeddings[i],
+            "documents": documents[i]
         }
         for i in range(len(ids))
     ]
