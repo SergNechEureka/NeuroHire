@@ -1,16 +1,17 @@
 import uvicorn
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from sqlmodel import SQLModel
 
 from .services import parser
-from .file_metadata.db import engine#
+from .db import engine
 from .routes.upload import router as upload_router
 from .routes.get_all_cvs import router as all_cvs_router
 from .routes.cv import router as cv_router
 from .routes.search_candidates import router as search_candidates
 from .routes.upload_status import router as get_upload_status
 from fastapi.middleware.cors import CORSMiddleware
+from .routes.auth import router as auth_router
 
 app = FastAPI()
 
@@ -28,6 +29,7 @@ app.include_router(all_cvs_router)
 app.include_router(cv_router)
 app.include_router(search_candidates)
 app.include_router(get_upload_status)
+app.include_router(auth_router)
 
 @app.on_event("startup")
 def on_startup():

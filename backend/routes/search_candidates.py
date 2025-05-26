@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from ..vector_db.crud import search_candidates
 from ..file_metadata.crud import get_cv_by_id
-from ..file_metadata.db import get_session
+from ..db import get_session
 
 router = APIRouter()
 

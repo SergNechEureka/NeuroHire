@@ -1,4 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
+from sqlalchemy.orm import Session
+
+from ..db import get_session
+from ..users.auth import current_active_user
+from ..users.models import User
 
 # Global storage for upload job statuses (in-memory)
 UPLOAD_STATUS = {}
@@ -14,7 +19,7 @@ def set_status(job_id: str, status: str, progress: int = 0):
         "progress": progress
     }
 
-def get_status(job_id: str):
+def get_status(job_id: str, ):
     """
     Retrieve the status of an upload job by job_id.
     """
@@ -24,7 +29,7 @@ def get_status(job_id: str):
     return status
 
 @router.get("/upload-status/{job_id}")
-def get_upload_status(job_id: str):
+def get_upload_status(job_id: str, user: User = Depends(current_active_user), session: Session = Depends(get_session)):
     """
     Endpoint to get upload status by job_id.
     """

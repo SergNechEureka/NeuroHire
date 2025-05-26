@@ -44,11 +44,14 @@ export function useUploadDialog({ onClose, onUploadComplete }: UploadDialogHookP
   const uploadFiles = async (files: File[]) => {
     setIsUploading(true);
     const formData = new FormData();
+    const token = localStorage.getItem('access_token');
     files.forEach(f => formData.append("files", f));
 
     try {
       const res = await axios.post(`${API_URL}upload`, formData, {
-        headers: { "Content-Type": "multipart/form-data" }
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data" }
       });
       // Each job: { filename, job_id }
       const jobs: FileJob[] = res.data.jobs.map((f: any) => ({
@@ -87,7 +90,10 @@ export function useUploadDialog({ onClose, onUploadComplete }: UploadDialogHookP
         fileJobs.map(async job => {
           if (job.status === "Completed" || job.status === "Error") return job;
           try {
-            const res = await axios.get(`${API_URL}upload-status/${job.job_id}`);
+            const token = localStorage.getItem('access_token');
+            const res = await axios.get(`${API_URL}upload-status/${job.job_id}`, {
+              headers: { Authorization: `Bearer ${token}` }
+            });
             return {
               ...job,
               status: res.data.status,
@@ -101,7 +107,7 @@ export function useUploadDialog({ onClose, onUploadComplete }: UploadDialogHookP
       if (!cancelled) setFileJobs(newJobs);
     };
 
-    const interval = setInterval(poll, 1500);
+    const interval = setInterval(poll, 15000);
     poll();
 
     return () => {
@@ -126,6 +132,6 @@ export function useUploadDialog({ onClose, onUploadComplete }: UploadDialogHookP
     handleFilesChange,
     fileJobs,
     isUploading,
-    handleDialogClose,
+    handleDialogClose
   };
 }

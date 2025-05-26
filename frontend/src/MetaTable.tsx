@@ -18,7 +18,6 @@ const MetaTable: React.FC = () => {
     handleSelect,
     handleDeleteSelected,
     handleDeleteOne,
-    handleUploadCV,
     fetchData
   } = useMetaTableData();
 

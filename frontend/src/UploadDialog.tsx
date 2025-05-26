@@ -17,7 +17,6 @@ const UploadDialog: React.FC<UploadDialogProps> = ({ open, onClose, onUploadComp
   const {
     handleFilesDrop,
     fileJobs,
-    isUploading,
     handleDialogClose,
     inputRef,
     handleFilesChange,

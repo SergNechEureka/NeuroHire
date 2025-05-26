@@ -1,18 +1,24 @@
 import React from "react";
 import MetaTable from "./MetaTable";
+import LoginForm from "./LoginForm";
+import ApplicationBar from "./ApplicationBar";
+import { useAuth } from "./AuthContext";
 
-function App() {
-  React.useEffect(() => {
-    document.body.classList.add('dark');
-    return () => document.body.classList.remove('dark');
-  }, []);
+const App: React.FC = () => {
+  const { token, handleLogin, handleLogout } = useAuth();
 
   return (
     <div>
-      <h1>CV Metadata</h1>
-      <MetaTable />
+      {!token ? (
+        <LoginForm onLogin={handleLogin} />
+      ) : (
+        <>
+          <ApplicationBar onLogout={handleLogout}/>
+          <MetaTable />
+        </>
+      )}
     </div>
   );
-}
+};
 
 export default App;
