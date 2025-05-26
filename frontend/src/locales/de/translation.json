@@ -6,5 +6,8 @@
   "login_success": "Sie haben sich erfolgreich angemeldet!",
   "login_error": "Ungültiger Benutzername oder Passwort.",
   "metadata": "Metadaten-Tabelle",
-  "welcome": "Willkommen"
+  "welcome": "Willkommen",
+  "drag_and_drop": "Ziehen Sie Dateien hierher und legen Sie sie dort ab, oder klicken Sie, um Dateien auszuwählen",
+  "delete": "Löschen",
+  "upload": "Hochladen CV"
 }

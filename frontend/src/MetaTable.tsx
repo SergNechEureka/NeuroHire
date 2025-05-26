@@ -4,6 +4,7 @@ import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   Checkbox, Paper, IconButton, Toolbar, Typography, Button
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import UploadDialog from "./UploadDialog";
@@ -22,6 +23,7 @@ const MetaTable: React.FC = () => {
   } = useMetaTableData();
 
   const [uploadOpen, setUploadOpen] = useState(false);
+  const { t } = useTranslation();
 
   if (loading) return <div>Loading...</div>;
 
@@ -34,7 +36,7 @@ const MetaTable: React.FC = () => {
           onClick={() => setUploadOpen(true)}
           startIcon={<CloudUploadIcon />}
         >
-          Загрузить CV
+          {t("upload")}
         </Button>
         <Button
           variant="contained"
@@ -43,7 +45,7 @@ const MetaTable: React.FC = () => {
           disabled={selected.length === 0}
           onClick={handleDeleteSelected}
         >
-          Удалить
+          {t("delete")}
         </Button>
       </Toolbar>
       <TableContainer>

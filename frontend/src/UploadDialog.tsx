@@ -4,6 +4,7 @@ import {
   Dialog, DialogTitle, DialogContent, DialogActions,
   Button, Box, LinearProgress, Typography, List, ListItem, ListItemText
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useUploadDialog } from "./useUploadDialog";
 
@@ -24,6 +25,8 @@ const UploadDialog: React.FC<UploadDialogProps> = ({ open, onClose, onUploadComp
   } = useUploadDialog({ onClose, onUploadComplete });
 
   const allCompleted = fileJobs.every(job => job.status === "Completed" || job.status === "Error");
+  
+  const { t } = useTranslation();
 
   return (
     <Dialog open={open} onClose={handleDialogClose} fullWidth maxWidth="sm">
@@ -42,7 +45,7 @@ const UploadDialog: React.FC<UploadDialogProps> = ({ open, onClose, onUploadComp
           onClick={triggerFileInput}
         >
           <CloudUploadIcon sx={{ fontSize: 40, mb: 1 }} />
-          <Typography variant="subtitle1">Drag and drop files here, or click to select files</Typography>
+          <Typography variant="subtitle1">{t("drag_and_drop")}</Typography>
           <input
             ref={inputRef}
             type="file"

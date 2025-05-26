@@ -9,9 +9,9 @@ type ApplicationBarProps = {
   onLogout: () => void;
 };
 
-const ApplicationBar: React.FC<ApplicationBarProps> = ({ onLogout }) =>  {
+const ApplicationBar: React.FC<ApplicationBarProps> = () =>  {
   const { token, handleLogout } = useAuth();
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <AppBar position="static">

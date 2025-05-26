@@ -6,5 +6,8 @@
   "login_success": "You have successfully logged in!",
   "login_error": "Invalid username or password.",
   "metadata": "Metadata Table",
-  "welcome": "Welcome"
+  "welcome": "Welcome",
+  "drag_and_drop": "Drag and drop files here, or click to select files",
+  "delete": "Delete",
+  "upload": "Upload CV"
 }
