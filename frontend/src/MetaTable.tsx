@@ -28,7 +28,7 @@ const MetaTable: React.FC = () => {
   return (
     <Paper sx={{ m: 3, p: 2 }}>
       <Toolbar>
-         <Typography variant="h5" sx={{ flex: 1 }}>CV Metadata</Typography>
+         <Typography variant="h5" sx={{ flex: 1 }}>Candidates</Typography>
         <Button
           variant="contained"
           onClick={() => setUploadOpen(true)}

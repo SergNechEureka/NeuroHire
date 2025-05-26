@@ -2,6 +2,8 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { useAuth } from "./AuthContext";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 type ApplicationBarProps = {
   onLogout: () => void;
@@ -9,6 +11,7 @@ type ApplicationBarProps = {
 
 const ApplicationBar: React.FC<ApplicationBarProps> = ({ onLogout }) =>  {
   const { token, handleLogout } = useAuth();
+    const { t } = useTranslation();
 
   return (
     <AppBar position="static">
@@ -18,9 +21,10 @@ const ApplicationBar: React.FC<ApplicationBarProps> = ({ onLogout }) =>  {
         </Typography>
         {token && (
           <Button color="inherit" onClick={handleLogout}>
-            Logout
+            {t("logout")}
           </Button>
         )}
+        <LanguageSwitcher />
       </Toolbar>
     </AppBar>
   );

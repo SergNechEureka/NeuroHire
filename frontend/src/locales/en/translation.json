@@ -1,0 +1,10 @@
+{
+  "login": "Login",
+  "logout": "Logout",
+  "username": "Username",
+  "password": "Password",
+  "login_success": "You have successfully logged in!",
+  "login_error": "Invalid username or password.",
+  "metadata": "Metadata Table",
+  "welcome": "Welcome"
+}

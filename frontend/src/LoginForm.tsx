@@ -1,7 +1,9 @@
 import React from "react";
 import { Box, Button, TextField, Typography, Alert, Paper } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 import { useLoginForm } from "./useLoginForm";
+
 
 interface LoginFormProps {
   onLogin: (token: string) => void;
@@ -18,13 +20,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
         handleSubmit
     } = useLoginForm({ onLogin });
 
+    const { t } = useTranslation();
+
     return (
         <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
             <Paper elevation={3} sx={{ p: 4, width: 400 }}>
                 <Typography variant="h5" mb={3} align="center">Login</Typography>
                 <form onSubmit={handleSubmit}>
                     <TextField
-                        label="Username"
+                        label={t("username")}
                         value={username}
                         onChange={e => setUsername(e.target.value)}
                         fullWidth

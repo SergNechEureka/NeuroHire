@@ -1,0 +1,10 @@
+{
+  "login": "Anmelden",
+  "logout": "Abmelden",
+  "username": "Benutzername",
+  "password": "Passwort",
+  "login_success": "Sie haben sich erfolgreich angemeldet!",
+  "login_error": "Ungültiger Benutzername oder Passwort.",
+  "metadata": "Metadaten-Tabelle",
+  "welcome": "Willkommen"
+}
