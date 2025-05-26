@@ -1,7 +1,9 @@
+import os
 import uvicorn
 
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from sqlmodel import SQLModel
+from dotenv import load_dotenv
 
 from .services import parser
 from .db import engine
@@ -15,10 +17,15 @@ from .routes.auth import router as auth_router
 
 app = FastAPI()
 
+load_dotenv()
+
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS")
+if ALLOWED_HOSTS is None:
+    raise ValueError("ALLOWED_HOSTS environment variable is not set.")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
-    #allow_origins=["*"],
+    allow_origins=ALLOWED_HOSTS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

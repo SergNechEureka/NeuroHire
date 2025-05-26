@@ -21,3 +21,4 @@ venv/
 # Env secrets
 .env
 backend/Archiv.zip
+frontend_cra

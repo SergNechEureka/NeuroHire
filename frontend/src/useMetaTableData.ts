@@ -14,7 +14,7 @@ type CVMeta = {
   status: string;
 };
 
-const API_URL = process.env.REACT_APP_API_URL as string;
+const API_URL = import.meta.env.VITE_API_URL as string;
 
 export function useMetaTableData() {
   const [meta, setMeta] = useState<CVMeta[]>([]);
