@@ -13,7 +13,7 @@ from ..services.file_utils import TempFile
 from ..vector_db.utils import Embedder
 from ..services.chatgpt import ChatGPTService
 from ..vector_db.crud import VectorDBService
-from ..file_metadata.crud import CVRepository
+from ..file_metadata.CVRepository import CVRepository
 from ..file_metadata.models import CVMeta, CVExperience, CVSkill, Candidate
 from ..db import get_session
 

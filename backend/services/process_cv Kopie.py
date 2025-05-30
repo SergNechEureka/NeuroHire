@@ -2,7 +2,7 @@ import uuid
 import threading
 
 from ..file_metadata.models import CVMeta, CVExperience, CVSkill
-from ..file_metadata.crud import add_or_update_cv, add_or_update_experience, add_or_update_skill
+from ..file_metadata.CVRepository import add_or_update_cv, add_or_update_experience, add_or_update_skill
 from ..db import SessionLocal
 from ..vector_db.crud import add as add_embeddings, delete_by_cv_id as delete_embeddings_by_cv_id, get_by_cv_id as get_embeddings_by_cv_id
 from ..routes.upload_status import set_status  # import status helper

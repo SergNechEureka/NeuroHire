@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 from .db import engine
 from .routes.upload import router as upload_router
-from .routes.get_all_cvs import router as all_cvs_router
+from .routes.cvs import router as all_cvs_router
 from .routes.cv import router as cv_router
 from .routes.search_candidates import router as search_candidates
 from .routes.upload_status import router as get_upload_status
