@@ -1,8 +1,9 @@
-import uuid
+
 from fastapi import APIRouter, UploadFile, File, Depends, BackgroundTasks
 from typing import List
-from ..services.process_cv import start_jobs_for_files  
-from ..services.file_utils import save_temp_file# Импорт из нового файла
+from ..services.file_utils import TempFile
+from ..services.process_cv import CVFileProcessor  
+
 
 router = APIRouter()
 
@@ -19,10 +20,15 @@ def upload_files(
     """
     Starts background jobs for each file and returns job_ids for tracking.
     """
+
     job_ids = []
 
     for file in files:
-        job_id = start_jobs_for_files(background_tasks, file)
+        tempFile = TempFile(file)
+
+        cv_file_processor = CVFileProcessor(tempFile)
+        
+        job_id = cv_file_processor.start_job(background_tasks)
 
         job_ids.append({"filename": file.filename, "job_id": job_id})
 

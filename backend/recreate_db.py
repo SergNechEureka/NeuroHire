@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from sqlmodel import create_engine, Session
 from sqlalchemy.orm import sessionmaker, declarative_base
-from users.models import User, Base
+from file_metadata.models import Candidate, CVMeta, CandidateProjectRole, CVExperience, CVSkill
 
 load_dotenv()
 
@@ -19,10 +19,18 @@ engine = create_engine(url=DATABASE_URL, echo=True)
 
 if __name__ == "__main__":
     print("Dropping all tables...")
-    Base.metadata.drop_all(bind=engine)
+    Candidate.metadata.drop_all(bind=engine)
+    CVMeta.metadata.drop_all(bind=engine)
+    CandidateProjectRole.metadata.drop_all(bind=engine)
+    CVExperience.metadata.drop_all(bind=engine)
+    CVSkill.metadata.drop_all(bind=engine)
     print("Creating all tables...")
-    Base.metadata.create_all(bind=engine)
+    Candidate.metadata.create_all(bind=engine)
+    CVMeta.metadata.create_all(bind=engine)
+    CandidateProjectRole.metadata.create_all(bind=engine)
+    CVExperience.metadata.create_all(bind=engine)
+    CVSkill.metadata.create_all(bind=engine)
     print("Done! All tables have been recreated.")
 
-    User.metadata.drop_all(bind=engine)
-    User.metadata.create_all(bind=engine)
+#    User.metadata.drop_all(bind=engine)
+#    User.metadata.create_all(bind=engine)

@@ -76,7 +76,7 @@ export function useUploadDialog({ onClose, onUploadComplete }: UploadDialogHookP
     const poll = async () => {
       // Only poll jobs that are not finished
       const pendingJobs = fileJobs.filter(job =>
-        job.status !== "Completed" && job.status !== "Error"
+        job.progress !== 100 && job.progress !== -1 && job.status !== "Error"
       );
       if (pendingJobs.length === 0) {
         setPolling(false);

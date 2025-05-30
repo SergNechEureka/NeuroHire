@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from sqlmodel import SQLModel
 from dotenv import load_dotenv
 
-from .services import parser
+
 from .db import engine
 from .routes.upload import router as upload_router
 from .routes.get_all_cvs import router as all_cvs_router

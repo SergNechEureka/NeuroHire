@@ -1,34 +1,43 @@
 from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional, List
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 import uuid
 
+class Candidate(SQLModel, table=True):
+    candidate_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
+    candidate_name: str = Field(max_length=255)
+    email: Optional[str] = Field(default=None, max_length=320)
+    phone: Optional[str] = Field(default=None, max_length=50)
+    country: Optional[str] = Field(default=None, max_length=100)
+    birth_date: Optional[date] = Field(default=None)
+    native_language: Optional[str] = Field(default=None, max_length=100)
+
+    cv: List["CVMeta"] = Relationship(back_populates="candidate")
+
+class CandidateProjectRole(SQLModel, table=True):
+    project_role: str = Field(primary_key=True, max_length=100)
+    candidate_id: uuid.UUID = Field(foreign_key="candidate.candidate_id", index=True)
+
 class CVMeta(SQLModel, table=True):
-    cv_id: str = Field(default_factory=lambda: str(uuid.uuid4()), primary_key=True)
+    cv_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    candidate_id: uuid.UUID = Field(foreign_key="candidate.candidate_id", index=True)
     filename: str
     filetype: str | None = None
-    filesize: int | None = None
-    candidate_name: str | None = None
-    email: str | None = None
-    phone: str | None = None               
-    country: str | None = None             
-    birth_date: date | None = None         
-    position_applied: str | None = None
-    uploaded_at: datetime = Field(default_factory=datetime.utcnow)
+    filesize: int | None = None           
+    uploaded_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime | None = None
     status: str = Field(default="active")
     source: str | None = None
-    parsed_ok: bool | None = None
-    parsing_info: str | None = None
     language: str | None = None
-    file_path: str | None = None
+
+    candidate: Optional[Candidate] = Relationship(back_populates="cv")
 
     experience: List["CVExperience"] = Relationship(back_populates="cv")
     skills: List["CVSkill"] = Relationship(back_populates="cv")
 
 class CVExperience(SQLModel, table=True):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()), primary_key=True)
-    cv_id: str = Field(foreign_key="cvmeta.cv_id")
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    cv_id: uuid.UUID = Field(foreign_key="cvmeta.cv_id", index=True)
     position: str
     company: Optional[str]
     industry: Optional[str]
@@ -36,12 +45,12 @@ class CVExperience(SQLModel, table=True):
     end_date: Optional[str]
     description: Optional[str]
     technologies: Optional[str]
-    cv: Optional[CVMeta] = Relationship(back_populates="experience")
+    cv: CVMeta = Relationship(back_populates="experience")
 
 class CVSkill(SQLModel, table=True):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()), primary_key=True)
-    cv_id: str = Field(foreign_key="cvmeta.cv_id")
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    cv_id: uuid.UUID = Field(foreign_key="cvmeta.cv_id", index=True)
     skill_name: str
     skill_level: Optional[str]
     description: Optional[str]
-    cv: Optional[CVMeta] = Relationship(back_populates="skills")
+    cv: CVMeta = Relationship(back_populates="skills")

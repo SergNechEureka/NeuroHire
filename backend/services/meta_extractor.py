@@ -1,4 +1,4 @@
-from ..services.chatgpt import extract_metadata_from_cv, extract_experience_from_cv, extract_skill_from_cv
+"""from ..services.chatgpt import extract_metadata_from_cv, extract_experience_from_cv, extract_skill_from_cv
 
 def extract_semantic_metadata(text):
     try:
@@ -31,5 +31,5 @@ def extract_semantic_skill(text):
         skill = []
         parsed_ok = False
         parsing_info = str(e)
-    return skill, parsed_ok, parsing_info
+    return skill, parsed_ok, parsing_info"""
 

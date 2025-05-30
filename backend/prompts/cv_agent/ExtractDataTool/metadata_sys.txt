@@ -9,7 +9,8 @@ Fields to extract:
 	•	position_applied
 	•	status
 	•	source
-	•	language
+	•	native_language (language which candidate nativly speaks)
+	•	language (source language of the text)
 
 Instructions:
 	•	Only include keys for which you find clear values.

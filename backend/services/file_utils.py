@@ -1,48 +1,44 @@
 import os
 import shutil
 import uuid
-
 from sqlmodel import Session
 from datetime import datetime
 
-from ..file_metadata.models import CVMeta
-from ..file_metadata.crud import search_cv
-from ..routes.upload import UploadFile
-
-def save_temp_file(file: UploadFile, ext: str) -> str:
+class TempFile:
     temp_dir = "/tmp/neurohire"
-    os.makedirs(temp_dir, exist_ok=True)
-    temp_path = os.path.join(temp_dir, f"{uuid.uuid4()}.{ext}")
-    with open(temp_path, "wb") as out_file:
-        shutil.copyfileobj(file.file, out_file)
-    return temp_path
+    full_path: str = ""
 
-def remove_file(path):
-    if os.path.exists(path):
-        os.remove(path)
+    def __init__(self, file) -> None:
+        self.file = file
+        pass
 
+    def save_file(self) -> str:
+        os.makedirs(TempFile.temp_dir, exist_ok=True)
+        self.full_path = os.path.join(TempFile.temp_dir, f"{uuid.uuid4()}.{self.get_file_type()}")
+        with open(self.full_path, "wb") as out_file:
+            shutil.copyfileobj(self.file.file, out_file)
+        return self.full_path
 
+    def remove_file(self):
+        if os.path.exists(self.full_path):
+            os.remove(self.full_path)
 
-def generate_file_metadata(session: Session, sem_meta, filename, temp_path):
-    cv_meta = CVMeta(
-        candidate_name=sem_meta.get("candidate_name"),
-        birth_date=sem_meta.get("birth_date"),
-        email=sem_meta.get("email"),
-        phone=sem_meta.get("phone"),
-        country=sem_meta.get("country")
-    )
+    def get_full_path(self):
+        return self.full_path
 
-    db_cv = search_cv(session, cv_meta)
+    def get_file_name(self):
+        return self.file.filename
 
-    if db_cv != None:
-        cv_id = db_cv.cv_id
-    else:
-        cv_id = str(uuid.uuid4())
+    def get_file_type(self):
+        return self.file.filename.split('.')[-1].lower()
 
-    return {
-        "cv_id": cv_id,
-        "filename": filename,
-        "filetype": filename.split('.')[-1].lower(),
-        "filesize": os.path.getsize(temp_path),
-        "uploaded_at": datetime.utcnow()
-    }
+    def get_file_size(self):
+        return self.file.size
+
+    def extract_file_metadata(self):
+        return {
+            "filename": self.file.filename,
+            "filetype": self.get_file_type(),
+            "filesize": self.get_file_size(),
+            "uploaded_at": datetime.utcnow()
+        }
