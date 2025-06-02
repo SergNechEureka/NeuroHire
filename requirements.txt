@@ -37,8 +37,10 @@ flatbuffers==25.2.10
 frozenlist==1.6.0
 fsspec==2025.3.2
 google-auth==2.40.1
+googleapis-common-protos==1.70.0
 greenlet==3.2.2
 groq==0.26.0
+grpcio==1.72.1
 h11==0.16.0
 httpcore==1.0.9
 httptools==0.6.4
@@ -77,10 +79,12 @@ oauthlib==3.2.2
 onnxruntime==1.22.0
 openai==1.78.1
 opentelemetry-api==1.33.0
+opentelemetry-exporter-otlp-proto-common==1.33.0
 opentelemetry-exporter-otlp-proto-grpc==1.33.0
 opentelemetry-instrumentation==0.54b0
 opentelemetry-instrumentation-asgi==0.54b0
 opentelemetry-instrumentation-fastapi==0.54b0
+opentelemetry-proto==1.33.0
 opentelemetry-sdk==1.33.0
 opentelemetry-semantic-conventions==0.54b0
 opentelemetry-util-http==0.54b0
@@ -93,7 +97,7 @@ pdfplumber==0.11.6
 pillow==11.2.1
 posthog==4.0.1
 propcache==0.3.1
-protobuf==6.31.1
+protobuf==5.29.5
 psycopg2==2.9.10
 pwdlib==0.2.1
 py_rust_stemmers==0.1.5
