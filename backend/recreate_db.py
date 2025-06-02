@@ -3,7 +3,8 @@ import os
 from dotenv import load_dotenv
 from sqlmodel import create_engine, Session
 from sqlalchemy.orm import sessionmaker, declarative_base
-from file_metadata.models import Candidate, CVMeta, CandidateProjectRole, CVExperience, CVSkill
+from CandidatesDB.models import Candidate, CVMeta, CandidateProjectRole, CVExperience, CVSkill
+from vector_db.VectorDBService import VectorDBService
 
 load_dotenv()
 
@@ -31,6 +32,10 @@ if __name__ == "__main__":
     CVExperience.metadata.create_all(bind=engine)
     CVSkill.metadata.create_all(bind=engine)
     print("Done! All tables have been recreated.")
+
+    vector_db = VectorDBService()
+    vector_db.clear_db()
+
 
 #    User.metadata.drop_all(bind=engine)
 #    User.metadata.create_all(bind=engine)

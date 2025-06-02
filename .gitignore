@@ -21,3 +21,4 @@ venv/
 .env
 backend/Archiv.zip
 frontend_cra
+.chromadb_data

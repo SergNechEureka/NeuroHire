@@ -20,3 +20,5 @@ venv/
 
 # Env secrets
 .env
+
+.chromadb_data

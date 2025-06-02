@@ -1,40 +1,22 @@
 import os
-from openai import OpenAI
+import openai
+import groq
+import together
+from abc import ABC, abstractmethod
+from openai import OpenAI, RateLimitError
 from dotenv import load_dotenv
 from pathlib import Path
-import json
-import time
-from fastapi import HTTPException
 
-class ChatGPTService:
-    def __init__(self, system_prompt_template: str, user_prompt_template: str):
-        """Initialize the ChatGPTService with OpenAI client and environment variables."""
+class LLMService(ABC):
+    client: object
+
+    def __init__(self, system_prompt_template: str, user_prompt_template: str) -> None:
         load_dotenv()
-
-        self.client = OpenAI(
-            api_key=os.getenv("GROQ_API_KEY"),
-            base_url="https://api.groq.com/openai/v1",
-        )
 
         self.system_prompt_template = self._load_prompt_template(system_prompt_template) 
         self.user_prompt_template = self._load_prompt_template(user_prompt_template)
 
-    def ask_llm(self, prompt_vars: dict, temperature, top_p) -> str:
-        """Send a prompt to the LLM and return the response as a string."""
-        messages = self._prepare_prompts(prompt_vars)
-
-        response = self.client.chat.completions.create(
-            model="llama3-70b-8192",
-            messages=messages,
-            temperature=temperature,
-            top_p=top_p
-        )
-
-        content = response.choices[0].message.content
-        return content.strip() if content is not None else ""
-    
-    async def ask_llm_async(self, prompt_vars: dict, temperature, top_p) -> str:
-        return self.ask_llm(prompt_vars, temperature, top_p)
+        pass
 
     def _prepare_prompts(self, prompt_vars):
         user_prompt = self.user_prompt_template
@@ -62,3 +44,37 @@ class ChatGPTService:
         prompt_path = Path(__file__).parent.parent / "prompts" / filename
         with open(prompt_path, "r", encoding="utf-8") as f:
             return f.read()
+
+    def ask_llm(self, prompt_vars: dict, model, temperature, top_p) -> str:
+        """Send a prompt to the LLM and return the response as a string."""
+        messages = self._prepare_prompts(prompt_vars)
+
+        try:
+            response = self.client.chat.completions.create(
+                model=model,
+                messages=messages,
+                temperature=temperature,
+                top_p=top_p
+            )
+
+            content = response.choices[0].message.content
+            return content.strip() if content is not None else ""
+        
+        except RateLimitError as e:
+            return "repeat"
+        
+    async def ask_llm_async(self, prompt_vars: dict, model, temperature, top_p) -> str:
+        return self.ask_llm(prompt_vars, model, temperature, top_p)
+
+class GROQService(LLMService):
+    def __init__(self, system_prompt_template: str, user_prompt_template: str):
+        super().__init__(system_prompt_template, user_prompt_template)
+
+        self.client = groq.Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+class thogetherAIService(LLMService):
+    def __init__(self, system_prompt_template: str, user_prompt_template: str):
+        super().__init__(system_prompt_template, user_prompt_template)
+
+        self.client = together.Client(api_key=os.getenv("TOGETHER_API_KEY"))
+    

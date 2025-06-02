@@ -1,5 +1,6 @@
 import uuid
 import threading
+import traceback
 
 from ..db import SessionLocal
 from ..routes.upload_status import set_status
@@ -49,6 +50,7 @@ class CVFileProcessor:
             set_status(job_id, f"Error: {str(e)}", -1)
             self.file.remove_file()
             print(f"Error:{e}")
+
         finally:
             session.close()
             file_processing_semaphore.release()

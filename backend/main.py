@@ -8,10 +8,12 @@ from dotenv import load_dotenv
 
 from .db import engine
 from .routes.upload import router as upload_router
-from .routes.cvs import router as all_cvs_router
-from .routes.cv import router as cv_router
+from .routes.cvs import router as cvs
+from .routes.cv import router as cv
 from .routes.search_candidates import router as search_candidates
 from .routes.upload_status import router as get_upload_status
+from .routes.candidates import router as candidates
+from .routes.candidate import router as candidate
 from fastapi.middleware.cors import CORSMiddleware
 from .routes.auth import router as auth_router
 
@@ -32,11 +34,13 @@ app.add_middleware(
 )
 
 app.include_router(upload_router)
-app.include_router(all_cvs_router)
-app.include_router(cv_router)
+app.include_router(cvs)
+app.include_router(cv)
 app.include_router(search_candidates)
 app.include_router(get_upload_status)
 app.include_router(auth_router)
+app.include_router(candidates)
+app.include_router(candidate)
 
 @app.on_event("startup")
 def on_startup():

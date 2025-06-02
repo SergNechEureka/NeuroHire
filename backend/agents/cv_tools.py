@@ -7,17 +7,17 @@ import asyncio
 import uuid
 
 from abc import ABC, abstractmethod
-from typing import Any, List, Dict
+from typing import Any, Dict
 
 from ..services.file_utils import TempFile  
 from ..vector_db.utils import Embedder
-from ..services.chatgpt import ChatGPTService
-from ..vector_db.crud import VectorDBService
-from ..file_metadata.CVRepository import CVRepository
-from ..file_metadata.models import CVMeta, CVExperience, CVSkill, Candidate
+from ..services.chatgpt import LLMService, GROQService,thogetherAIService
+from ..vector_db.VectorDBService import VectorDBService
+from ..CandidatesDB.CVRepository import CVRepository
+from ..CandidatesDB.CandidatesRepository import CandidatesRepository
+from ..CandidatesDB.models import CVMeta, CVExperience, CVSkill, Candidate
 from ..db import get_session
-
-
+from ..services.langdetectSingleton import LangDetectSingleton
 
 
 class BaseTool(ABC):
@@ -25,8 +25,9 @@ class BaseTool(ABC):
     description: str = ""
     input_schema: Dict[str, str] = {}
     output_schema: Dict[str, str] = {}
-    chatgpt_service: ChatGPTService
+    llm_service: LLMService
     file: TempFile
+    max_retries: int = 3
 
 
     @abstractmethod
@@ -34,6 +35,27 @@ class BaseTool(ABC):
 
         pass
 
+    def _conver_llm_answer_to_json(self, answer: str) -> dict:
+        # Parse only the JSON part from LLM response
+        json_start = answer.find('[')
+        if json_start == -1 or answer.find('{') < json_start:
+            json_start = answer.find('{')
+            json_end = answer.rfind('}') + 1
+        else:
+            json_end = answer.rfind(']') + 1
+
+        try:
+            json_answer = json.loads(answer[json_start:json_end])
+
+            if len(json_answer) != 0:
+                return json_answer
+            else:
+                return {}
+            
+        except Exception as e:
+            print("LLM response (JSON parsing error):", answer)
+            
+            raise
 
 class ParseCVTool(BaseTool):
     name = "ParseCVTool"
@@ -127,7 +149,7 @@ class CheckCVTool(BaseTool):
 
     def __init__(self):
         super().__init__()
-        self.chatgpt_service = ChatGPTService("cv_agent/CheckCVTool_sys.txt", "cv_agent/CheckCVTool.txt")
+        self.llm_service = thogetherAIService("cv_agent/CheckCVTool_sys.txt", "cv_agent/CheckCVTool.txt")
 
     def run(self, tool_input: dict) -> dict:
         cv_text = str(tool_input.get("cv_text"))
@@ -136,26 +158,39 @@ class CheckCVTool(BaseTool):
             "user": [{"name": "cv_text", "value": cv_text}],
         }
 
-        answer = self.chatgpt_service.ask_llm(
-            prompt_vars = prompt_vars,
-            temperature=0.0,
-            top_p=0.3
-        )
+        for attempt in range(1, self.max_retries + 1):
+            try:
+                answer = self.llm_service.ask_llm(
+                    prompt_vars = prompt_vars,
+                    model="mistralai/Mistral-7B-Instruct-v0.1",
+                    temperature=0.0,
+                    top_p=0.3
+                )
 
-        if not answer:
-            raise ValueError("The uploaded document is neither CV nor resume.")
+                match answer:
+                    case "repeat": 
+                        time.sleep(15)
+                        attempt -= 1
+                    
+                    case "True":
+                        return {
+                            "next_tool": DetectLanguageTool(), 
+                            "tool_input": { 
+                                "cv_text": cv_text 
+                            },
+                            "job_status": {
+                                "message": "Detecting language",
+                                "percentage": 30,
+                            }
+                        }
+                    case "False":
+                        raise ValueError("The uploaded document is neither CV nor resume.")
 
-        return {
-            "next_tool": DetectLanguageTool(), 
-            "tool_input": { 
-                "cv_text": cv_text 
-                },
-            "job_status": {
-                "message": "Detecting language",
-                "percentage": 30,
-                }
-            }
-
+            except Exception as e:
+                time.sleep(1)
+                if attempt == self.max_retries:
+                    raise ValueError("Translation not done after multiple LLM attempts")
+                continue
 
 class DetectLanguageTool(BaseTool):
     name = "DetectLanguage"
@@ -163,11 +198,14 @@ class DetectLanguageTool(BaseTool):
     input_schema = {"cv_text": "str"}
     output_schema = {"language": "str (ISO 639-1 language code, e.g. 'en', 'ru', 'de')"}
 
-    def run(self, tool_input: dict) -> dict:
-        from langdetect import detect
+    def __init__(self) -> None:
+        super().__init__()
+        self.lang_detect = LangDetectSingleton()
 
+    def run(self, tool_input: dict) -> dict:
         cv_text = str(tool_input.get("cv_text"))
-        language = detect(cv_text)
+        
+        language = self.lang_detect.detect(cv_text)
 
         if language != "en":
             return {
@@ -200,7 +238,7 @@ class TranslateToEnglishTool(BaseTool):
 
     def __init__(self):
         super().__init__()
-        self.chatgpt_service = ChatGPTService("cv_agent/TranslateToEnglishTool_sys.txt", "cv_agent/TranslateToEnglishTool.txt")
+        self.llm_service = thogetherAIService("cv_agent/TranslateToEnglishTool_sys.txt", "cv_agent/TranslateToEnglishTool.txt")
 
     def run(self, tool_input: dict) -> dict:
         cv_text = str(tool_input.get("cv_text"))
@@ -209,18 +247,28 @@ class TranslateToEnglishTool(BaseTool):
             "user": [{"name": "cv_text", "value": cv_text}],
         }
 
-        answer = self.chatgpt_service.ask_llm(
-            prompt_vars = prompt_vars,
-            temperature=0.0,
-            top_p=0.3
-        )
+        for attempt in range(1, self.max_retries + 1):
+            try:
+                answer = self.llm_service.ask_llm(
+                    prompt_vars = prompt_vars,
+                    model = "NLLB-200",
+                    temperature=0.0,
+                    top_p=0.3
+                )
 
-        json_answer = json.loads(answer)
+                if answer != "repeat":
+                    json_answer = self._conver_llm_answer_to_json(answer)
+                    cv_text_eng = json_answer.get("translated_text")
 
-        cv_text_eng = json_answer.get("translated_text")
+                else:
+                    time.sleep(15)
+                    attempt -= 1
 
-        if not cv_text_eng:
-            raise ValueError("Translation to English failed.")
+            except Exception as e:
+                time.sleep(1)
+                if attempt == self.max_retries:
+                    raise ValueError("Translation not done after multiple LLM attempts")
+                continue
 
         return {
             "next_tool": SearchCandidateTool(), 
@@ -278,26 +326,6 @@ class ExtractDataTool(BaseTool):
     description = "Extracts information about candidate from the CV text"
     input_schema = {"cv_text": "str"}
     output_schema = {"chunks": "List[str]"}
-    max_retries: int = 3
-
-    def _conver_llm_answer_to_json(self, answer: str) -> dict:
-        # Parse only the JSON part from LLM response
-        json_start = answer.find('[')
-        if json_start == -1 or answer.find('{') < json_start:
-            json_start = answer.find('{')
-            json_end = answer.rfind('}') + 1
-        else:
-            json_end = answer.rfind(']') + 1
-
-        try:
-            json_answer = json.loads(answer[json_start:json_end])
-
-            if len(json_answer) != 0:
-                return json_answer
-
-        except Exception as e:
-            print("LLM response (JSON parsing error):", answer)
-            raise e
 
     def run(self, tool_input: dict) -> dict:
         cv_text_orig = tool_input.get("cv_text_orig")
@@ -369,7 +397,13 @@ class ExtractDataTool(BaseTool):
         loop = asyncio.get_running_loop()
         result = await loop.run_in_executor(
             None,
-            lambda: self._ask_llm(cv_text_orig, sys_prompt_template, usr_prompt_template, 0.0, 0.3)
+            lambda: self._ask_llm(
+                cv_text_orig, 
+                sys_prompt_template, 
+                usr_prompt_template, 
+                "Llama-3.3-70b-versatile",
+                0.0, 
+                0.3)
         )   
 
         result = await loop.run_in_executor(
@@ -398,7 +432,13 @@ class ExtractDataTool(BaseTool):
         loop = asyncio.get_running_loop()
         result = await loop.run_in_executor(
             None,
-            lambda: self._ask_llm(cv_text_orig, sys_prompt_template, usr_prompt_template, 0.3, 0.95)
+            lambda: self._ask_llm(
+                cv_text_orig, 
+                sys_prompt_template, 
+                usr_prompt_template, 
+                "Llama-3.3-70b-versatile",
+                0.3, 
+                0.95)
             )
 
         return result
@@ -411,13 +451,19 @@ class ExtractDataTool(BaseTool):
         loop = asyncio.get_running_loop()
         result = await loop.run_in_executor(
             None,
-            lambda: self._ask_llm(cv_text_orig, sys_prompt_template, usr_prompt_template, 0.5, 0.9)
+            lambda: self._ask_llm(
+                cv_text_orig, 
+                sys_prompt_template, 
+                usr_prompt_template, 
+                "Llama-3.3-70b-versatile",
+                0.5, 
+                0.9)
         )
 
         return result
 
-    def _ask_llm(self, cv_text, sys_prompt_template, usr_prompt_template, temperature, top_p):
-        chatgpt_service = ChatGPTService(sys_prompt_template, usr_prompt_template)
+    def _ask_llm(self, cv_text, sys_prompt_template, usr_prompt_template, model, temperature, top_p):
+        llm_service = GROQService(sys_prompt_template, usr_prompt_template)
         prompt_vars = {
             "user": [
                 {"name": "cv_text", "value": cv_text}
@@ -425,21 +471,25 @@ class ExtractDataTool(BaseTool):
         }
 
         for attempt in range(1, self.max_retries + 1):
-            answer = chatgpt_service.ask_llm(
-                prompt_vars = prompt_vars,
-                temperature=temperature,
-                top_p=top_p
-            )
-
             try:
-                return self._conver_llm_answer_to_json(answer)
+                answer = llm_service.ask_llm(
+                    model = model,
+                    prompt_vars = prompt_vars,
+                    temperature=temperature,
+                    top_p=top_p
+                )
 
-            except Exception:
+                if answer != "repeat":
+                    return self._conver_llm_answer_to_json(answer)
+                else:
+                    time.sleep(15)
+                    attempt -= 1
+
+            except Exception as e:
                 time.sleep(1)
                 if attempt == self.max_retries:
                     raise ValueError("Information not found after multiple LLM attempts")
                 continue
-
     
 class VectorizeTool(BaseTool):
     name = "Vectorize"
@@ -474,8 +524,6 @@ class VectorizeTool(BaseTool):
                 }
         }
 
-
-    
 class StoreDataTool(BaseTool):
     name = "StoreData"
     description = "Store candidate data and CV."
@@ -486,6 +534,8 @@ class StoreDataTool(BaseTool):
         super().__init__()
 
         self.cv_repository = CVRepository(next(get_session()))
+        self.candidates_repository = CandidatesRepository(next(get_session()))
+
         self.VectorDB = VectorDBService()
 
     def run(self, tool_input: dict) -> dict:
@@ -529,7 +579,7 @@ class StoreDataTool(BaseTool):
             country=metadata.get("country"),
             native_language=metadata.get("native_language")
         )
-        candidate_id = self.cv_repository.add_or_update_candidate(candidate)
+        candidate_id = self.candidates_repository.add_or_update_candidate(candidate)
 
         return candidate_id
 

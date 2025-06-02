@@ -30,6 +30,6 @@ def upload_files(
         
         job_id = cv_file_processor.start_job(background_tasks)
 
-        job_ids.append({"filename": file.filename, "job_id": job_id})
+        job_ids.append({"filename": file.filename, "jobId": job_id})
 
     return {"jobs": job_ids}

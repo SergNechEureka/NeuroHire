@@ -1,8 +1,14 @@
 import chromadb
 
-def get_client():
-    return chromadb.PersistentClient(path="./chromadb_data")
+class ChromaDBService:
+    collection_name = "cv_embeddings"
 
-def get_collection(name="cv_embeddings"):
-    client = get_client()
-    return client.get_or_create_collection(name)
+    def __init__(self, path: str = "./chromadb_data"):
+        self.path = path
+        self.client = chromadb.PersistentClient(path=self.path)
+
+    def get_collection(self):
+        return self.client.get_or_create_collection(self.collection_name)
+    
+    def clear_db(self):
+        self.client.delete_collection(self.collection_name)

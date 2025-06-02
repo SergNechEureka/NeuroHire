@@ -1,4 +1,4 @@
-Is the following text a candidate CV (resume)? Please answer strictly with "True" or "False".
+Is the following text a candidate CV (resume)? Please answer strictly boolean with "True" or "False" without any other symbols.
 
 Text:
 {cv_text}

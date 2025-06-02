@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlmodel import Session
 from ..db import get_session
-from ..file_metadata.CVRepository import CVRepository
+from ..CandidatesDB.CVRepository import CVRepository
 from ..users.auth import current_active_user
 from ..users.models import User
 

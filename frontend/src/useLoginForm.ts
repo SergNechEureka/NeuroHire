@@ -36,8 +36,12 @@ export function useLoginForm({ onLogin }: LoginFormProps) {
             } else {
                 setError("No access token returned");
             }
-        } catch (e: any) {
-                setError(e.response?.data?.detail || "Login failed");
+        } catch (e: unknown) {
+                if (axios.isAxiosError(e)) {
+                    setError(e.response?.data?.detail || "Login failed");
+                } else {
+                    setError("Login failed");
+                }
         } finally {
         setLoading(false);
         }
