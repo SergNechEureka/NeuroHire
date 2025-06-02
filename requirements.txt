@@ -37,7 +37,6 @@ flatbuffers==25.2.10
 frozenlist==1.6.0
 fsspec==2025.3.2
 google-auth==2.40.1
-googleapis-common-protos==1.70.0
 greenlet==3.2.2
 groq==0.26.0
 h11==0.16.0
@@ -83,7 +82,6 @@ opentelemetry-exporter-otlp-proto-grpc==1.33.0
 opentelemetry-instrumentation==0.54b0
 opentelemetry-instrumentation-asgi==0.54b0
 opentelemetry-instrumentation-fastapi==0.54b0
-opentelemetry-proto==1.33.0
 opentelemetry-sdk==1.33.0
 opentelemetry-semantic-conventions==0.54b0
 opentelemetry-util-http==0.54b0
