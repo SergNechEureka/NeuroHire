@@ -11,7 +11,7 @@ from typing import Any, Dict
 
 from ..services.file_utils import TempFile  
 from ..vector_db.utils import Embedder
-from ..services.chatgpt import LLMService, GROQService,thogetherAIService
+from ..services.LLMService import LLMService, GROQService,thogetherAIService, huggingFaceService
 from ..vector_db.VectorDBService import VectorDBService
 from ..CandidatesDB.CVRepository import CVRepository
 from ..CandidatesDB.CandidatesRepository import CandidatesRepository
@@ -211,7 +211,8 @@ class DetectLanguageTool(BaseTool):
             return {
                 "next_tool": TranslateToEnglishTool(), 
                 "tool_input": { 
-                    "cv_text": cv_text 
+                    "cv_text": cv_text,
+                    "language": language
                     },
                 "job_status": {
                     "message": "Translating file to English",
@@ -222,7 +223,7 @@ class DetectLanguageTool(BaseTool):
             return {
                 "next_tool": SearchCandidateTool(), 
                 "tool_input": { 
-                    "cv_text_orig": cv_text 
+                    "cv_text_orig": cv_text
                     },
                 "job_status": {
                     "message": "Looking for a candidate having a similar CV(s)",
@@ -242,16 +243,18 @@ class TranslateToEnglishTool(BaseTool):
 
     def run(self, tool_input: dict) -> dict:
         cv_text = str(tool_input.get("cv_text"))
+        language = str(tool_input.get("language"))
 
         prompt_vars = {
-            "user": [{"name": "cv_text", "value": cv_text}],
+            "user": [{"name": "cv_text", "value": cv_text},
+                     {"name": "language", "value": language}],
         }
 
         for attempt in range(1, self.max_retries + 1):
             try:
                 answer = self.llm_service.ask_llm(
                     prompt_vars = prompt_vars,
-                    model = "NLLB-200",
+                    model = "mistralai/Mistral-7B-Instruct-v0.1",
                     temperature=0.0,
                     top_p=0.3
                 )
@@ -259,6 +262,7 @@ class TranslateToEnglishTool(BaseTool):
                 if answer != "repeat":
                     json_answer = self._conver_llm_answer_to_json(answer)
                     cv_text_eng = json_answer.get("translated_text")
+                    break
 
                 else:
                     time.sleep(15)

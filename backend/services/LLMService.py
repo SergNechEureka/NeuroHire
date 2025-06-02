@@ -2,6 +2,8 @@ import os
 import openai
 import groq
 import together
+import huggingface_hub
+from huggingface_hub import InferenceClient
 from abc import ABC, abstractmethod
 from openai import OpenAI, RateLimitError
 from dotenv import load_dotenv
@@ -13,8 +15,10 @@ class LLMService(ABC):
     def __init__(self, system_prompt_template: str, user_prompt_template: str) -> None:
         load_dotenv()
 
-        self.system_prompt_template = self._load_prompt_template(system_prompt_template) 
-        self.user_prompt_template = self._load_prompt_template(user_prompt_template)
+        if system_prompt_template:
+            self.system_prompt_template = self._load_prompt_template(system_prompt_template) 
+        if user_prompt_template:
+            self.user_prompt_template = self._load_prompt_template(user_prompt_template)
 
         pass
 
@@ -77,4 +81,37 @@ class thogetherAIService(LLMService):
         super().__init__(system_prompt_template, user_prompt_template)
 
         self.client = together.Client(api_key=os.getenv("TOGETHER_API_KEY"))
+
+class huggingFaceService(LLMService):
+    def __init__(self, system_prompt_template: str, user_prompt_template: str):
+        super().__init__(system_prompt_template, user_prompt_template)
+
+        self.client = InferenceClient(api_key=os.getenv("HUGGING_FACE_API_KEY"))
+
+    def ask_llm(self, prompt_vars: dict, model, temperature, top_p) -> str:
+        cv_text = next(
+            (item["value"] for item in prompt_vars["user"] if item["name"] == "cv_text"), None
+        )
+
+        src_text = "Translate German to English: "+ cv_text
+
+        src_lang = next(
+            (item["value"] for item in prompt_vars["user"] if item["name"] == "language"), None
+        )
+
+        try:
+            response = self.client.translation(
+                model=model,
+                #src_lang=src_lang,
+                #tgt_lang="en",
+                text=src_text
+            )
+
+            content = response.choices[0].message.content
+            return content.strip() if content is not None else ""
+        
+        except RateLimitError as e:
+            return "repeat"
+
+
     
