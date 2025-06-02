@@ -22,7 +22,7 @@ export default function useCandidates() {
     fetchData();
   }, [token, fetchData]);
 
-  const onSelect = useCallback(
+  const handleSelect = useCallback(
     (id: string) => {
       setSelectedIds((prev) =>
         prev.includes(id) ? prev.filter((sid) => sid !== id) : [...prev, id]
@@ -31,15 +31,15 @@ export default function useCandidates() {
     []
   );
 
-  const onSelectAll = useCallback(() => {
+  const handleSelectAll = useCallback(() => {
     setSelectedIds(candidates.map((c) => c.candidate_id));
   }, [candidates]);
 
-  const onDeselectAll = useCallback(() => {
+  const handleDeselectAll = useCallback(() => {
     setSelectedIds([]);
   }, []);
 
-  const onDelete = useCallback(
+  const handleDelete = useCallback(
     async (ids: string[]) => {
       await deleteCandidates(ids);
       setCandidates((prev) => prev.filter((c) => !ids.includes(c.candidate_id)));
@@ -49,7 +49,7 @@ export default function useCandidates() {
     []
   );
 
-  const onDeleteOne = useCallback( 
+  const handleDeleteOne = useCallback( 
     async (id: string) => {
       await deleteCandidate(id);
       setSelected(selected.filter(id => id !== id));
@@ -61,15 +61,15 @@ export default function useCandidates() {
   return {
     candidates,
     selectedIds,
-    onSelect,
-    onSelectAll,
-    onDeselectAll,
-    onDelete,
+    handleSelect,
+    handleSelectAll,
+    handleDeselectAll,
+    handleDelete,
     setCandidates,
     setSelectedIds,
     loading,
     setLoading,
-    onDeleteOne,
+    handleDeleteOne,
     fetchData
   };
 }

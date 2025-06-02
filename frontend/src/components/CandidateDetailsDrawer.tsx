@@ -1,56 +1,46 @@
 import React from "react";
-import { Drawer, Typography, Divider, List, ListItem, ListItemText } from "@mui/material";
-import { Candidate, CVExperience, CVSkill } from "../types";
+import type { Candidate } from "../types";
+import CVList from "./CVList";
+import {
+  Drawer,
+  Typography,
+  Box,
+  Divider
+} from "@mui/material";
 
-type Props = {
+interface CandidateDetailsDrawerProps {
   open: boolean;
-  onClose: () => void;
   candidate: Candidate | null;
-  experiences: CVExperience[];
-  skills: CVSkill[];
-};
+  onClose: () => void;
+  cvs: any[];
+}
 
-export default function CandidateDetailsDrawer({
+const CandidateDetailsDrawer: React.FC<CandidateDetailsDrawerProps> = ({
   open,
-  onClose,
   candidate,
-  experiences,
-  skills,
-}: Props) {
-  if (!candidate) return null;
-
+  onClose,
+  cvs,
+}) => {
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
-      <div style={{ width: 400, padding: 24 }}>
-        <Typography variant="h6">{candidate.candidate_name}</Typography>
-        <Typography variant="body2">{candidate.email}</Typography>
-        <Typography variant="body2">{candidate.country}</Typography>
-        <Typography variant="body2">{candidate.birth_date}</Typography>
-        <Divider style={{ margin: "16px 0" }} />
-        <Typography variant="subtitle1">Experience</Typography>
-        <List>
-          {experiences.map(exp => (
-            <ListItem key={exp.id}>
-              <ListItemText
-                primary={`${exp.position || ""} @ ${exp.company || ""}`}
-                secondary={`${exp.start_date} - ${exp.end_date}: ${exp.description}`}
-              />
-            </ListItem>
-          ))}
-        </List>
-        <Divider style={{ margin: "16px 0" }} />
-        <Typography variant="subtitle1">Skills</Typography>
-        <List>
-          {skills.map(skill => (
-            <ListItem key={skill.id}>
-              <ListItemText
-                primary={skill.skill_name}
-                secondary={skill.description}
-              />
-            </ListItem>
-          ))}
-        </List>
-      </div>
+      <Box sx={{ width: 400, p: 3 }}>
+        {candidate && (
+          <>
+            <Typography variant="h5">{candidate.candidate_name}</Typography>
+            <Typography variant="subtitle1">{candidate.email}</Typography>
+            <Typography variant="subtitle1">{candidate.country}</Typography>
+            <Typography variant="subtitle2">{candidate.birth_date}</Typography>
+            <Divider sx={{ my: 2 }} />
+            <Typography variant="h6">CVs</Typography>
+            <CVList cvs={cvs} />
+          </>
+        )}
+        {!candidate && (
+          <Typography variant="body2">No candidate selected</Typography>
+        )}
+      </Box>
     </Drawer>
   );
-}
+};
+
+export default CandidateDetailsDrawer;

@@ -25,12 +25,12 @@ import {
 interface CandidatesTableProps {
   candidates: Candidate[];
   selectedIds: string[];
-  onSelect: (id: string) => void;
-  onSelectAll: () => void;
-  onDeselectAll: () => void;
-  onDelete: (ids: string[]) => void;
-  onDeleteOne: (id: string) => void;
-  onRowClick: (candidate: Candidate) => void;
+  handleSelect: (id: string) => void;
+  handleSelectAll: () => void;
+  handleDeselectAll: () => void;
+  handleDelete: (ids: string[]) => void;
+  handleDeleteOne: (id: string) => void;
+  handleRowClick: (candidate: Candidate) => void;
   loading: boolean;
   fetchData: () => void;
 }
@@ -40,12 +40,12 @@ type Props = CandidatesTableProps;
 export default function CandidatesTable({
   candidates,
   selectedIds,
-  onSelect,
-  onSelectAll,
-  onDeselectAll,
-  onDelete,
-  onRowClick,
-  onDeleteOne,
+  handleSelect,
+  handleSelectAll,
+  handleDeselectAll,
+  handleDelete,
+  handleRowClick,
+  handleDeleteOne,
   loading,
   fetchData
 }: Props) {
@@ -70,18 +70,18 @@ export default function CandidatesTable({
     </Paper>
       <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
           <Tooltip title="Select all">
-            <IconButton onClick={onSelectAll}>
+            <IconButton onClick={handleSelectAll}>
               <SelectAllIcon />
             </IconButton>
           </Tooltip>
         <Tooltip title="Deselect all">
-          <IconButton onClick={onDeselectAll}>
+          <IconButton onClick={handleDeselectAll}>
             <DeselectIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete selected">
           <IconButton
-            onClick={() => onDelete(selectedIds)}
+            onClick={() => handleDelete(selectedIds)}
             color="error"
             disabled={selectedIds.length === 0}
           >
@@ -107,7 +107,7 @@ export default function CandidatesTable({
                 key={candidate.candidate_id}
                 hover
                 selected={selectedIds.includes(candidate.candidate_id)}
-                onClick={() => onRowClick(candidate)}
+                onClick={() => handleRowClick(candidate)}
                 style={{ cursor: "pointer" }}
               >
                 <TableCell>
@@ -115,7 +115,7 @@ export default function CandidatesTable({
                     checked={selectedIds.includes(candidate.candidate_id)}
                     onChange={e => {
                       e.stopPropagation();
-                      onSelect(candidate.candidate_id);
+                      handleSelect(candidate.candidate_id);
                     }}
                   />
                 </TableCell>
@@ -127,7 +127,7 @@ export default function CandidatesTable({
                   <IconButton
                     aria-label="Удалить"
                     color="error"
-                    onClick={() => onDeleteOne(candidate.candidate_id)}
+                    onClick={() => handleDeleteOne(candidate.candidate_id)}
                   >
                     <DeleteIcon />
                   </IconButton>
