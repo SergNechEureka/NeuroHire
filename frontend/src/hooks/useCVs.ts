@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CVMeta } from "../types";
+import { CVMeta } from "../types/models";
 import { fetchCVsByCandidate, deleteCVs } from "../api/cvs";
 
 export function useCVs(candidateId: string | null) {

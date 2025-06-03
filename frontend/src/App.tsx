@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import CandidatesTable from "./components/CandidatesTable";
+import CandidatePageLayout from "./components/CandidatePageLayout";
 import useCandidates from "./hooks/useCandidates";
 import LoginForm from "./LoginForm";
 import ApplicationBar from "./ApplicationBar";
 import { useAuth } from "./AuthContext";
+import type { Candidate } from "./types/models";
 
 const App: React.FC = () => {
   const { token, handleLogin, handleLogout } = useAuth();
@@ -11,35 +13,51 @@ const App: React.FC = () => {
   const {
     candidates,
     selectedIds,
-    onSelect,
-    onSelectAll,
-    onDeselectAll,
-    onDelete,
-    onDeleteOne,
-    fetchData
+    order,
+    orderBy,
+    handleSelect,
+    handleSelectAll,
+    handleDelete,
+    handleDeleteOne,
+    handleRowClick,
+    fetchData,
+    getComparator,
+    handleRequestSort,
   } = useCandidates();
+
+  const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(
+    null
+  );
 
   return (
     <div>
       {!token ? (
-        <LoginForm 
-            onLogin={handleLogin} />
+        <LoginForm onLogin={handleLogin} />
       ) : (
         <>
-          <ApplicationBar 
-            onLogout={handleLogout}/>
-          <CandidatesTable 
-            candidates={candidates}
-            selectedIds={selectedIds}
-            onSelect={onSelect}
-            onSelectAll={onSelectAll}
-            onDeselectAll={onDeselectAll}
-            onDelete={onDelete}
-            onDeleteOne={onDeleteOne}
-            onRowClick={console.log}
-            loading={false}
-            fetchData={fetchData}
-          />
+          <ApplicationBar onLogout={handleLogout} />
+          {selectedCandidate ? (
+            <CandidatePageLayout
+              candidate={selectedCandidate}
+              onBack={() => setSelectedCandidate(null)}
+            />
+          ) : (
+            <CandidatesTable
+              candidates={candidates}
+              selectedIds={selectedIds}
+              order={order}
+              orderBy={orderBy}
+              handleSelect={handleSelect}
+              handleSelectAll={handleSelectAll}
+              handleDelete={handleDelete}
+              handleDeleteOne={handleDeleteOne}
+              handleRowClick={handleRowClick}
+              loading={false}
+              fetchData={fetchData}
+              getComparator={getComparator}
+              handleRequestSort={handleRequestSort}
+            />
+          )}
         </>
       )}
     </div>

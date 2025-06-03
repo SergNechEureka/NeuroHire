@@ -9,5 +9,11 @@
   "welcome": "Welcome",
   "drag_and_drop": "Drag and drop files here, or click to select files",
   "delete": "Delete",
-  "upload": "Upload CV"
+  "upload": "Upload CV",
+  "name": "Name",
+  "candidates": "Candidates",
+  "email": "E-Mail",
+  "country": "Country",
+  "birthDate": "Birth Date",
+  "nativeLanguage": "Native Language"
 }

@@ -9,5 +9,6 @@
   "welcome": "Willkommen",
   "drag_and_drop": "Ziehen Sie Dateien hierher und legen Sie sie dort ab, oder klicken Sie, um Dateien auszuwählen",
   "delete": "Löschen",
-  "upload": "Hochladen CV"
+  "upload": "Hochladen CV",
+  "name": "Name"
 }

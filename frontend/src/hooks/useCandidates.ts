@@ -1,28 +1,60 @@
-import { useEffect, useState, useCallback } from "react";
-import type { Candidate } from "../types";
+import * as React from "react";
+import type { Candidate } from "../types/models";
 import { fetchCandidates, deleteCandidates, deleteCandidate } from "../api/candidates";
 import { useAuth } from "../AuthContext";
 
+import type { Order } from "../types/common";
+
 export default function useCandidates() {
-  const [candidates, setCandidates] = useState<Candidate[]>([]);
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [selected, setSelected] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [candidates, setCandidates] = React.useState<Candidate[]>([]);
+  const [order, setOrder] = React.useState<"asc" | "desc">("asc");
+  const [orderBy, setOrderBy] = React.useState<keyof Candidate>('candidate_name');
+  const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
+  const [loading, setLoading] = React.useState(true);
   const { token } = useAuth();
 
-  const fetchData = useCallback(() => {
+  const fetchData = React.useCallback(() => {
       setLoading(true);
-      fetchCandidates().then(setCandidates).finally(() => setLoading(false));
+      fetchCandidates().then(setCandidates).finally(() => setLoading(false)); 
     },
     []
   );
 
-  useEffect(() => {
+  function getComparator<Key extends keyof Candidate>(
+    order: Order,
+    orderBy: Key,
+  ): (
+    a: { [key in Key]: number | string | null | undefined },
+    b: { [key in Key]: number | string | null | undefined },
+  ) => number {
+    return order === 'desc'
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+
+  function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+    const aValue = a[orderBy];
+    const bValue = b[orderBy];
+
+    if (aValue == null && bValue == null) return 0;
+    if (aValue == null) return 1;
+    if (bValue == null) return -1;
+
+    if (bValue < aValue) {
+      return -1;
+    }
+    if (bValue > aValue) {
+      return 1;
+    }
+    return 0;
+  }
+
+  React.useEffect(() => {
     if (!token) return;
     fetchData();
   }, [token, fetchData]);
 
-  const handleSelect = useCallback(
+  const handleSelect = React.useCallback(
     (id: string) => {
       setSelectedIds((prev) =>
         prev.includes(id) ? prev.filter((sid) => sid !== id) : [...prev, id]
@@ -31,45 +63,62 @@ export default function useCandidates() {
     []
   );
 
-  const handleSelectAll = useCallback(() => {
-    setSelectedIds(candidates.map((c) => c.candidate_id));
-  }, [candidates]);
-
-  const handleDeselectAll = useCallback(() => {
-    setSelectedIds([]);
-  }, []);
-
-  const handleDelete = useCallback(
+  const handleDelete = React.useCallback(
     async (ids: string[]) => {
       await deleteCandidates(ids);
       setCandidates((prev) => prev.filter((c) => !ids.includes(c.candidate_id)));
       setSelectedIds((prev) => prev.filter((id) => !ids.includes(id)));
       fetchData();
     },
-    []
+    [fetchData]
   );
 
-  const handleDeleteOne = useCallback( 
+  const handleDeleteOne = React.useCallback( 
     async (id: string) => {
       await deleteCandidate(id);
-      setSelected(selected.filter(id => id !== id));
+      setSelectedIds(prev => prev.filter(sid => sid !== id));
       fetchData();
     },
-    []
+    [fetchData]
   );
+
+  const handleRowClick = React.useCallback((candidate: Candidate) => {
+    console.log("This row was clicked:", candidate.candidate_id);
+  }, []);
+
+  const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      setSelectedIds(candidates.map((n) => n.candidate_id));
+    } else {
+      setSelectedIds([]);
+    }
+  };
+
+  const handleRequestSort = (
+    event: React.MouseEvent<unknown>,
+    property: keyof Candidate,
+  ) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
 
   return {
     candidates,
     selectedIds,
+    order,
+    orderBy,
     handleSelect,
     handleSelectAll,
-    handleDeselectAll,
     handleDelete,
     setCandidates,
     setSelectedIds,
     loading,
     setLoading,
     handleDeleteOne,
-    fetchData
+    fetchData,
+    handleRowClick,
+    handleRequestSort,
+    getComparator
   };
 }
