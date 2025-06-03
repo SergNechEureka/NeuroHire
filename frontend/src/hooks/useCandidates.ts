@@ -10,6 +10,7 @@ export default function useCandidates() {
   const [order, setOrder] = React.useState<"asc" | "desc">("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Candidate>('candidate_name');
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
+  const [selectedCandidate, setSelectedCandidate] = React.useState<Candidate | null>(null);
   const [loading, setLoading] = React.useState(true);
   const { token } = useAuth();
 
@@ -84,6 +85,7 @@ export default function useCandidates() {
 
   const handleRowClick = React.useCallback((candidate: Candidate) => {
     console.log("This row was clicked:", candidate.candidate_id);
+    setSelectedCandidate(candidate);
   }, []);
 
   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,20 +107,22 @@ export default function useCandidates() {
 
   return {
     candidates,
-    selectedIds,
-    order,
-    orderBy,
+    fetchData,
+    getComparator,
+    handleDelete,
+    handleDeleteOne,
+    handleRequestSort,
+    handleRowClick,
     handleSelect,
     handleSelectAll,
-    handleDelete,
-    setCandidates,
-    setSelectedIds,
     loading,
+    order,
+    orderBy,
+    selectedCandidate,
+    selectedIds,
+    setCandidates,
     setLoading,
-    handleDeleteOne,
-    fetchData,
-    handleRowClick,
-    handleRequestSort,
-    getComparator
+    setSelectedCandidate,
+    setSelectedIds,
   };
 }

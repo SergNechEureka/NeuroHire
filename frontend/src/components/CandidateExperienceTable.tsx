@@ -1,13 +1,15 @@
 import React from "react";
 import { Paper, Typography } from "@mui/material";
+import type { CVExperience } from "../types/models";
 
 interface CandidateExperienceTableProps {
-  experience: any[]; // Заменить на корректный тип, если появится структура
+  selectedCandidateId: string;
 }
 
 const CandidateExperienceTable: React.FC<CandidateExperienceTableProps> = ({
-  experience,
+  selectedCandidateId,
 }) => {
+  const experience: CVExperience[] = [];
   return (
     <Paper sx={{ p: 2, mb: 2 }}>
       <Typography variant="h6">Experience</Typography>

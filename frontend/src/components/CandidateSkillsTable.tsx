@@ -1,13 +1,15 @@
 import React from "react";
 import { Paper, Typography } from "@mui/material";
+import type { CVSkill } from "../types/models";
 
 interface CandidateSkillsTableProps {
-  skills: any[]; // Позже заменить на правильный тип
+  selectedCandidateId: string;
 }
 
 const CandidateSkillsTable: React.FC<CandidateSkillsTableProps> = ({
-  skills,
+  selectedCandidateId,
 }) => {
+  const skills: CVSkill[] = [];
   return (
     <Paper sx={{ p: 2, mb: 2 }}>
       <Typography variant="h6">Skills</Typography>

@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import CandidatesTable from "./components/CandidatesTable";
 import CandidatePageLayout from "./components/CandidatePageLayout";
 import useCandidates from "./hooks/useCandidates";
 import LoginForm from "./LoginForm";
 import ApplicationBar from "./ApplicationBar";
 import { useAuth } from "./AuthContext";
-import type { Candidate } from "./types/models";
 
 const App: React.FC = () => {
   const { token, handleLogin, handleLogout } = useAuth();
@@ -23,11 +22,9 @@ const App: React.FC = () => {
     fetchData,
     getComparator,
     handleRequestSort,
+    selectedCandidate,
+    setSelectedCandidate,
   } = useCandidates();
-
-  const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(
-    null
-  );
 
   return (
     <div>

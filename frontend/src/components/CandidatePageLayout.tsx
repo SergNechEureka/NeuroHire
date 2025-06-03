@@ -5,15 +5,16 @@ import CandidateNavigation from "./CandidateNavigation";
 import CandidateDetails from "./CandidateDetails";
 import CandidateExperienceTable from "./CandidateExperienceTable";
 import CandidateSkillsTable from "./CandidateSkillsTable";
+import type { Candidate } from "../types/models";
 
 interface CandidatePageLayoutProps {
   onBack: () => void;
-  candidateId: string;
+  candidate: Candidate;
 }
 
 const CandidatePageLayout: React.FC<CandidatePageLayoutProps> = ({
   onBack,
-  candidateId,
+  candidate,
 }) => {
   return (
     <Box sx={{ p: 3 }}>
@@ -31,15 +32,19 @@ const CandidatePageLayout: React.FC<CandidatePageLayoutProps> = ({
         </Breadcrumbs>
         <Grid container spacing={2}>
           <Grid item xs={12} md={3}>
-            <CandidateNavigation selectedCandidateId={candidateId} />
+            <CandidateNavigation selectedCandidateId={candidate.candidate_id} />
           </Grid>
           <Grid item xs={12} md={9}>
-            <CandidateDetails candidateId={candidateId} />
+            <CandidateDetails selectedCandidate={candidate} />
             <Box sx={{ mt: 2 }}>
-              <CandidateExperienceTable candidateId={candidateId} />
+              <CandidateExperienceTable
+                selectedCandidateId={candidate.candidate_id}
+              />
             </Box>
             <Box sx={{ mt: 2 }}>
-              <CandidateSkillsTable candidateId={candidateId} />
+              <CandidateSkillsTable
+                selectedCandidateId={candidate.candidate_id}
+              />
             </Box>
           </Grid>
         </Grid>
