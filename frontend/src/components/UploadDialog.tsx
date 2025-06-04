@@ -1,7 +1,16 @@
 import React from "react";
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions,
-  Button, Box, LinearProgress, Typography, List, ListItem, ListItemText
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Box,
+  LinearProgress,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -13,7 +22,11 @@ type UploadDialogProps = {
   onUploadComplete: () => void;
 };
 
-const UploadDialog: React.FC<UploadDialogProps> = ({ open, onClose, onUploadComplete }) => {
+const UploadDialog: React.FC<UploadDialogProps> = ({
+  open,
+  onClose,
+  onUploadComplete,
+}) => {
   const {
     handleFilesDrop,
     fileJobs,
@@ -23,8 +36,10 @@ const UploadDialog: React.FC<UploadDialogProps> = ({ open, onClose, onUploadComp
     triggerFileInput,
   } = useUploadDialog({ onClose, onUploadComplete });
 
-  const allCompleted = fileJobs.every(job => job.status === "Completed" || job.status === "Error");
-  
+  const allCompleted = fileJobs.every(
+    (job) => job.status === "Completed" || job.status === "Error"
+  );
+
   const { t } = useTranslation();
 
   return (
@@ -40,7 +55,7 @@ const UploadDialog: React.FC<UploadDialogProps> = ({ open, onClose, onUploadComp
           color="#eee"
           sx={{ cursor: "pointer" }}
           onDrop={handleFilesDrop}
-          onDragOver={e => e.preventDefault()}
+          onDragOver={(e) => e.preventDefault()}
           onClick={triggerFileInput}
         >
           <CloudUploadIcon sx={{ fontSize: 40, mb: 1 }} />
@@ -55,12 +70,9 @@ const UploadDialog: React.FC<UploadDialogProps> = ({ open, onClose, onUploadComp
           />
         </Box>
         <List>
-          {fileJobs.map(job => (
-            <ListItem key={job.job_id || job.filename}>
-              <ListItemText
-                primary={job.filename}
-                secondary={job.status}
-              />
+          {fileJobs.map((job) => (
+            <ListItem key={job.jobId || job.filename}>
+              <ListItemText primary={job.filename} secondary={job.status} />
               <Box width={150} mr={2}>
                 <LinearProgress
                   variant={job.progress < 100 ? "determinate" : "indeterminate"}
@@ -74,7 +86,12 @@ const UploadDialog: React.FC<UploadDialogProps> = ({ open, onClose, onUploadComp
         </List>
       </DialogContent>
       <DialogActions>
-        <Button   variant="contained" color="primary" onClick={handleDialogClose} disabled={!allCompleted}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleDialogClose}
+          disabled={!allCompleted}
+        >
           ЗАКРЫТЬ
         </Button>
       </DialogActions>

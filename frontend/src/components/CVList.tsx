@@ -7,11 +7,14 @@ import {
   Typography,
 } from "@mui/material";
 
-interface CVListProps {
-  cvs: any[];
+import type { CV } from "../types/models";
+
+interface CVsProps {
+  onBack: () => void;
+  cvs: CV[];
 }
 
-const CVList: React.FC<CVListProps> = ({ cvs }) => {
+const CVList: React.FC<CVsProps> = ({ cvs }) => {
   if (!cvs || cvs.length === 0)
     return <Typography variant="body2">No CVs available</Typography>;
 
@@ -20,10 +23,7 @@ const CVList: React.FC<CVListProps> = ({ cvs }) => {
       {cvs.map((cv) => (
         <React.Fragment key={cv.cv_id}>
           <ListItem>
-            <ListItemText
-              primary={cv.filename}
-              secondary={cv.language}
-            />
+            <ListItemText primary={cv.filename} secondary={cv.language} />
           </ListItem>
           <Divider />
         </React.Fragment>

@@ -2,10 +2,12 @@
 
 import axios from "axios";
 import type { CV, CVExperience, CVSkill } from "../types/models";
+import type { JobStatus } from "../types/apis";
+import type { FileJob } from "../types/common";
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
-export async function uploadCVs(formData: FormData): Promise<void> {
+export async function uploadCVs(formData: FormData): Promise<FileJob[]> {
     const token = localStorage.getItem('access_token');
     const response = await axios.post(`${API_URL}upload`, formData, {
         headers: {
@@ -15,7 +17,7 @@ export async function uploadCVs(formData: FormData): Promise<void> {
     return response.data.jobs
 }
 
-export async function getUploadStatus(jobId: string): Promise<void> {
+export async function getUploadStatus(jobId: string): Promise<JobStatus> {
     const token = localStorage.getItem('access_token');
     const response = await axios.get(`${API_URL}upload-status/${jobId}`, {
         headers: {

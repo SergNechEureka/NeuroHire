@@ -39,11 +39,13 @@ const CandidatePageLayout: React.FC<CandidatePageLayoutProps> = ({
             <Box sx={{ mt: 2 }}>
               <CandidateExperienceTable
                 selectedCandidateId={candidate.candidate_id}
+                experience={[]}
               />
             </Box>
             <Box sx={{ mt: 2 }}>
               <CandidateSkillsTable
                 selectedCandidateId={candidate.candidate_id}
+                skills={[]}
               />
             </Box>
           </Grid>

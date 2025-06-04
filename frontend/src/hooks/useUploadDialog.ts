@@ -1,14 +1,7 @@
 // src/useUploadDialog.ts
 import { useRef, useState, useEffect } from "react";
 import { uploadCVs, getUploadStatus } from "../api/cvs";
-
-
-export type FileJob = {
-  filename: string;
-  jobId: string;
-  status: string;
-  progress: number;
-};
+import type { FileJob } from "../types/common";
 
 type UploadDialogHookProps = {
   onClose: () => void;
@@ -43,13 +36,12 @@ export function useUploadDialog({ onClose, onUploadComplete }: UploadDialogHookP
   const uploadFiles = async (files: File[]) => {
     setIsUploading(true);
     const formData = new FormData();
-    const token = localStorage.getItem('access_token');
     files.forEach(f => formData.append("files", f));
 
     try {
-      const fileJobs = await uploadCVs(formData);
-      // Each job: { filename, jobId }
-      const jobs: FileJob[] = fileJobs.map((f: any) => ({
+      const uploadResult = await uploadCVs(formData);
+
+      const jobs: FileJob[] = uploadResult.map((f: { filename: string; jobId: string }) => ({
         filename: f.filename,
         jobId: f.jobId,
         status: "Queued",
@@ -57,7 +49,7 @@ export function useUploadDialog({ onClose, onUploadComplete }: UploadDialogHookP
       }));
       setFileJobs(jobs);
       setPolling(true); // Start polling statuses
-    } catch (e) {
+    } catch {
       alert("Error uploading files");
       setIsUploading(false);
     }

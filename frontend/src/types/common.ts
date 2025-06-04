@@ -2,6 +2,13 @@ import type { Candidate } from "../types/models";
 
 export type Order = 'asc' | 'desc';
 
+export type FileJob = {
+    filename: string;
+    jobId: string;
+    status: string;
+    progress: number;
+  };
+
 export interface EnhancedTableToolbarProps {
   numSelected: number;
 };

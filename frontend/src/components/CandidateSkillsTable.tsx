@@ -4,12 +4,12 @@ import type { CVSkill } from "../types/models";
 
 interface CandidateSkillsTableProps {
   selectedCandidateId: string;
+  skills: CVSkill[];
 }
 
 const CandidateSkillsTable: React.FC<CandidateSkillsTableProps> = ({
-  selectedCandidateId,
+  skills,
 }) => {
-  const skills: CVSkill[] = [];
   return (
     <Paper sx={{ p: 2, mb: 2 }}>
       <Typography variant="h6">Skills</Typography>

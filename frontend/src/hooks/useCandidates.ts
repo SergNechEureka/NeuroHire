@@ -97,7 +97,7 @@ export default function useCandidates() {
   };
 
   const handleRequestSort = (
-    event: React.MouseEvent<unknown>,
+    _event: React.MouseEvent<unknown>,
     property: keyof Candidate,
   ) => {
     const isAsc = orderBy === property && order === 'asc';

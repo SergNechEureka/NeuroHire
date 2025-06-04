@@ -4,12 +4,12 @@ import type { CVExperience } from "../types/models";
 
 interface CandidateExperienceTableProps {
   selectedCandidateId: string;
+  experience: CVExperience[];
 }
 
 const CandidateExperienceTable: React.FC<CandidateExperienceTableProps> = ({
-  selectedCandidateId,
+  experience,
 }) => {
-  const experience: CVExperience[] = [];
   return (
     <Paper sx={{ p: 2, mb: 2 }}>
       <Typography variant="h6">Experience</Typography>
