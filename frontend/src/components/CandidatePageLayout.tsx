@@ -31,23 +31,29 @@ const CandidatePageLayout: React.FC<CandidatePageLayoutProps> = ({
           <Typography color="text.primary">Candidate</Typography>
         </Breadcrumbs>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={3}>
-            <CandidateNavigation selectedCandidateId={candidate.candidate_id} />
+          <Grid size={{ xs: 12, md: 3 }}>
+            <Paper>
+              <CandidateNavigation
+                selectedCandidateId={candidate.candidate_id}
+              />
+            </Paper>
           </Grid>
-          <Grid item xs={12} md={9}>
-            <CandidateDetails selectedCandidate={candidate} />
-            <Box sx={{ mt: 2 }}>
-              <CandidateExperienceTable
-                selectedCandidateId={candidate.candidate_id}
-                experience={[]}
-              />
-            </Box>
-            <Box sx={{ mt: 2 }}>
-              <CandidateSkillsTable
-                selectedCandidateId={candidate.candidate_id}
-                skills={[]}
-              />
-            </Box>
+          <Grid size={{ xs: 12, md: 9 }}>
+            <Paper>
+              <CandidateDetails selectedCandidate={candidate} />
+              <Box sx={{ mt: 2 }}>
+                <CandidateExperienceTable
+                  selectedCandidateId={candidate.candidate_id}
+                  experience={[]}
+                />
+              </Box>
+              <Box sx={{ mt: 2 }}>
+                <CandidateSkillsTable
+                  selectedCandidateId={candidate.candidate_id}
+                  skills={[]}
+                />
+              </Box>
+            </Paper>
           </Grid>
         </Grid>
       </Paper>

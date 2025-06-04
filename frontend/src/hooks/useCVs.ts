@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { CVMeta } from "../types/models";
-import { fetchCVsByCandidate, deleteCVs } from "../api/cvs";
+import type { CV } from "../types/models";
+import { fetchCandidateCVs, deleteCVs } from "../api/cvs";
 
 export function useCVs(candidateId: string | null) {
-  const [cvs, setCVs] = useState<CVMeta[]>([]);
+  const [cvs, setCVs] = useState<CV[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -12,7 +12,7 @@ export function useCVs(candidateId: string | null) {
       return;
     }
     setLoading(true);
-    fetchCVsByCandidate(candidateId).then(data => {
+    fetchCandidateCVs(candidateId).then(data => {
       setCVs(data);
       setLoading(false);
     });
