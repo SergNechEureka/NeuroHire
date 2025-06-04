@@ -19,6 +19,7 @@ venv/
 
 # Env secrets
 .env
-backend/Archiv.zip
-frontend_cra
-.chromadb_data
+*.zip
+frontend_old
+chromadb_data
+node_modules
