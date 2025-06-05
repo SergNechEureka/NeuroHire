@@ -18,6 +18,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useUploadDialog } from "../hooks/useUploadDialog";
 
 type UploadDialogProps = {
@@ -71,24 +72,58 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
     }
   };
 
+  const [dragActive, setDragActive] = React.useState(false);
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragActive(true);
+  };
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragActive(false);
+  };
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    setDragActive(false);
+    handleFilesDrop(e);
+  };
+
   return (
     <Dialog open={open} onClose={handleDialogClose} fullWidth maxWidth="sm">
       <DialogTitle>{t("uploadFiles")}</DialogTitle>
       <DialogContent>
         <Box
           p={2}
-          border="2px dashed #888"
+          border={dragActive ? "2px solid #1976d2" : "2px dashed #888"}
           borderRadius={2}
           textAlign="center"
-          bgcolor="#222"
+          bgcolor={dragActive ? "#e3f2fd" : "#222"}
           color="#eee"
-          sx={{ cursor: "pointer" }}
-          onDrop={handleFilesDrop}
-          onDragOver={(e) => e.preventDefault()}
+          sx={{ cursor: "pointer", transition: "all 0.2s" }}
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
           onClick={triggerFileInput}
         >
-          <CloudUploadIcon sx={{ fontSize: 40, mb: 1 }} />
+          <CloudUploadIcon
+            sx={{
+              fontSize: 40,
+              mb: 1,
+              color: dragActive ? "#1976d2" : undefined,
+            }}
+          />
           <Typography variant="subtitle1">{t("drag_and_drop")}</Typography>
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={1}
+            mt={1}
+          >
+            <InfoOutlinedIcon fontSize="small" color="info" />
+            <Typography variant="caption" color="info.main">
+              {t("supportedFormats")}
+            </Typography>
+          </Stack>
           <input
             ref={inputRef}
             type="file"

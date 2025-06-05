@@ -1,8 +1,7 @@
 # backend/recreate_db.py
 import os
 from dotenv import load_dotenv
-from sqlmodel import create_engine, Session
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlmodel import create_engine
 from CandidatesDB.models import Candidate, CVMeta, CandidateProjectRole, CVExperience, CVSkill
 from vector_db.VectorDBService import VectorDBService
 
@@ -13,10 +12,6 @@ if DATABASE_URL is None:
     raise ValueError("DATABASE_URL environment variable is not set.")
 
 engine = create_engine(url=DATABASE_URL, echo=True)
-
-#Base = declarative_base()
-
-
 
 def recreate_db(engine):
     print("Dropping all tables...")
@@ -38,7 +33,3 @@ def recreate_db(engine):
 
 if __name__ == "__main__":
     recreate_db(engine)
-
-
-#    User.metadata.drop_all(bind=engine)
-#    User.metadata.create_all(bind=engine)
