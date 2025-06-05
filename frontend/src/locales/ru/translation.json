@@ -29,5 +29,7 @@
   "filter": "Фильтр",
   "densePadding": "Компактный режим",
   "loading": "Загрузка...",
-  "loggingIn": "Вход..."
+  "loggingIn": "Вход...",
+  "uploadFiles": "Загрузка файлов CV",
+  "close": "Закрыть"
 }

@@ -11,15 +11,33 @@ import {
   List,
   ListItem,
   ListItemText,
+  Stack,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ErrorIcon from "@mui/icons-material/Error";
+import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import { useUploadDialog } from "../hooks/useUploadDialog";
 
 type UploadDialogProps = {
   open: boolean;
   onClose: () => void;
   onUploadComplete: () => void;
+};
+
+const getStatusProps = (status: string) => {
+  switch (status) {
+    case "Completed":
+      return {
+        color: "success.main",
+        icon: <CheckCircleIcon color="success" />,
+      };
+    case "Error":
+      return { color: "error.main", icon: <ErrorIcon color="error" /> };
+    default:
+      return { color: "info.main", icon: <HourglassTopIcon color="info" /> };
+  }
 };
 
 const UploadDialog: React.FC<UploadDialogProps> = ({
@@ -42,9 +60,20 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
 
   const { t } = useTranslation();
 
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case "Completed":
+        return t("uploadStatusCompleted");
+      case "Error":
+        return t("uploadStatusError");
+      default:
+        return t("uploadStatusUploading");
+    }
+  };
+
   return (
     <Dialog open={open} onClose={handleDialogClose} fullWidth maxWidth="sm">
-      <DialogTitle>Upload CV Files</DialogTitle>
+      <DialogTitle>{t("uploadFiles")}</DialogTitle>
       <DialogContent>
         <Box
           p={2}
@@ -70,19 +99,46 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
           />
         </Box>
         <List>
-          {fileJobs.map((job) => (
-            <ListItem key={job.jobId || job.filename}>
-              <ListItemText primary={job.filename} secondary={job.status} />
-              <Box width={150} mr={2}>
-                <LinearProgress
-                  variant={job.progress < 100 ? "determinate" : "indeterminate"}
-                  value={job.progress}
-                  sx={{ height: 8, borderRadius: 2 }}
-                />
-              </Box>
-              <Typography variant="body2">{`${job.progress}%`}</Typography>
-            </ListItem>
-          ))}
+          {fileJobs.map((job) => {
+            const { color, icon } = getStatusProps(job.status);
+            return (
+              <ListItem key={job.jobId || job.filename}>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  spacing={1}
+                  sx={{ flex: 1 }}
+                >
+                  {icon}
+                  <ListItemText
+                    primary={job.filename}
+                    secondary={getStatusText(job.status)}
+                    sx={{ color }}
+                  />
+                </Stack>
+                <Box width={150} mr={2}>
+                  <LinearProgress
+                    variant={
+                      job.progress < 100 ? "determinate" : "indeterminate"
+                    }
+                    value={job.progress}
+                    sx={{ height: 8, borderRadius: 2 }}
+                    color={
+                      job.status === "Error"
+                        ? "error"
+                        : job.status === "Completed"
+                        ? "success"
+                        : "info"
+                    }
+                  />
+                </Box>
+                <Typography
+                  variant="body2"
+                  sx={{ color, minWidth: 40, textAlign: "right" }}
+                >{`${job.progress}%`}</Typography>
+              </ListItem>
+            );
+          })}
         </List>
       </DialogContent>
       <DialogActions>
@@ -92,7 +148,7 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
           onClick={handleDialogClose}
           disabled={!allCompleted}
         >
-          ЗАКРЫТЬ
+          {t("close")}
         </Button>
       </DialogActions>
     </Dialog>

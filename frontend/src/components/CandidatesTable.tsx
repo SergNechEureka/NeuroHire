@@ -81,8 +81,12 @@ function EnhancedTableToolbar(
         {
           pl: { sm: 2 },
           pr: { xs: 1, sm: 1 },
+          minHeight: 64,
+          display: "flex",
           flexDirection: { xs: "column", sm: "row" },
-          gap: { xs: 2, sm: 0 },
+          alignItems: { xs: "stretch", sm: "center" },
+          justifyContent: "space-between",
+          gap: 2,
         },
         numSelected > 0 && {
           bgcolor: (theme) =>
@@ -97,48 +101,49 @@ function EnhancedTableToolbar(
         sx={{
           display: "flex",
           alignItems: "center",
-          width: { xs: "100%", sm: "auto" },
+          flex: 1,
+          minWidth: 0,
           gap: 2,
         }}
       >
-        {numSelected > 0 ? (
-          <Typography
-            sx={{ flex: "1 1 100%" }}
-            color="inherit"
-            variant="subtitle1"
-            component="div"
-          >
-            {numSelected} {t("candidates")} {t("selected")}
-          </Typography>
-        ) : (
-          <Typography
-            sx={{ flex: "1 1 100%" }}
-            variant="h6"
-            id="tableTitle"
-            component="div"
-          >
-            {t("candidates")}
-          </Typography>
-        )}
+        <Typography
+          sx={{
+            flexShrink: 0,
+            fontWeight: 700,
+            fontSize: { xs: 20, sm: 24 },
+            mr: 2,
+            minWidth: 0,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+          color={numSelected > 0 ? "primary" : "inherit"}
+          variant="h6"
+          id="tableTitle"
+          component="div"
+        >
+          {numSelected > 0
+            ? `${numSelected} ${t("candidates")} ${t("selected")}`
+            : t("candidates")}
+        </Typography>
       </Box>
-
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
           gap: 2,
-          width: { xs: "100%", sm: "auto" },
+          flexShrink: 0,
         }}
       >
         <Button
           variant="contained"
+          color="primary"
           onClick={onUploadClick}
           startIcon={<CloudUploadIcon />}
-          sx={{ whiteSpace: "nowrap" }}
+          sx={{ fontWeight: 600, px: 3, boxShadow: 1 }}
         >
           {t("upload")}
         </Button>
-
         {numSelected > 0 ? (
           <Tooltip title={t("delete")}>
             <IconButton

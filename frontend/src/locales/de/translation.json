@@ -29,5 +29,7 @@
   "filter": "Filter",
   "densePadding": "Dichte Abstände",
   "loading": "Lädt...",
-  "loggingIn": "Anmeldung..."
+  "loggingIn": "Anmeldung...",
+  "uploadFiles": "CV-Dateien hochladen",
+  "close": "Schließen"
 }

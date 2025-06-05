@@ -29,5 +29,7 @@
   "filter": "Filter",
   "densePadding": "Dense padding",
   "loading": "Loading...",
-  "loggingIn": "Logging in..."
+  "loggingIn": "Logging in...",
+  "uploadFiles": "Upload CV Files",
+  "close": "Close"
 }
