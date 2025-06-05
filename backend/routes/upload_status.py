@@ -25,10 +25,18 @@ def get_status(job_id: str, user: User = Depends(current_active_user), session: 
         status = UPLOAD_STATUS.get(job_id)
         if status is None:
             raise HTTPException(status_code=404, detail="Status for job_id not found")
+        # Если статус завершён или ошибка — удалить из памяти
+        if status.get("progress") in (100, -1):
+            clear_status(job_id)
         return status
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+def clear_status(job_id: str):
+    """Удаляет статус job_id из UPLOAD_STATUS, если он есть."""
+    if job_id in UPLOAD_STATUS:
+        del UPLOAD_STATUS[job_id]
 
 @router.get("/upload-status/{job_id}")
 def get_upload_status(job_id: str, user: User = Depends(current_active_user), session: Session = Depends(get_session)):
