@@ -7,8 +7,8 @@ class ChromaDBService:
         self.path = path
         self.client = chromadb.PersistentClient(path=self.path)
 
-    def get_collection(self):
-        self.client.get_or_create_collection(self.collection_name)
+    def get_collection(self) -> chromadb.Collection:
+        return self.client.get_or_create_collection(self.collection_name)
     
     def clear_db(self):
         self.client.delete_collection(self.collection_name)

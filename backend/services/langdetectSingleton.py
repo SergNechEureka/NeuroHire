@@ -19,8 +19,11 @@ class LangDetectSingleton:
                 DetectorFactory.seed = 0  # For reproducibility
                 LangDetectSingleton._initialized = True
 
+    _detect_lock = threading.Lock()
+
     def detect(self, text):
         try:
-            return detect(text)
+            with self._detect_lock:
+                return detect(text)
         except LangDetectException as e:
             return "unknown"

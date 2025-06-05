@@ -82,6 +82,12 @@ class thogetherAIService(LLMService):
 
         self.client = together.Client(api_key=os.getenv("TOGETHER_API_KEY"))
 
+class OpenAIService(LLMService):
+    def __init__(self, system_prompt_template: str, user_prompt_template: str):
+        super().__init__(system_prompt_template, user_prompt_template)
+
+        self.client = openai.Client(api_key=os.getenv("OPENAI_API_KEY"))
+
 class huggingFaceService(LLMService):
     def __init__(self, system_prompt_template: str, user_prompt_template: str):
         super().__init__(system_prompt_template, user_prompt_template)

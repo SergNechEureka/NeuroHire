@@ -11,7 +11,7 @@ from typing import Any, Dict
 
 from ..services.file_utils import TempFile  
 from ..vector_db.utils import Embedder
-from ..services.LLMService import LLMService, GROQService,thogetherAIService, huggingFaceService
+from ..services.LLMService import LLMService, GROQService, thogetherAIService, huggingFaceService, OpenAIService
 from ..vector_db.VectorDBService import VectorDBService
 from ..candidates_db.CVRepository import CVRepository
 from ..candidates_db.CandidatesRepository import CandidatesRepository
@@ -170,7 +170,7 @@ class CheckCVTool(BaseTool):
                 match answer:
                     case "repeat": 
                         time.sleep(15)
-                        attempt -= 1
+                        
                     
                     case "True":
                         return {
@@ -266,7 +266,7 @@ class TranslateToEnglishTool(BaseTool):
 
                 else:
                     time.sleep(15)
-                    attempt -= 1
+                    
 
             except Exception as e:
                 time.sleep(1)
@@ -468,33 +468,52 @@ class ExtractDataTool(BaseTool):
 
     def _ask_llm(self, cv_text, sys_prompt_template, usr_prompt_template, model, temperature, top_p):
         llm_service = GROQService(sys_prompt_template, usr_prompt_template)
+
         prompt_vars = {
             "user": [
                 {"name": "cv_text", "value": cv_text}
             ],
         }
 
-        for attempt in range(1, self.max_retries + 1):
-            try:
-                answer = llm_service.ask_llm(
-                    model = model,
-                    prompt_vars = prompt_vars,
-                    temperature=temperature,
-                    top_p=top_p
-                )
+        #service_classes = [GROQService, thogetherAIService, OpenAIService]
+        service_classes = [GROQService, OpenAIService]
+        #service_names = ["GROQService", "thogetherAIService", "OpenAIService"]
+        service_names = ["GROQService", "OpenAIService"]
+        #models = ["Llama-3.3-70b-versatile", "mistralai/Mistral-7B-Instruct-v0.1", "gpt-4o"]
+        models = ["Llama-3.3-70b-versatile", "gpt-4o-mini"]
 
-                if answer != "repeat":
-                    return self._conver_llm_answer_to_json(answer)
-                else:
+        tried_class = type(llm_service)
+        tried_name = tried_class.__name__
+        model_to_use = model
+
+        services = [(llm_service, tried_name, model_to_use)]
+        for cls, name, model_to_use in zip(service_classes, service_names, models):
+            if cls != tried_class:
+                services.append((cls(sys_prompt_template, usr_prompt_template), name, model_to_use))
+
+        for service, name, model_to_use in services:
+            for attempt in range(1, self.max_retries + 1):
+                try:
+                    answer = service.ask_llm(
+                        model=model_to_use,
+                        prompt_vars=prompt_vars,
+                        temperature=temperature,
+                        top_p=top_p
+                    )
+                    if answer != "repeat":
+                        return self._conver_llm_answer_to_json(answer)
+                    if attempt == self.max_retries:
+                        break
                     time.sleep(15)
-                    attempt -= 1
+                except Exception as e:
+                    if model_to_use == "gpt-4o-mini":
+                        model = "gpt-4o-mini"
+                    if attempt == self.max_retries:
+                        break
+                    time.sleep(1)
 
-            except Exception as e:
-                time.sleep(1)
-                if attempt == self.max_retries:
-                    raise ValueError("Information not found after multiple LLM attempts")
-                continue
-    
+        raise ValueError("Information not found after multiple LLM attempts (all providers)")
+
 class VectorizeTool(BaseTool):
     name = "Vectorize"
     description = "Vectorize a list of text chunks using an embedding model."

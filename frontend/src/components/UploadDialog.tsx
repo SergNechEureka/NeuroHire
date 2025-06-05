@@ -17,8 +17,8 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import ErrorIcon from "@mui/icons-material/Error";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
+import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useUploadDialog } from "../hooks/useUploadDialog";
@@ -30,18 +30,20 @@ type UploadDialogProps = {
   onUploadError?: () => void;
 };
 
-const getStatusProps = (status: string) => {
-  switch (status) {
-    case "Completed":
-      return {
-        color: "success.main",
-        icon: <CheckCircleIcon color="success" />,
-      };
-    case "Error":
-      return { color: "error.main", icon: <ErrorIcon color="error" /> };
-    default:
-      return { color: "info.main", icon: <HourglassTopIcon color="info" /> };
+const getStatusProps = (status: string, progress: number) => {
+  if (progress === 100) {
+    return {
+      color: "success.main",
+      icon: <TaskAltIcon color="success" />,
+    };
   }
+  if (status === "Error" || progress === -1) {
+    return {
+      color: "error.main",
+      icon: <ReportProblemIcon color="error" />,
+    };
+  }
+  return { color: "info.main", icon: <HourglassTopIcon color="info" /> };
 };
 
 const UploadDialog: React.FC<UploadDialogProps> = ({
@@ -61,7 +63,7 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
 
   const allCompleted =
     fileJobs.length > 0 &&
-    fileJobs.every((job) => job.status === "Completed" || job.progress === -1);
+    fileJobs.every((job) => job.progress === 100 || job.progress === -1);
 
   const { t } = useTranslation();
 
@@ -158,7 +160,11 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
         </Box>
         <List>
           {fileJobs.map((job) => {
-            const { color, icon } = getStatusProps(job.status);
+            const { color, icon } = getStatusProps(job.status, job.progress);
+            let textColor = undefined;
+            if (job.status === "Error" || job.progress === -1)
+              textColor = "error.main";
+            else if (job.progress === 100) textColor = "success.main";
             return (
               <ListItem key={job.jobId || job.filename}>
                 <Stack
@@ -171,7 +177,7 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
                   <ListItemText
                     primary={job.filename}
                     secondary={job.statusMessage || getStatusText(job.status)}
-                    sx={{ color }}
+                    sx={{ color: textColor }}
                   />
                 </Stack>
                 <Box width={150} mr={2}>
