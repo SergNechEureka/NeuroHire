@@ -92,5 +92,5 @@ class VectorDBService:
         return [m for m in matches if m["is_relevant"]]
     
     def clear_db(self):
-        collection = self.db_service.get_collection()
-        collection.delete()
+        self.db_service.clear_db()
+
