@@ -6,13 +6,21 @@ import type { FileJob } from "../types/common";
 type UploadDialogHookProps = {
   onClose: () => void;
   onUploadComplete: () => void;
+  open: boolean;
 };
 
-export function useUploadDialog({ onClose, onUploadComplete }: UploadDialogHookProps) {
+export function useUploadDialog({ onClose, onUploadComplete, open }: UploadDialogHookProps) {
   const [fileJobs, setFileJobs] = useState<FileJob[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [polling, setPolling] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Reset fileJobs when dialog is opened
+  useEffect(() => {
+    if (open) {
+      setFileJobs([]);
+    }
+  }, [open]);
 
   // Trigger hidden input for file selection
   const triggerFileInput = () => {
@@ -81,10 +89,11 @@ export function useUploadDialog({ onClose, onUploadComplete }: UploadDialogHookP
             return {
               ...job,
               status: jobStatus.status,
+              statusMessage: jobStatus.status,
               progress: jobStatus.progress
             };
           } catch {
-            return { ...job, status: "Error", progress: -1 };
+            return { ...job, status: "Error", progress: -1, statusMessage: "Error" };
           }
         })
       );

@@ -55,7 +55,7 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
     inputRef,
     handleFilesChange,
     triggerFileInput,
-  } = useUploadDialog({ onClose, onUploadComplete });
+  } = useUploadDialog({ onClose, onUploadComplete, open });
 
   const allCompleted = fileJobs.every(
     (job) => job.status === "Completed" || job.status === "Error"
@@ -168,7 +168,7 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
                   {icon}
                   <ListItemText
                     primary={job.filename}
-                    secondary={getStatusText(job.status)}
+                    secondary={job.statusMessage || getStatusText(job.status)}
                     sx={{ color }}
                   />
                 </Stack>

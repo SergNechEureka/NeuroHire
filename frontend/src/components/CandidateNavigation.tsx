@@ -62,7 +62,7 @@ const CandidateNavigation: React.FC<CandidateNavigationProps> = ({
         {filtered.length === 0 && (
           <Typography variant="body2" color="text.secondary" sx={{ p: 1 }}>
             {t("noMatches")}
-          </Typography>
+      </Typography>
         )}
       </List>
     </Paper>

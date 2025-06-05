@@ -7,6 +7,7 @@ export type FileJob = {
     jobId: string;
     status: string;
     progress: number;
+    statusMessage?: string;
   };
 
 export interface EnhancedTableToolbarProps {
