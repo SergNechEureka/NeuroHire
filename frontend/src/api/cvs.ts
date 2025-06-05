@@ -7,6 +7,18 @@ import type { FileJob } from "../types/common";
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
+// Add a global axios interceptor for 401 errors
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem('access_token');
+      window.location.reload(); // This will trigger AuthContext to show login
+    }
+    return Promise.reject(error);
+  }
+);
+
 export async function uploadCVs(formData: FormData): Promise<FileJob[]> {
     const token = localStorage.getItem('access_token');
     const response = await axios.post(`${API_URL}upload`, formData, {

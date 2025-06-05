@@ -21,6 +21,6 @@ venv/
 .env
 *.zip
 frontend_old/
-chromadb_data/
+
 node_modules/
 chromadb_data/chroma.sqlite3
