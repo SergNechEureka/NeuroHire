@@ -35,7 +35,8 @@ const App: React.FC = () => {
           <ApplicationBar onLogout={handleLogout} />
           {selectedCandidate ? (
             <CandidatePageLayout
-              candidate={selectedCandidate}
+              candidates={candidates}
+              selectedCandidate={selectedCandidate}
               onBack={() => setSelectedCandidate(null)}
             />
           ) : (

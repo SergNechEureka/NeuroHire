@@ -12,8 +12,22 @@
   "upload": "Upload CV",
   "name": "Name",
   "candidates": "Candidates",
+  "candidate": "Candidate",
   "email": "E-Mail",
   "country": "Country",
   "birthDate": "Birth Date",
-  "nativeLanguage": "Native Language"
+  "nativeLanguage": "Native Language",
+  "skills": "Skills",
+  "noSkillsData": "No skills data",
+  "skillsTableHere": "Skills table will be here",
+  "experience": "Experience",
+  "noExperienceData": "No experience data",
+  "experienceTableHere": "Experience table will be here",
+  "searchByName": "Search by name",
+  "noMatches": "No matches",
+  "all": "All",
+  "filter": "Filter",
+  "densePadding": "Dense padding",
+  "loading": "Loading...",
+  "loggingIn": "Logging in..."
 }

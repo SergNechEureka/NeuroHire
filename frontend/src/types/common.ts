@@ -27,4 +27,14 @@ export interface EnhancedTableProps {
   order: Order;
   orderBy: string;
   rowCount: number;
+  onSearch?: (type: "name" | "language" | "country", value: string) => void;
+  uniqueValues: {
+    languages: string[];
+    countries: string[];
+  };
+  filters: {
+    name: string;
+    language: string;
+    country: string;
+  };
 }

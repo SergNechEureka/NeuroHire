@@ -14,7 +14,7 @@ interface CVsProps {
   cvs: CV[];
 }
 
-const CVList: React.FC<CVsProps> = ({ cvs }) => {
+const CandidateCVs: React.FC<CVsProps> = ({ cvs }) => {
   if (!cvs || cvs.length === 0)
     return <Typography variant="body2">No CVs available</Typography>;
 
@@ -32,4 +32,4 @@ const CVList: React.FC<CVsProps> = ({ cvs }) => {
   );
 };
 
-export default CVList;
+export default CandidateCVs;
