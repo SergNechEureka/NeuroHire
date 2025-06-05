@@ -32,7 +32,7 @@
   "loggingIn": "Вход...",
   "uploadFiles": "Загрузка файлов CV",
   "close": "Закрыть",
-  "supportedFormats": "Поддерживаемые форматы: .pdf, .doc, .docx",
+  "supportedFormats": "Поддерживаемые форматы: .pdf, .doc, .docx (макс. 500 КБ)",
   "uploadStatusUploading": "Загрузка...",
   "uploadStatusCompleted": "Завершено",
   "uploadStatusError": "Ошибка",

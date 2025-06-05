@@ -146,7 +146,7 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
           >
             <InfoOutlinedIcon fontSize="small" color="info" />
             <Typography variant="caption" color="info.main">
-              {t("supportedFormats")}
+              {t("supportedFormats")} (max 500 KB)
             </Typography>
           </Stack>
           <input

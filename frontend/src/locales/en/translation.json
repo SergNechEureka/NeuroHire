@@ -32,7 +32,7 @@
   "loggingIn": "Logging in...",
   "uploadFiles": "Upload CV Files",
   "close": "Close",
-  "supportedFormats": "Supported formats: .pdf, .doc, .docx",
+  "supportedFormats": "Supported formats: .pdf, .doc, .docx (max 500 KB)",
   "uploadStatusUploading": "Uploading...",
   "uploadStatusCompleted": "Completed",
   "uploadStatusError": "Error",

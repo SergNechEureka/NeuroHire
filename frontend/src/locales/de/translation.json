@@ -32,7 +32,7 @@
   "loggingIn": "Anmeldung...",
   "uploadFiles": "CV-Dateien hochladen",
   "close": "Schließen",
-  "supportedFormats": "Unterstützte Formate: .pdf, .doc, .docx",
+  "supportedFormats": "Unterstützte Formate: .pdf, .doc, .docx (max. 500 KB)",
   "uploadStatusUploading": "Wird hochgeladen...",
   "uploadStatusCompleted": "Abgeschlossen",
   "uploadStatusError": "Fehler",

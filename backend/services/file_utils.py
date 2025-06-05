@@ -14,6 +14,11 @@ class TempFile:
 
     def save_file(self) -> str:
         os.makedirs(TempFile.temp_dir, exist_ok=True)
+        self.file.file.seek(0, 2)  # Перейти в конец файла
+        file_size = self.file.file.tell()
+        self.file.file.seek(0)  # Вернуться в начало
+        if file_size > 500 * 1024:
+            raise ValueError("File size exceeds 500 KB limit.")
         self.full_path = os.path.join(TempFile.temp_dir, f"{uuid.uuid4()}.{self.get_file_type()}")
         with open(self.full_path, "wb") as out_file:
             shutil.copyfileobj(self.file.file, out_file)

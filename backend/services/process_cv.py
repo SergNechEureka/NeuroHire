@@ -44,13 +44,14 @@ class CVFileProcessor:
             cv_processing_agent = CVProcessingAgent()
             cv_processing_agent.process(self.file, job_id)
 
-            self.file.remove_file()
-
         except Exception as e:
             set_status(job_id, f"Error: {str(e)}", -1)
-            self.file.remove_file()
             print(f"Error:{e}")
 
         finally:
+            try:
+                self.file.remove_file()
+            except Exception as file_err:
+                print(f"[WARNING] Failed to remove temp file: {file_err}")
             session.close()
             file_processing_semaphore.release()
