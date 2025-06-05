@@ -33,6 +33,8 @@ class Embedder:
         documents = []
 
         chunks = self.split_text_to_chunks(text)
+        if len(chunks) > 100:
+            raise ValueError("CV is too large: exceeds 100 chunks. Please upload a smaller file.")
 
         for idx, chunk in enumerate(chunks):
             embedding_id = str(idx)
