@@ -5,7 +5,7 @@ from ..users.auth import current_active_user
 from ..users.models import User
 
 from ..db import get_session
-from ..CandidatesDB.CandidatesRepository import CandidatesRepository
+from ..candidates_db.CandidatesRepository import CandidatesRepository
 from ..vector_db.VectorDBService import VectorDBService
 
 router = APIRouter()

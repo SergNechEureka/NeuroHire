@@ -2,8 +2,8 @@
 import os
 from dotenv import load_dotenv
 from sqlmodel import create_engine
-from CandidatesDB.models import Candidate, CVMeta, CandidateProjectRole, CVExperience, CVSkill
-from vector_db.VectorDBService import VectorDBService
+from .candidates_db.models import Candidate, CVMeta, CandidateProjectRole, CVExperience, CVSkill
+from .vector_db.VectorDBService import VectorDBService
 
 load_dotenv()
 

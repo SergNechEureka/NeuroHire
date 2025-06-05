@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlmodel import Session
 
 from ..vector_db.VectorDBService import VectorDBService
-from ..CandidatesDB.CVRepository import CVRepository
+from ..candidates_db.CVRepository import CVRepository
 from ..users.models import User
 from ..users.auth import current_active_user
 from ..db import get_session

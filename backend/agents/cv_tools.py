@@ -13,9 +13,9 @@ from ..services.file_utils import TempFile
 from ..vector_db.utils import Embedder
 from ..services.LLMService import LLMService, GROQService,thogetherAIService, huggingFaceService
 from ..vector_db.VectorDBService import VectorDBService
-from ..CandidatesDB.CVRepository import CVRepository
-from ..CandidatesDB.CandidatesRepository import CandidatesRepository
-from ..CandidatesDB.models import CVMeta, CVExperience, CVSkill, Candidate
+from ..candidates_db.CVRepository import CVRepository
+from ..candidates_db.CandidatesRepository import CandidatesRepository
+from ..candidates_db.models import CVMeta, CVExperience, CVSkill, Candidate
 from ..db import get_session
 from ..services.langdetectSingleton import LangDetectSingleton
 
