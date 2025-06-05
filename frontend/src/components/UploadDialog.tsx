@@ -61,10 +61,6 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
     triggerFileInput,
   } = useUploadDialog({ onClose, onUploadComplete, onUploadError, open });
 
-  const allCompleted =
-    fileJobs.length > 0 &&
-    fileJobs.every((job) => job.progress === 100 || job.progress === -1);
-
   const { t } = useTranslation();
 
   const getStatusText = (status: string) => {
@@ -206,12 +202,7 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
         </List>
       </DialogContent>
       <DialogActions>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleDialogClose}
-          disabled={!allCompleted}
-        >
+        <Button variant="contained" color="primary" onClick={handleDialogClose}>
           {t("close")}
         </Button>
       </DialogActions>

@@ -5,6 +5,7 @@ import json
 import time
 import asyncio
 import uuid
+import gc
 
 from abc import ABC, abstractmethod
 from typing import Any, Dict
@@ -267,7 +268,6 @@ class TranslateToEnglishTool(BaseTool):
                 else:
                     time.sleep(15)
                     
-
             except Exception as e:
                 time.sleep(1)
                 if attempt == self.max_retries:
@@ -337,6 +337,7 @@ class ExtractDataTool(BaseTool):
         cv_id = tool_input.get("cv_id")
 
         result = asyncio.run(self._run_in_parallel(cv_text_orig, cv_text_eng))
+        gc.collect()  # Очистка после параллельной обработки
 
         match len(result):
             case 3:
@@ -391,7 +392,9 @@ class ExtractDataTool(BaseTool):
                 self._extract_experience(cv_text_eng),
                 self._extract_skills(cv_text_eng)
             ]
-        return await asyncio.gather(*tasks)
+        result = await asyncio.gather(*tasks)
+        gc.collect()  # Очистка после выполнения всех задач
+        return result
 
     async def _extract_metadata(self, cv_text_orig):
         print("LLM extracts metadata from CV...")
@@ -409,11 +412,13 @@ class ExtractDataTool(BaseTool):
                 0.0, 
                 0.3)
         )   
+        gc.collect()  # Очистка после извлечения метаданных
 
         result = await loop.run_in_executor(
             None,
             lambda: self._extract_metadata_from_file(result)
         ) 
+        gc.collect()  # Очистка после обработки метаданных файла
 
         return result
     
@@ -444,6 +449,7 @@ class ExtractDataTool(BaseTool):
                 0.3, 
                 0.95)
             )
+        gc.collect()  # Очистка после извлечения опыта
 
         return result
 
@@ -463,6 +469,7 @@ class ExtractDataTool(BaseTool):
                 0.5, 
                 0.9)
         )
+        gc.collect()  # Очистка после извлечения навыков
 
         return result
 
