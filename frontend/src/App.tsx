@@ -4,7 +4,7 @@ import CandidatePageLayout from "./components/CandidatePageLayout";
 import useCandidates from "./hooks/useCandidates";
 import LoginForm from "./LoginForm";
 import ApplicationBar from "./ApplicationBar";
-import { useAuth } from "./AuthContext";
+import { useAuth, isTokenExpired } from "./AuthContext";
 
 const App: React.FC = () => {
   const { token, handleLogin, handleLogout } = useAuth();
@@ -26,37 +26,36 @@ const App: React.FC = () => {
     setSelectedCandidate,
   } = useCandidates();
 
+  // Показываем только LoginForm, если токен отсутствует или истёк
+  if (!token || isTokenExpired(token)) {
+    return <LoginForm onLogin={handleLogin} />;
+  }
+
   return (
     <div>
-      {!token ? (
-        <LoginForm onLogin={handleLogin} />
+      <ApplicationBar onLogout={handleLogout} />
+      {selectedCandidate ? (
+        <CandidatePageLayout
+          candidates={candidates}
+          selectedCandidate={selectedCandidate}
+          onBack={() => setSelectedCandidate(null)}
+        />
       ) : (
-        <>
-          <ApplicationBar onLogout={handleLogout} />
-          {selectedCandidate ? (
-            <CandidatePageLayout
-              candidates={candidates}
-              selectedCandidate={selectedCandidate}
-              onBack={() => setSelectedCandidate(null)}
-            />
-          ) : (
-            <CandidatesTable
-              candidates={candidates}
-              selectedIds={selectedIds}
-              order={order}
-              orderBy={orderBy}
-              handleSelect={handleSelect}
-              handleSelectAll={handleSelectAll}
-              handleDelete={handleDelete}
-              handleDeleteOne={handleDeleteOne}
-              handleRowClick={handleRowClick}
-              loading={false}
-              fetchData={fetchData}
-              getComparator={getComparator}
-              handleRequestSort={handleRequestSort}
-            />
-          )}
-        </>
+        <CandidatesTable
+          candidates={candidates}
+          selectedIds={selectedIds}
+          order={order}
+          orderBy={orderBy}
+          handleSelect={handleSelect}
+          handleSelectAll={handleSelectAll}
+          handleDelete={handleDelete}
+          handleDeleteOne={handleDeleteOne}
+          handleRowClick={handleRowClick}
+          loading={false}
+          fetchData={fetchData}
+          getComparator={getComparator}
+          handleRequestSort={handleRequestSort}
+        />
       )}
     </div>
   );

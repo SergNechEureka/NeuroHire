@@ -6,10 +6,11 @@ import type { FileJob } from "../types/common";
 type UploadDialogHookProps = {
   onClose: () => void;
   onUploadComplete: () => void;
+  onUploadError?: () => void;
   open: boolean;
 };
 
-export function useUploadDialog({ onClose, onUploadComplete, open }: UploadDialogHookProps) {
+export function useUploadDialog({ onClose, onUploadComplete, onUploadError, open }: UploadDialogHookProps) {
   const [fileJobs, setFileJobs] = useState<FileJob[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [polling, setPolling] = useState(false);
@@ -80,7 +81,9 @@ export function useUploadDialog({ onClose, onUploadComplete, open }: UploadDialo
       if (pendingJobs.length === 0) {
         setPolling(false);
         setIsUploading(false);
-        if (onUploadComplete) onUploadComplete();
+        const anyError = currentJobs.some(job => job.progress === -1);
+        if (!anyError && onUploadComplete) onUploadComplete();
+        if (anyError && onUploadError) onUploadError();
         return;
       }
 

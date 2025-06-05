@@ -551,6 +551,9 @@ export default function CandidatesTable({
           setUploadOpen(false);
           fetchData();
         }}
+        onUploadError={() => {
+          // Не закрываем окно, можно добавить логику показа сообщения, если нужно
+        }}
       />
     </Box>
   );

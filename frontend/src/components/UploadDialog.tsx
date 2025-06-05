@@ -27,6 +27,7 @@ type UploadDialogProps = {
   open: boolean;
   onClose: () => void;
   onUploadComplete: () => void;
+  onUploadError?: () => void;
 };
 
 const getStatusProps = (status: string) => {
@@ -47,6 +48,7 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
   open,
   onClose,
   onUploadComplete,
+  onUploadError,
 }) => {
   const {
     handleFilesDrop,
@@ -55,11 +57,11 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
     inputRef,
     handleFilesChange,
     triggerFileInput,
-  } = useUploadDialog({ onClose, onUploadComplete, open });
+  } = useUploadDialog({ onClose, onUploadComplete, onUploadError, open });
 
-  const allCompleted = fileJobs.every(
-    (job) => job.status === "Completed" || job.status === "Error"
-  );
+  const allCompleted =
+    fileJobs.length > 0 &&
+    fileJobs.every((job) => job.status === "Completed" || job.progress === -1);
 
   const { t } = useTranslation();
 
