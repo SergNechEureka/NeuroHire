@@ -12,6 +12,8 @@ import {
   ListItem,
   ListItemText,
   Stack,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -86,6 +88,25 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
     setDragActive(false);
     handleFilesDrop(e);
   };
+
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [snackbarType, setSnackbarType] = React.useState<"success" | "error">(
+    "success"
+  );
+
+  React.useEffect(() => {
+    if (fileJobs.length === 0) return;
+    const allCompleted = fileJobs.every(
+      (job) => job.status === "Completed" || job.status === "Error"
+    );
+    const anyError = fileJobs.some((job) => job.status === "Error");
+    if (allCompleted) {
+      setSnackbarType(anyError ? "error" : "success");
+      setSnackbarOpen(true);
+    }
+  }, [fileJobs]);
+
+  const handleSnackbarClose = () => setSnackbarOpen(false);
 
   return (
     <Dialog open={open} onClose={handleDialogClose} fullWidth maxWidth="sm">
@@ -186,6 +207,20 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
           {t("close")}
         </Button>
       </DialogActions>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarType}
+          sx={{ width: "100%" }}
+        >
+          {snackbarType === "success" ? t("uploadSuccess") : t("uploadError")}
+        </Alert>
+      </Snackbar>
     </Dialog>
   );
 };

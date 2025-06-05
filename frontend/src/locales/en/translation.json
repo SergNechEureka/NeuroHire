@@ -31,5 +31,11 @@
   "loading": "Loading...",
   "loggingIn": "Logging in...",
   "uploadFiles": "Upload CV Files",
-  "close": "Close"
+  "close": "Close",
+  "supportedFormats": "Supported formats: .pdf, .doc, .docx",
+  "uploadStatusUploading": "Uploading...",
+  "uploadStatusCompleted": "Completed",
+  "uploadStatusError": "Error",
+  "uploadSuccess": "All files uploaded successfully!",
+  "uploadError": "Some files failed to upload."
 }

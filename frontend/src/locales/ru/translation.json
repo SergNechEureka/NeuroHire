@@ -31,5 +31,11 @@
   "loading": "Загрузка...",
   "loggingIn": "Вход...",
   "uploadFiles": "Загрузка файлов CV",
-  "close": "Закрыть"
+  "close": "Закрыть",
+  "supportedFormats": "Поддерживаемые форматы: .pdf, .doc, .docx",
+  "uploadStatusUploading": "Загрузка...",
+  "uploadStatusCompleted": "Завершено",
+  "uploadStatusError": "Ошибка",
+  "uploadSuccess": "Все файлы успешно загружены!",
+  "uploadError": "Некоторые файлы не удалось загрузить."
 }

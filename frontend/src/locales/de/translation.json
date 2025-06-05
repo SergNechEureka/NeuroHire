@@ -31,5 +31,11 @@
   "loading": "Lädt...",
   "loggingIn": "Anmeldung...",
   "uploadFiles": "CV-Dateien hochladen",
-  "close": "Schließen"
+  "close": "Schließen",
+  "supportedFormats": "Unterstützte Formate: .pdf, .doc, .docx",
+  "uploadStatusUploading": "Wird hochgeladen...",
+  "uploadStatusCompleted": "Abgeschlossen",
+  "uploadStatusError": "Fehler",
+  "uploadSuccess": "Alle Dateien wurden erfolgreich hochgeladen!",
+  "uploadError": "Einige Dateien konnten nicht hochgeladen werden."
 }

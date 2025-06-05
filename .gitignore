@@ -20,6 +20,9 @@ venv/
 # Env secrets
 .env
 *.zip
-frontend_old
+frontend_old/
+chromadb_data/*
+chromadb_data/
 chromadb_data
-node_modules
+node_modules/
+chromadb_data/chroma.sqlite3

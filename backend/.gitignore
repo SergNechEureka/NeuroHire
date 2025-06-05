@@ -21,4 +21,4 @@ venv/
 # Env secrets
 .env
 
-.chromadb_data
+chromadb_data/
