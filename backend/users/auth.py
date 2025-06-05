@@ -46,8 +46,8 @@ async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 
 
-def get_jwt_strategy() -> JWTStrategy[models.UP, models.ID]:
-    return JWTStrategy(secret=SECRET, lifetime_seconds=3600)
+def get_jwt_strategy() -> JWTStrategy[User, uuid.UUID]:
+    return JWTStrategy(secret=str(SECRET), lifetime_seconds=3600)
 
 
 auth_backend = AuthenticationBackend(

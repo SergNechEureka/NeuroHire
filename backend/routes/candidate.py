@@ -14,21 +14,29 @@ import uuid
 
 @router.delete("/candidate/{id}")
 def delete_cv(id: uuid.UUID, user: User = Depends(current_active_user), session: Session = Depends(get_session)):
-    candidates = CandidatesRepository(session)
-    success = candidates.delete_by_id(id)
+    try:
+        candidates = CandidatesRepository(session)
+        success = candidates.delete_by_id(id)
     
-    if not success:
-        raise HTTPException(status_code=404, detail="Candidate not found")
+        if not success:
+            raise HTTPException(status_code=404, detail="Candidate not found")
     
-    return Response(status_code=204)
+        return Response(status_code=204)
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/candidate/{id}")
 def cv_metadata(id: uuid.UUID, user: User = Depends(current_active_user), session: Session = Depends(get_session)):
-    candidates = CandidatesRepository(session)
+    try:
+        candidates = CandidatesRepository(session)
 
-    candidate = candidates.get_by_id(id)
+        candidate = candidates.get_by_id(id)
 
-    if not candidates:
-        raise HTTPException(status_code=404, detail="Candidate not found")
+        if not candidates:
+            raise HTTPException(status_code=404, detail="Candidate not found")
     
-    return candidate
+        return candidate
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

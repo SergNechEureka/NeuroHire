@@ -15,6 +15,10 @@ export function useUploadDialog({ onClose, onUploadComplete, open }: UploadDialo
   const [polling, setPolling] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Ref to always have the latest fileJobs in polling
+  const fileJobsRef = useRef(fileJobs);
+  fileJobsRef.current = fileJobs;
+
   // Reset fileJobs when dialog is opened
   useEffect(() => {
     if (open) {
@@ -63,14 +67,14 @@ export function useUploadDialog({ onClose, onUploadComplete, open }: UploadDialo
     }
   };
 
-  // Poll statuses for all jobs
+  // Poll statuses for all jobs (fixed: only depends on polling)
   useEffect(() => {
     if (!polling) return;
     let cancelled = false;
 
     const poll = async () => {
-      // Only poll jobs that are not finished
-      const pendingJobs = fileJobs.filter(job =>
+      const currentJobs = fileJobsRef.current;
+      const pendingJobs = currentJobs.filter(job =>
         job.progress !== 100 && job.progress !== -1 && job.status !== "Error"
       );
       if (pendingJobs.length === 0) {
@@ -80,9 +84,8 @@ export function useUploadDialog({ onClose, onUploadComplete, open }: UploadDialo
         return;
       }
 
-      // Request status for each job
       const newJobs = await Promise.all(
-        fileJobs.map(async job => {
+        currentJobs.map(async job => {
           if (job.status === "Completed" || job.status === "Error") return job;
           try {
             const jobStatus = await getUploadStatus(job.jobId)
@@ -100,15 +103,14 @@ export function useUploadDialog({ onClose, onUploadComplete, open }: UploadDialo
       if (!cancelled) setFileJobs(newJobs);
     };
 
-    const interval = setInterval(poll, 15000);
+    const interval = setInterval(poll, 1000);
     poll();
 
     return () => {
       cancelled = true;
       clearInterval(interval);
     };
-    // eslint-disable-next-line
-  }, [polling, fileJobs]);
+  }, [polling]);
 
   // Close dialog if not uploading
   const handleDialogClose = () => {

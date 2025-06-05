@@ -12,6 +12,8 @@ class VectorDBService:
 
     def add(self, cv_id: uuid.UUID, vector_data) -> None:
         collection = self.db_service.get_collection()
+        if collection is None:
+            raise RuntimeError("Failed to get collection from db_service; collection is None.")
 
         ids = vector_data.get("ids")
         embeddings = vector_data.get("embeddings")
@@ -25,16 +27,24 @@ class VectorDBService:
 
     def delete_by_cv_id(self, cv_id: uuid.UUID) -> None:
         collection = self.db_service.get_collection()
+        if collection is None:
+            raise RuntimeError("Failed to get collection from db_service; collection is None.")
         collection.delete(where={"cv_id": str(cv_id)})
 
     def delete_by_cv_ids(self, cv_ids: List[uuid.UUID]) -> None:
         collection = self.db_service.get_collection()
+        if collection is None:
+            raise RuntimeError("Failed to get collection from db_service; collection is None.")
+        
         str_ids = [str(cv_id) for cv_id in cv_ids]
         for cv_id in str_ids:
             collection.delete(where={"cv_id": cv_id})
 
     def get_by_cv_id(self, cv_id: str):
         collection = self.db_service.get_collection()
+        if collection is None:
+            raise RuntimeError("Failed to get collection from db_service; collection is None.")
+        
         result = collection.get(where={"cv_id": str(cv_id)}, include=["metadatas", "embeddings", "documents"])
         ids = result.get("ids", [])
         metadatas = result.get("metadatas", [])
@@ -52,6 +62,8 @@ class VectorDBService:
 
     def search_candidates(self, query_text, top_k=5):
         collection = self.db_service.get_collection()
+        if collection is None:
+            return []
 
         query_embedding = self.embedder.embed_query(query_text)
         # Ensure the embedding is a flat list of floats
@@ -92,5 +104,6 @@ class VectorDBService:
         return [m for m in matches if m["is_relevant"]]
     
     def clear_db(self):
+        self.db_service.get_collection()
         self.db_service.clear_db()
 

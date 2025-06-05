@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 from typing import List
 import uuid
@@ -14,13 +14,21 @@ class Body(BaseModel):
 
 @router.get("/candidates")
 async def get_candidates (user: User = Depends(current_active_user), session: Session = Depends(get_session)):
-    candidates_repository = CandidatesRepository(session)
-    candidates = candidates_repository.get_all()
-    return candidates
+    try:
+        candidates_repository = CandidatesRepository(session)
+        candidates = candidates_repository.get_all()
+        return candidates
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.delete("/candidates")
 async def delete_candidates (body: Body, user: User = Depends(current_active_user), session: Session = Depends(get_session)):
-    candidates_repository = CandidatesRepository(session)
+    try:
+        candidates_repository = CandidatesRepository(session)
 
-    candidates_repository.delete_by_ids(body.ids)
+        candidates_repository.delete_by_ids(body.ids)
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
