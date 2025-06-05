@@ -16,6 +16,7 @@ from .routes.candidates import router as candidates
 from .routes.candidate import router as candidate
 from fastapi.middleware.cors import CORSMiddleware
 from .routes.auth import router as auth_router
+from .routes.recreate_db import router as recreate_db  # Add this import
 
 app = FastAPI()
 
@@ -41,6 +42,7 @@ app.include_router(get_upload_status)
 app.include_router(auth_router)
 app.include_router(candidates)
 app.include_router(candidate)
+app.include_router(recreate_db)
 
 @app.on_event("startup")
 def on_startup():

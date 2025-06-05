@@ -18,7 +18,7 @@ engine = create_engine(url=DATABASE_URL, echo=True)
 
 
 
-if __name__ == "__main__":
+def recreate_db(engine):
     print("Dropping all tables...")
     Candidate.metadata.drop_all(bind=engine)
     CVMeta.metadata.drop_all(bind=engine)
@@ -35,6 +35,9 @@ if __name__ == "__main__":
 
     vector_db = VectorDBService()
     vector_db.clear_db()
+
+if __name__ == "__main__":
+    recreate_db(engine)
 
 
 #    User.metadata.drop_all(bind=engine)

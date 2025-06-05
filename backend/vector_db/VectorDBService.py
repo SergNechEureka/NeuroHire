@@ -30,7 +30,8 @@ class VectorDBService:
     def delete_by_cv_ids(self, cv_ids: List[uuid.UUID]) -> None:
         collection = self.db_service.get_collection()
         str_ids = [str(cv_id) for cv_id in cv_ids]
-        collection.delete(where={"cv_id": {"$in": str_ids}})
+        for cv_id in str_ids:
+            collection.delete(where={"cv_id": cv_id})
 
     def get_by_cv_id(self, cv_id: str):
         collection = self.db_service.get_collection()
@@ -42,9 +43,9 @@ class VectorDBService:
         return [
             {
                 "embedding_id": ids[i],
-                "text": metadatas[i].get("text", ""),
-                "embedding": embeddings[i],
-                "documents": documents[i]
+                "text": metadatas[i].get("text", "") if isinstance(metadatas, list) and i < len(metadatas) and isinstance(metadatas[i], dict) else "",
+                "embedding": embeddings[i] if embeddings is not None else None,
+                "documents": documents[i] if documents is not None else None
             }
             for i in range(len(ids))
         ]
@@ -53,6 +54,14 @@ class VectorDBService:
         collection = self.db_service.get_collection()
 
         query_embedding = self.embedder.embed_query(query_text)
+        # Ensure the embedding is a flat list of floats
+        if hasattr(query_embedding, "tolist"):
+            query_embedding = query_embedding.tolist()
+        # If the embedding is a list of lists (e.g., [[...]]), flatten it
+        if isinstance(query_embedding, list) and len(query_embedding) == 1 and isinstance(query_embedding[0], (list, tuple)):
+            query_embedding = list(map(float, query_embedding[0]))
+        else:
+            query_embedding = list(map(float, query_embedding))
         
         results = collection.query(
             query_embeddings=[query_embedding],
@@ -60,14 +69,28 @@ class VectorDBService:
         )
 
         matches = []
-        for i in range(len(results['ids'][0])):
-            score = results['distances'][0][i]
+        distances = results.get('distances')
+        ids = results.get('ids')
+        metadatas = results.get('metadatas')
+        documents = results.get('documents')
+        if distances is None or ids is None or metadatas is None or documents is None:
+            return []
+        if not distances or not ids or not metadatas or not documents:
+            return []
+        for i in range(len(ids[0])):
+            score = None
+            if distances[0] is not None and i < len(distances[0]):
+                score = distances[0][i]
             match = {
-                "embedding_id": results['ids'][0][i],
+                "embedding_id": ids[0][i],
                 "score": score,
-                "cv_id": results['metadatas'][0][i]['cv_id'],
-                "documents": results['documents'][0][i],
-                "is_relevant": score <= self.RELEVANCE_THRESHOLD
+                "cv_id": metadatas[0][i]['cv_id'] if metadatas[0][i] is not None and 'cv_id' in metadatas[0][i] else None,
+                "documents": documents[0][i] if documents[0] is not None and i < len(documents[0]) else None,
+                "is_relevant": score is not None and score <= self.RELEVANCE_THRESHOLD
             }
             matches.append(match)
         return [m for m in matches if m["is_relevant"]]
+    
+    def clear_db(self):
+        collection = self.db_service.get_collection()
+        collection.delete()
