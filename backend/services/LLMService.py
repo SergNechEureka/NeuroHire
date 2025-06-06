@@ -99,7 +99,7 @@ class huggingFaceService(LLMService):
             (item["value"] for item in prompt_vars["user"] if item["name"] == "cv_text"), None
         )
 
-        src_text = "Translate German to English: "+ cv_text
+        src_text = "Translate to English: "+ cv_text
 
         src_lang = next(
             (item["value"] for item in prompt_vars["user"] if item["name"] == "language"), None

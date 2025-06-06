@@ -510,7 +510,10 @@ export default function CandidatesTable({
                       <IconButton
                         aria-label={t("delete")}
                         color="error"
-                        onClick={() => handleDeleteOne(candidate.candidate_id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteOne(candidate.candidate_id);
+                        }}
                       >
                         <DeleteIcon />
                       </IconButton>
