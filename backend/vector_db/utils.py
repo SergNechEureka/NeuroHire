@@ -3,7 +3,7 @@ import re
 from fastembed.text import TextEmbedding
 
 class Embedder:
-    _instance = None
+    _instance = None 
 
     def __new__(cls):
         if cls._instance is None:
