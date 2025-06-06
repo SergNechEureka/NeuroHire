@@ -1,7 +1,4 @@
-[providers]
-  python = "default"
+providers = ["python"]
 
 [phases.setup]
-  nixPkgs = [
-    "pandoc"
-  ]
+nixPkgs = ["pandoc"]
