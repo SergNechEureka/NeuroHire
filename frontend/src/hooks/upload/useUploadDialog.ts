@@ -99,19 +99,7 @@ export function useUploadDialog({ onClose, onUploadComplete, onUploadError, open
 
     const poll = async () => {
       const currentJobs = fileJobsRef.current;
-      const pendingJobs = currentJobs.filter(job => job.progress !== 100 && job.progress !== -1);
-      
-      if (pendingJobs.length === 0) {
-        setPolling(false);
-        setIsUploading(false);
-        const anyError = currentJobs.some(job => job.progress === -1);
-        if (!anyError && onUploadComplete) onUploadComplete();
-        if (anyError && onUploadError) onUploadError();
-        return;
-      }
-
-      // Batch polling
-      const jobIds = pendingJobs.map(job => job.jobId);
+      const jobIds = currentJobs.map(job => job.jobId);
       let statuses: Record<string, JobStatus | undefined> = {};
       let batchError: string | null = null;
       try {
@@ -126,7 +114,6 @@ export function useUploadDialog({ onClose, onUploadComplete, onUploadError, open
       }
 
       const newJobs = currentJobs.map(job => {
-        if (job.progress === 100 || job.progress === -1) return job;
         if (batchError) {
           return { ...job, status: "Error", progress: -1, statusMessage: `Error: ${batchError}` };
         }
@@ -141,7 +128,20 @@ export function useUploadDialog({ onClose, onUploadComplete, onUploadError, open
           progress: status.progress
         };
       });
-      if (!cancelled) setFileJobs(newJobs);
+
+      const pendingJobs = newJobs.filter(job => job.progress !== 100 && job.progress !== -1);
+
+      if (pendingJobs.length === 0) {
+        setPolling(false);
+        setIsUploading(false);
+        const anyError = newJobs.some(job => job.progress === -1);
+        if (!anyError && onUploadComplete) onUploadComplete();
+        if (anyError && onUploadError) onUploadError();
+        setFileJobs(newJobs);
+        return;
+      }
+
+      setFileJobs(newJobs);
     };
 
     const interval = setInterval(poll, 1000);
