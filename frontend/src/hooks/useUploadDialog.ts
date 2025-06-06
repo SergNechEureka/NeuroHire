@@ -75,9 +75,8 @@ export function useUploadDialog({ onClose, onUploadComplete, onUploadError, open
 
     const poll = async () => {
       const currentJobs = fileJobsRef.current;
-      const pendingJobs = currentJobs.filter(job =>
-        job.progress !== 100 && job.progress !== -1 && job.status !== "Error"
-      );
+      const pendingJobs = currentJobs.filter(job => job.progress !== 100 && job.progress !== -1);
+      
       if (pendingJobs.length === 0) {
         setPolling(false);
         setIsUploading(false);
@@ -89,7 +88,9 @@ export function useUploadDialog({ onClose, onUploadComplete, onUploadError, open
 
       const newJobs = await Promise.all(
         currentJobs.map(async job => {
-          if (job.status === "Completed" || job.status === "Error") return job;
+          // Skip polling for completed or failed jobs
+          if (job.progress === 100 || job.progress === -1) return job;
+          
           try {
             const jobStatus = await getUploadStatus(job.jobId)
             return {
