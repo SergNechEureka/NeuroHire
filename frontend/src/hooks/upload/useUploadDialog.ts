@@ -95,8 +95,10 @@ export function useUploadDialog({ onClose, onUploadComplete, onUploadError, open
   // Poll statuses for all jobs
   useEffect(() => {
     if (!polling) return;
+    let cancelled = false;
 
     const poll = async () => {
+      if (cancelled) return;
       const currentJobs = fileJobsRef.current;
 
       const activeJobs = currentJobs.filter(job => job.progress !== 100 && job.progress !== -1);
