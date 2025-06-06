@@ -7,5 +7,11 @@ export default defineConfig({
   server: {
     port: 8080,
     host: true,
+    allowedHosts: [
+      'neurohire-app.up.railway.app',
+      '.railway.app', 
+      'localhost',
+      '.eureka-it.de'
+    ],
   },
 })
