@@ -15,7 +15,7 @@ export async function fetchCandidates(): Promise<Candidate[]> {
 
 export async function deleteCandidates(candidateIds: string[]): Promise<void> {
     const token = localStorage.getItem('access_token');
-    await axios.delete(`${API_URL}candidates/`, {
+    await axios.delete(`${API_URL}candidates`, {
         data: { ids: candidateIds },
         headers: {
           Authorization: `Bearer ${token}`,
