@@ -1,12 +1,15 @@
 import os
 import uvicorn
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from sqlmodel import SQLModel
 from dotenv import load_dotenv
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import declarative_base
 
 
-from .db import engine
+from .db import engine, async_engine, Base
 from .routes.upload import router as upload_router
 from .routes.cvs import router as cvs
 from .routes.cv import router as cv
@@ -18,7 +21,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from .routes.auth import router as auth_router
 from .routes.recreate_db import router as recreate_db  # Add this import
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Create SQLModel tables
+    SQLModel.metadata.create_all(engine)
+    # Create SQLAlchemy tables (for User model)
+    async with async_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    yield
+
+app = FastAPI(lifespan=lifespan)
 
 load_dotenv()
 
@@ -43,10 +55,6 @@ app.include_router(auth_router)
 app.include_router(candidates)
 app.include_router(candidate)
 app.include_router(recreate_db)
-
-@app.on_event("startup")
-def on_startup():
-    SQLModel.metadata.create_all(engine)
 
 @app.get("/")
 def read_root():

@@ -6,7 +6,7 @@ from ..users.models import User  # Ensure you import your User model
 from uuid import UUID           # Import UUID if not already imported
 
 from fastapi_users.authentication import AuthenticationBackend, Strategy, BearerTransport
-from typing import Callable
+
 # Ensure get_jwt_strategy is correctly typed
 def get_jwt_strategy_dep() -> Strategy[User, UUID]:
     return get_jwt_strategy()
