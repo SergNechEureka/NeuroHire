@@ -78,8 +78,15 @@ export function useUploadDialog({ onClose, onUploadComplete, onUploadError, open
       }));
       setFileJobs(jobs);
       setPolling(true); // Start polling statuses
-    } catch {
-      alert("Error uploading files");
+    } catch (error: unknown) {
+      let errorMsg = "Unknown error";
+      if (typeof error === "object" && error !== null) {
+        // @ts-expect-error: axios error shape
+        errorMsg = error?.response?.data?.detail || error?.message || String(error);
+      } else {
+        errorMsg = String(error);
+      }
+      alert(`Error uploading files: ${errorMsg}`);
       setIsUploading(false);
     }
   };
@@ -115,8 +122,15 @@ export function useUploadDialog({ onClose, onUploadComplete, onUploadError, open
               statusMessage: jobStatus.status,
               progress: jobStatus.progress
             };
-          } catch {
-            return { ...job, status: "Error", progress: -1, statusMessage: "Error" };
+          } catch (error: unknown) {
+            let errorMsg = "Unknown error";
+            if (typeof error === "object" && error !== null) {
+              // @ts-expect-error: axios error shape
+              errorMsg = error?.response?.data?.detail || error?.message || String(error);
+            } else {
+              errorMsg = String(error);
+            }
+            return { ...job, status: "Error", progress: -1, statusMessage: `Error: ${errorMsg}` };
           }
         })
       );

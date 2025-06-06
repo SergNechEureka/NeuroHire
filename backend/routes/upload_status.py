@@ -20,7 +20,7 @@ def set_status(job_id: str, status: str, progress: int = 0, user: User = Depends
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-def get_status(job_id: str, user: User = Depends(current_active_user), session: Session = Depends(get_session)):
+def get_status(job_id: str):
     try:
         status = UPLOAD_STATUS.get(job_id)
         if status is None:
@@ -41,6 +41,7 @@ def clear_status(job_id: str):
 def get_upload_status(job_id: str, user: User = Depends(current_active_user), session: Session = Depends(get_session)):
     try:
         return get_status(job_id)
-         
+    except HTTPException as e:
+        raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
