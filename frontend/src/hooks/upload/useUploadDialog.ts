@@ -99,7 +99,9 @@ export function useUploadDialog({ onClose, onUploadComplete, onUploadError, open
 
     const poll = async () => {
       const currentJobs = fileJobsRef.current;
-      const jobIds = currentJobs.map(job => job.jobId);
+
+      const activeJobs = currentJobs.filter(job => job.progress !== 100 && job.progress !== -1);
+      const jobIds = activeJobs.map(job => job.jobId);
       let statuses: Record<string, JobStatus | undefined> = {};
       let batchError: string | null = null;
       try {
@@ -117,9 +119,11 @@ export function useUploadDialog({ onClose, onUploadComplete, onUploadError, open
         if (batchError) {
           return { ...job, status: "Error", progress: -1, statusMessage: `Error: ${batchError}` };
         }
+        // Если job не в списке активных, не обновляем
+        if (!jobIds.includes(job.jobId)) return job;
         const status = statuses[job.jobId];
         if (!status) {
-          return { ...job, status: "Error", progress: -1, statusMessage: "Error: not found" };
+          return { ...job, status: "Error", progress: -1, statusMessage: "Error: job status not found (possibly deleted)" };
         }
         return {
           ...job,
@@ -129,7 +133,7 @@ export function useUploadDialog({ onClose, onUploadComplete, onUploadError, open
         };
       });
 
-      const pendingJobs = newJobs.filter(job => job.progress !== 100 && job.progress !== -1);
+      const pendingJobs = newJobs.filter(job => job.progress !== 100 && job.progress !== -1 && job.status !== "Error: job status not found (possibly deleted)");
 
       if (pendingJobs.length === 0) {
         setPolling(false);
@@ -158,6 +162,9 @@ export function useUploadDialog({ onClose, onUploadComplete, onUploadError, open
     if (!isUploading) {
       setFileJobs([]);
       onClose();
+      if (typeof onUploadComplete === 'function') {
+        onUploadComplete();
+      }
     }
   };
 
