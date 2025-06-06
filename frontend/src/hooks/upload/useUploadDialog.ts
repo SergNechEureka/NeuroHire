@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
-import { uploadCVs, getUploadStatus } from "../../api/cvs";
+import { uploadCVs, getUploadStatuses } from "../../api/cvs";
 import type { FileJob } from "../../types/common";
+import type { JobStatus } from "../../types/apis";
 
 type UploadDialogHookProps = {
   onClose: () => void;
@@ -109,31 +110,37 @@ export function useUploadDialog({ onClose, onUploadComplete, onUploadError, open
         return;
       }
 
-      const newJobs = await Promise.all(
-        currentJobs.map(async job => {
-          // Skip polling for completed or failed jobs
-          if (job.progress === 100 || job.progress === -1) return job;
-          
-          try {
-            const jobStatus = await getUploadStatus(job.jobId)
-            return {
-              ...job,
-              status: jobStatus.status,
-              statusMessage: jobStatus.status,
-              progress: jobStatus.progress
-            };
-          } catch (error: unknown) {
-            let errorMsg = "Unknown error";
-            if (typeof error === "object" && error !== null) {
-              // @ts-expect-error: axios error shape
-              errorMsg = error?.response?.data?.detail || error?.message || String(error);
-            } else {
-              errorMsg = String(error);
-            }
-            return { ...job, status: "Error", progress: -1, statusMessage: `Error: ${errorMsg}` };
-          }
-        })
-      );
+      // Batch polling
+      const jobIds = pendingJobs.map(job => job.jobId);
+      let statuses: Record<string, JobStatus | undefined> = {};
+      let batchError: string | null = null;
+      try {
+        statuses = await getUploadStatuses(jobIds);
+      } catch (error) {
+        if (typeof error === "object" && error !== null) {
+          // @ts-expect-error: axios error shape
+          batchError = error?.response?.data?.detail || error?.message || String(error);
+        } else {
+          batchError = String(error);
+        }
+      }
+
+      const newJobs = currentJobs.map(job => {
+        if (job.progress === 100 || job.progress === -1) return job;
+        if (batchError) {
+          return { ...job, status: "Error", progress: -1, statusMessage: `Error: ${batchError}` };
+        }
+        const status = statuses[job.jobId];
+        if (!status) {
+          return { ...job, status: "Error", progress: -1, statusMessage: "Error: not found" };
+        }
+        return {
+          ...job,
+          status: status.status,
+          statusMessage: status.status,
+          progress: status.progress
+        };
+      });
       if (!cancelled) setFileJobs(newJobs);
     };
 

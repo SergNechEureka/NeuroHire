@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Body
 from sqlalchemy.orm import Session
 
 from ..db import get_session
@@ -25,7 +25,7 @@ def get_status(job_id: str):
         status = UPLOAD_STATUS.get(job_id)
         if status is None:
             raise HTTPException(status_code=404, detail="Status for job_id not found")
-        # Если статус завершён или ошибка — удалить из памяти
+
         if status.get("progress") in (100, -1):
             clear_status(job_id)
         return status
@@ -45,3 +45,18 @@ def get_upload_status(job_id: str, user: User = Depends(current_active_user), se
         raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@router.post("/upload-statuses")
+def get_upload_statuses(job_ids: list[str] = Body(...), user: User = Depends(current_active_user), session: Session = Depends(get_session)):
+    result = {}
+
+    for job_id in job_ids:
+        status = UPLOAD_STATUS.get(job_id)
+        
+        if status is not None:
+            if status.get("progress") in (100, -1):
+                clear_status(job_id)
+            result[job_id] = status
+        else:
+            result[job_id] = None
+    return result

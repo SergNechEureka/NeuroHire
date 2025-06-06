@@ -76,3 +76,14 @@ export async function fetchCVSkills(cvId: string): Promise<CVSkill[]> {
       });
     return response.data;
 }
+
+export async function getUploadStatuses(jobIds: string[]): Promise<Record<string, JobStatus | undefined>> {
+    const token = localStorage.getItem('access_token');
+    const response = await axios.post(`${API_URL}upload-statuses`, jobIds, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+    });
+    return response.data;
+}
