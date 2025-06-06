@@ -2,7 +2,7 @@ import React from "react";
 import CandidatesTable from "./components/CandidatesTable";
 import CandidatePageLayout from "./components/CandidatePageLayout";
 import useCandidates from "./hooks/useCandidates";
-import LoginForm from "./LoginForm";
+import LoginForm from "./components/auth/LoginForm";
 import ApplicationBar from "./ApplicationBar";
 import { useAuth, isTokenExpired } from "./AuthContext";
 

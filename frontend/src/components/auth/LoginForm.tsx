@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
-import { useLoginForm } from "./useLoginForm";
+import { useLoginForm } from "../../hooks/auth/useLoginForm";
 
 interface LoginFormProps {
   onLogin: (token: string) => void;

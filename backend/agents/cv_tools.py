@@ -527,11 +527,8 @@ class VectorizeTool(BaseTool):
     input_schema = {"cv_text": "str"}
     output_schema = {"vectors": "List[List[float]]"}
 
-
-
     def __init__(self) -> None:
         super().__init__()
-
         self.embedder = Embedder()
 
     def run(self, tool_input: dict) -> dict:

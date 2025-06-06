@@ -21,7 +21,7 @@ import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { useUploadDialog } from "../hooks/useUploadDialog";
+import { useUploadDialog } from "../hooks/upload/useUploadDialog";
 
 type UploadDialogProps = {
   open: boolean;
@@ -53,12 +53,23 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
   onUploadError,
 }) => {
   const {
+    // File handling
+    inputRef,
+    triggerFileInput,
+    handleFilesChange,
     handleFilesDrop,
     fileJobs,
     handleDialogClose,
-    inputRef,
-    handleFilesChange,
-    triggerFileInput,
+
+    // Drag & drop
+    dragActive,
+    handleDragOver,
+    handleDragLeave,
+
+    // Snackbar
+    snackbarOpen,
+    snackbarType,
+    handleSnackbarClose,
   } = useUploadDialog({ onClose, onUploadComplete, onUploadError, open });
 
   const { t } = useTranslation();
@@ -74,40 +85,6 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
     }
   };
 
-  const [dragActive, setDragActive] = React.useState(false);
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setDragActive(true);
-  };
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setDragActive(false);
-  };
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    setDragActive(false);
-    handleFilesDrop(e);
-  };
-
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [snackbarType, setSnackbarType] = React.useState<"success" | "error">(
-    "success"
-  );
-
-  React.useEffect(() => {
-    if (fileJobs.length === 0) return;
-    const allCompleted = fileJobs.every(
-      (job) => job.status === "Completed" || job.status === "Error"
-    );
-    const anyError = fileJobs.some((job) => job.status === "Error");
-    if (allCompleted) {
-      setSnackbarType(anyError ? "error" : "success");
-      setSnackbarOpen(true);
-    }
-  }, [fileJobs]);
-
-  const handleSnackbarClose = () => setSnackbarOpen(false);
-
   return (
     <Dialog open={open} onClose={handleDialogClose} fullWidth maxWidth="sm">
       <DialogTitle>{t("uploadFiles")}</DialogTitle>
@@ -120,7 +97,7 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
           bgcolor={dragActive ? "#e3f2fd" : "#222"}
           color="#eee"
           sx={{ cursor: "pointer", transition: "all 0.2s" }}
-          onDrop={handleDrop}
+          onDrop={handleFilesDrop}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onClick={triggerFileInput}

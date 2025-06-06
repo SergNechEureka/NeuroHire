@@ -135,32 +135,32 @@ function EnhancedTableToolbar(
           flexShrink: 0,
         }}
       >
-        <Button
-          variant="contained"
+      <Button
+        variant="contained"
           color="primary"
-          onClick={onUploadClick}
-          startIcon={<CloudUploadIcon />}
+        onClick={onUploadClick}
+        startIcon={<CloudUploadIcon />}
           sx={{ fontWeight: 600, px: 3, boxShadow: 1 }}
-        >
-          {t("upload")}
-        </Button>
-        {numSelected > 0 ? (
+      >
+        {t("upload")}
+      </Button>
+      {numSelected > 0 ? (
           <Tooltip title={t("delete")}>
-            <IconButton
-              onClick={onDeleteClick}
-              color="error"
-              disabled={numSelected === 0}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
+          <IconButton
+            onClick={onDeleteClick}
+            color="error"
+            disabled={numSelected === 0}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      ) : (
           <Tooltip title={t("filter")}>
-            <IconButton>
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        )}
+          <IconButton>
+            <FilterListIcon />
+          </IconButton>
+        </Tooltip>
+      )}
       </Box>
     </Toolbar>
   );
@@ -305,20 +305,20 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <TableSortLabel
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : "asc"}
-                onClick={createSortHandler(headCell.id)}
-              >
-                {headCell.label}
-                {orderBy === headCell.id ? (
-                  <Box component="span" sx={visuallyHidden}>
+            <TableSortLabel
+              active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : "asc"}
+              onClick={createSortHandler(headCell.id)}
+            >
+              {headCell.label}
+              {orderBy === headCell.id ? (
+                <Box component="span" sx={visuallyHidden}>
                     {order === "desc"
                       ? "sorted descending"
                       : "sorted ascending"}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
+                </Box>
+              ) : null}
+            </TableSortLabel>
               {renderFilterField(headCell)}
             </Box>
           </TableCell>
@@ -437,116 +437,116 @@ export default function CandidatesTable({
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar
-          numSelected={selectedIds.length}
-          onUploadClick={() => setUploadOpen(true)}
-          onDeleteClick={() => handleDelete(selectedIds)}
-        />
+      <Box sx={{ width: "100%" }}>
+        <Paper sx={{ width: "100%", mb: 2 }}>
+          <EnhancedTableToolbar
+            numSelected={selectedIds.length}
+            onUploadClick={() => setUploadOpen(true)}
+            onDeleteClick={() => handleDelete(selectedIds)}
+          />
         <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-          >
-            <EnhancedTableHead
-              numSelected={selectedIds.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAll={handleSelectAll}
-              onRequestSort={handleRequestSort}
-              rowCount={candidates.length}
+            <Table
+              sx={{ minWidth: 750 }}
+              aria-labelledby="tableTitle"
+              size={dense ? "small" : "medium"}
+            >
+              <EnhancedTableHead
+                numSelected={selectedIds.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAll={handleSelectAll}
+                onRequestSort={handleRequestSort}
+                rowCount={candidates.length}
               onSearch={handleSearch}
               uniqueValues={uniqueValues}
               filters={filters}
-            />
-            <TableBody>
-              {visibleRows.map((candidate, index) => {
-                const labelId = `enhanced-table-checkbox-${index}`;
+              />
+              <TableBody>
+                {visibleRows.map((candidate, index) => {
+                  const labelId = `enhanced-table-checkbox-${index}`;
 
-                return (
-                  <TableRow
-                    key={candidate.candidate_id}
-                    hover
+                  return (
+                    <TableRow
+                      key={candidate.candidate_id}
+                      hover
                     aria-checked={selectedIds.includes(candidate.candidate_id)}
-                    selected={selectedIds.includes(candidate.candidate_id)}
-                    onClick={() => handleRowClick(candidate)}
-                    role="checkbox"
-                    sx={{ cursor: "pointer" }}
-                    tabIndex={-1}
-                  >
+                      selected={selectedIds.includes(candidate.candidate_id)}
+                      onClick={() => handleRowClick(candidate)}
+                      role="checkbox"
+                      sx={{ cursor: "pointer" }}
+                      tabIndex={-1}
+                    >
                     <TableCell
                       padding="checkbox"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <Checkbox
-                        color="primary"
-                        checked={selectedIds.includes(candidate.candidate_id)}
-                        onChange={(e) => {
-                          e.stopPropagation();
-                          handleSelect(candidate.candidate_id);
-                        }}
-                        inputProps={{
-                          "aria-labelledby": labelId,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {candidate.candidate_name}
-                    </TableCell>
-                    <TableCell padding="none">{candidate.email}</TableCell>
-                    <TableCell padding="none">{candidate.country}</TableCell>
+                        <Checkbox
+                          color="primary"
+                          checked={selectedIds.includes(candidate.candidate_id)}
+                          onChange={(e) => {
+                            e.stopPropagation();
+                            handleSelect(candidate.candidate_id);
+                          }}
+                          inputProps={{
+                            "aria-labelledby": labelId,
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="none"
+                      >
+                        {candidate.candidate_name}
+                      </TableCell>
+                      <TableCell padding="none">{candidate.email}</TableCell>
+                      <TableCell padding="none">{candidate.country}</TableCell>
                     <TableCell padding="none">{candidate.birth_date}</TableCell>
-                    <TableCell padding="none">
-                      {candidate.native_language}
-                    </TableCell>
-                    <TableCell>
-                      <IconButton
-                        aria-label={t("delete")}
-                        color="error"
+                      <TableCell padding="none">
+                        {candidate.native_language}
+                      </TableCell>
+                      <TableCell>
+                        <IconButton
+                          aria-label={t("delete")}
+                          color="error"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleDeleteOne(candidate.candidate_id);
                         }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+                {emptyRows > 0 && (
+                  <TableRow
+                    style={{
+                      height: (dense ? 33 : 53) * emptyRows,
+                    }}
+                  >
+                    <TableCell colSpan={6} />
                   </TableRow>
-                );
-              })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
           count={filteredCandidates.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
+        <FormControlLabel
+          control={<Switch checked={dense} onChange={handleChangeDense} />}
         label={t("densePadding")}
-      />
+        />
       <UploadDialog
         open={uploadOpen}
         onClose={() => setUploadOpen(false)}

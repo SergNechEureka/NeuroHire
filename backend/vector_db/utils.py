@@ -2,14 +2,22 @@ import re
 
 from fastembed.text import TextEmbedding
 
-embedder = TextEmbedding()
-
 class Embedder:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(Embedder, cls).__new__(cls)
+            cls._instance._initialized = False
+        return cls._instance
+
     def __init__(self) -> None:
-        self.embedder = TextEmbedding()
+        if not self._initialized:
+            self.embedder = TextEmbedding()
+            self._initialized = True
 
     def embed_text(self, text):
-        return list(embedder.embed([text]))[0]
+        return list(self.embedder.embed([text]))[0]
 
     def embed_query(self, text):
         return self.embed_text(text)
