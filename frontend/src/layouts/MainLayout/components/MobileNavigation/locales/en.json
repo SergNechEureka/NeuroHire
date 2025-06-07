@@ -1,4 +1,5 @@
 {
-  "menu": "Menu",
-  "close": "Close"
+  "navigation": {
+    "menu": "Navigation menu"
+  }
 } 

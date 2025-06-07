@@ -1,15 +1,24 @@
 import type { ReactNode } from 'react';
 
-export interface MenuItem {
+export interface NavigationItem {
   id: string;
   title: string;
   icon: ReactNode;
   path: string;
-  children?: MenuItem[];
+  children?: NavigationItem[];
+  tooltip?: string;
 }
 
 export interface NavigationMenuProps {
-  items: MenuItem[];
+  items: NavigationItem[];
   isExpanded: boolean;
-  onNavigate: (path: string) => void;
+  onItemClick: (path: string) => void;
+}
+
+export interface MenuItemProps {
+  item: NavigationItem;
+  isExpanded: boolean;
+  isActive: boolean;
+  onItemClick: (path: string) => void;
+  level?: number;
 } 

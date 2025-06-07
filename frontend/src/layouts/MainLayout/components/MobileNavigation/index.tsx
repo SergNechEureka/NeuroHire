@@ -1,33 +1,34 @@
+import { useMediaQuery, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import type { MobileNavigationProps } from './types';
-import {
-  MobileNavContainer,
-  MobileNavList,
-  MobileNavItem,
-  MobileNavButton,
-  IconWrapper,
-} from './styles';
+import { MobileNavContainer, StyledBottomNavigation, StyledBottomNavigationAction } from './styles';
 
-export const MobileNavigation = ({ items, onNavigate, currentPath }: MobileNavigationProps) => {
-  const { t } = useTranslation();
+export const MobileNavigation = ({ items, onItemClick, currentPath }: MobileNavigationProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { t } = useTranslation('mobileNavigation');
+
+  if (!isMobile) {
+    return null;
+  }
 
   return (
-    <MobileNavContainer>
-      <MobileNavList>
+    <MobileNavContainer elevation={3} role="navigation" aria-label={t('navigation.menu')}>
+      <StyledBottomNavigation
+        value={currentPath}
+        onChange={(_, newValue) => onItemClick(newValue)}
+        showLabels
+      >
         {items.map((item) => (
-          <MobileNavItem key={item.id}>
-            <MobileNavButton
-              isActive={currentPath === item.path}
-              onClick={() => onNavigate(item.path)}
-              aria-label={t(`navigation.${item.id}`, item.id)}
-            >
-              <IconWrapper>{item.icon}</IconWrapper>
-              {/* Можно добавить подпись, если нужно: */}
-              {/* <span>{t(`navigation.${item.id}`, item.id)}</span> */}
-            </MobileNavButton>
-          </MobileNavItem>
+          <StyledBottomNavigationAction
+            key={item.id}
+            label={item.title}
+            value={item.path}
+            icon={item.icon}
+            aria-label={item.title}
+          />
         ))}
-      </MobileNavList>
+      </StyledBottomNavigation>
     </MobileNavContainer>
   );
 };

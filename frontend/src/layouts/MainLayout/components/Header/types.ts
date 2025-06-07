@@ -2,6 +2,14 @@ import type { ReactNode } from 'react';
 
 export interface HeaderProps {
   title?: string;
-  rightContent?: ReactNode;
-  onSearch?: (query: string) => void;
+  searchPlaceholder?: string;
+  onSearch?: (value: string) => void;
+  actions?: ReactNode;
+  userMenu?: {
+    avatar?: string;
+    name?: string;
+    onLogout?: () => void;
+    onProfileClick?: () => void;
+    onSettingsClick?: () => void;
+  };
 } 

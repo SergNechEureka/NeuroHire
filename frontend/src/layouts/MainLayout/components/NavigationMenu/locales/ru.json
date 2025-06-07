@@ -1,11 +1,6 @@
 {
   "navigation": {
-    "main": "Главное",
-    "candidates": "Кандидаты",
-    "projects": "Проекты",
-    "applications": "Заявки",
-    "administration": "Администрирование",
-    "users": "Пользователи",
-    "database": "База данных"
+    "expand": "Развернуть меню",
+    "collapse": "Свернуть меню"
   }
 } 

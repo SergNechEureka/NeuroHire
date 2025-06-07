@@ -1,6 +1,10 @@
 {
-  "search": "Search...",
-  "profile": "Profile",
-  "settings": "Settings",
-  "logout": "Logout"
+  "search": {
+    "placeholder": "Search..."
+  },
+  "userMenu": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  }
 } 

@@ -1,55 +1,40 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
+import { Paper, BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { keyframes } from '@emotion/react';
 
-export const MobileNavContainer = styled.nav`
+const slideUp = keyframes`
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+`;
+
+export const MobileNavContainer = styled(Paper)`
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #ffffff;
-  border-top: 1px solid #e0e0e0;
-  padding: 8px 0;
   z-index: 1000;
-  display: none;
-
-  @media (max-width: 768px) {
-    display: block;
-  }
+  animation: ${slideUp} 0.3s ease;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
 `;
 
-export const MobileNavList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+export const StyledBottomNavigation = styled(BottomNavigation)`
+  height: 56px;
+  background-color: #ffffff;
 `;
 
-export const MobileNavItem = styled.li`
-  flex: 1;
-  text-align: center;
-`;
-
-export const MobileNavButton = styled.button<{ isActive: boolean }>`
-  width: 100%;
-  padding: 8px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: ${({ isActive }) => (isActive ? '#1976d2' : '#666')};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
+export const StyledBottomNavigationAction = styled(BottomNavigationAction)`
+  min-width: 64px;
   
-  &:hover {
+  &.Mui-selected {
     color: #1976d2;
   }
-`;
-
-export const IconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
+  
+  .MuiBottomNavigationAction-label {
+    font-size: 0.75rem;
+    margin-top: 4px;
+  }
 `; 

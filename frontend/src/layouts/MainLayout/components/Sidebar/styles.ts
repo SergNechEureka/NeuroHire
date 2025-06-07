@@ -1,6 +1,10 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
-export const SidebarContainer = styled.div<{ isExpanded: boolean }>`
+interface SidebarContainerProps {
+  isExpanded: boolean;
+}
+
+export const SidebarContainer = styled.div<SidebarContainerProps>`
   width: ${({ isExpanded }) => (isExpanded ? '260px' : '64px')};
   height: 100vh;
   background-color: #ffffff;

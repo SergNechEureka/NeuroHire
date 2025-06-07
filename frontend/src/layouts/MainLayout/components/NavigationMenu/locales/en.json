@@ -1,11 +1,6 @@
 {
   "navigation": {
-    "main": "Main",
-    "candidates": "Candidates",
-    "projects": "Projects",
-    "applications": "Applications",
-    "administration": "Administration",
-    "users": "Users",
-    "database": "Database"
+    "expand": "Expand menu",
+    "collapse": "Collapse menu"
   }
 } 
