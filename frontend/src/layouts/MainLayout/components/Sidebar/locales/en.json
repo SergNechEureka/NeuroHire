@@ -1,7 +1,4 @@
 {
-  "sidebar": {
-    "expand": "Expand sidebar",
-    "collapse": "Collapse sidebar",
-    "navigation": "Main navigation"
-  }
+  "expand": "Expand sidebar",
+  "collapse": "Collapse sidebar"
 } 

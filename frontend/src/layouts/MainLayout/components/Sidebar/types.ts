@@ -1,7 +1,12 @@
-import type { ReactNode } from 'react';
+import type { NavigationItem } from '../NavigationMenu/types';
+
+export type SidebarMode = 'normal' | 'compact';
 
 export interface SidebarProps {
-  children: ReactNode;
-  isExpanded: boolean;
-  onToggle: () => void;
+  mode: SidebarMode;
+  navigationItems: NavigationItem[];
+  onModeChange: (mode: SidebarMode) => void;
+  activeItemId?: string;
+  onItemClick: (item: NavigationItem) => void;
+  className?: string;
 } 

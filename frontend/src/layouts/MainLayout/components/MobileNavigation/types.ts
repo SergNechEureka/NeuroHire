@@ -1,14 +1,9 @@
-import type { ReactNode } from 'react';
-
-export interface MobileNavigationItem {
-  id: string;
-  title: string;
-  icon: ReactNode;
-  path: string;
-}
+import type { NavigationItem } from '../../components/NavigationMenu/types';
 
 export interface MobileNavigationProps {
-  items: MobileNavigationItem[];
-  onItemClick: (path: string) => void;
-  currentPath: string;
+  isOpen: boolean;
+  onClose: () => void;
+  navigationItems: NavigationItem[];
+  activeItemId?: string;
+  onItemClick: (item: NavigationItem) => void;
 } 

@@ -1,40 +1,21 @@
-import styled from '@emotion/styled';
-import { Paper, BottomNavigation, BottomNavigationAction } from '@mui/material';
-import { keyframes } from '@emotion/react';
+import { styled } from '@mui/material/styles';
+import { Drawer, IconButton } from '@mui/material';
 
-const slideUp = keyframes`
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-`;
+export const StyledDrawer = styled(Drawer)(({ theme }) => ({
+  '& .MuiDrawer-paper': {
+    width: '100%',
+    maxWidth: 320,
+    backgroundColor: theme.palette.background.paper,
+    boxSizing: 'border-box',
+  },
+}));
 
-export const MobileNavContainer = styled(Paper)`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  animation: ${slideUp} 0.3s ease;
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
-`;
-
-export const StyledBottomNavigation = styled(BottomNavigation)`
-  height: 56px;
-  background-color: #ffffff;
-`;
-
-export const StyledBottomNavigationAction = styled(BottomNavigationAction)`
-  min-width: 64px;
-  
-  &.Mui-selected {
-    color: #1976d2;
-  }
-  
-  .MuiBottomNavigationAction-label {
-    font-size: 0.75rem;
-    margin-top: 4px;
-  }
-`; 
+export const CloseButton = styled(IconButton)(({ theme }) => ({
+  position: 'absolute',
+  right: theme.spacing(2),
+  top: theme.spacing(2),
+  color: theme.palette.text.secondary,
+  '&:hover': {
+    color: theme.palette.text.primary,
+  },
+})); 

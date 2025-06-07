@@ -1,25 +1,47 @@
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+import { NavigationMenu } from '../NavigationMenu';
+import { StyledPaper, ToggleButton, Content } from './styles';
 import type { SidebarProps } from './types';
-import { SidebarContainer, ToggleButton } from './styles';
 
-export const Sidebar = ({ children, isExpanded, onToggle }: SidebarProps) => {
+export const Sidebar = ({
+  mode,
+  navigationItems,
+  onModeChange,
+  activeItemId,
+  onItemClick,
+  className,
+}: SidebarProps) => {
   const { t } = useTranslation('sidebar');
 
+  const handleToggle = () => {
+    onModeChange(mode === 'normal' ? 'compact' : 'normal');
+  };
+
   return (
-    <SidebarContainer
-      isExpanded={isExpanded}
-      role="navigation"
-      aria-label={t('sidebar.navigation')}
+    <StyledPaper
+      elevation={0}
+      className={className}
+      sx={{
+        width: mode === 'normal' ? 280 : 72,
+      }}
     >
       <ToggleButton
-        onClick={onToggle}
-        aria-label={isExpanded ? t('sidebar.collapse') : t('sidebar.expand')}
-        aria-expanded={isExpanded}
+        onClick={handleToggle}
+        aria-label={mode === 'normal' ? t('collapse') : t('expand')}
+        size="small"
       >
-        {isExpanded ? <ChevronLeft /> : <ChevronRight />}
+        {mode === 'normal' ? <ChevronLeft /> : <ChevronRight />}
       </ToggleButton>
-      {children}
-    </SidebarContainer>
+
+      <Content>
+        <NavigationMenu
+          items={navigationItems}
+          mode={mode}
+          activeItemId={activeItemId}
+          onItemClick={onItemClick}
+        />
+      </Content>
+    </StyledPaper>
   );
 };

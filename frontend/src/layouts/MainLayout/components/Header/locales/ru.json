@@ -1,10 +1,4 @@
 {
-  "search": {
-    "placeholder": "Поиск..."
-  },
-  "userMenu": {
-    "profile": "Профиль",
-    "settings": "Настройки",
-    "logout": "Выйти"
-  }
+  "menu": "Меню",
+  "title": "NeuroHire"
 } 

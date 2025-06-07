@@ -1,6 +1,4 @@
 {
-  "navigation": {
-    "expand": "Expand menu",
-    "collapse": "Collapse menu"
-  }
+  "expand": "Expand",
+  "collapse": "Collapse"
 } 

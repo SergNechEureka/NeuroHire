@@ -1,34 +1,50 @@
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Close as CloseIcon } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+import { Box, Typography } from '@mui/material';
+import { NavigationMenu } from '../NavigationMenu';
+import { StyledDrawer, CloseButton } from './styles';
 import type { MobileNavigationProps } from './types';
-import { MobileNavContainer, StyledBottomNavigation, StyledBottomNavigationAction } from './styles';
+import type { NavigationItem } from '../NavigationMenu/types';
 
-export const MobileNavigation = ({ items, onItemClick, currentPath }: MobileNavigationProps) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+export const MobileNavigation = ({
+  isOpen,
+  onClose,
+  navigationItems,
+  activeItemId,
+  onItemClick,
+}: MobileNavigationProps) => {
   const { t } = useTranslation('mobileNavigation');
 
-  if (!isMobile) {
-    return null;
-  }
+  const handleItemClick = (item: NavigationItem) => {
+    onItemClick(item);
+    onClose();
+  };
 
   return (
-    <MobileNavContainer elevation={3} role="navigation" aria-label={t('navigation.menu')}>
-      <StyledBottomNavigation
-        value={currentPath}
-        onChange={(_, newValue) => onItemClick(newValue)}
-        showLabels
-      >
-        {items.map((item) => (
-          <StyledBottomNavigationAction
-            key={item.id}
-            label={item.title}
-            value={item.path}
-            icon={item.icon}
-            aria-label={item.title}
-          />
-        ))}
-      </StyledBottomNavigation>
-    </MobileNavContainer>
+    <StyledDrawer
+      anchor="left"
+      open={isOpen}
+      onClose={onClose}
+      ModalProps={{
+        keepMounted: true, // Better mobile performance
+      }}
+    >
+      <Box sx={{ p: 2, pt: 8 }}>
+        <CloseButton onClick={onClose} aria-label={t('close')} size="large">
+          <CloseIcon />
+        </CloseButton>
+
+        <Typography variant="h6" component="h2" sx={{ mb: 2, px: 2 }}>
+          {t('navigation')}
+        </Typography>
+
+        <NavigationMenu
+          items={navigationItems}
+          mode="normal"
+          activeItemId={activeItemId}
+          onItemClick={handleItemClick}
+        />
+      </Box>
+    </StyledDrawer>
   );
 };

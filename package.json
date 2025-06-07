@@ -3,8 +3,15 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.1.0"
   },
+  "scripts": {
+    "type-check": "cd frontend && npx tsc --noEmit -p tsconfig.app.json",
+    "lint": "cd frontend && npm run lint",
+    "lint:fix": "cd frontend && npm run lint:fix",
+    "pre-commit": "npm run type-check && npm run lint"
+  },
   "lint-staged": {
     "frontend/src/**/*.{js,jsx,ts,tsx}": [
+      "npm run --prefix frontend type-check",
       "npm run --prefix frontend lint:fix"
     ]
   }

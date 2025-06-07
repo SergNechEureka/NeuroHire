@@ -1,88 +1,51 @@
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useMediaQuery, useTheme } from '@mui/material';
-import { Dashboard, People, Settings, Assessment } from '@mui/icons-material';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Header } from './components/Header';
-import { Sidebar } from './components/Sidebar';
 import { NavigationMenu } from './components/NavigationMenu';
+import { Sidebar } from './components/Sidebar';
 import { MobileNavigation } from './components/MobileNavigation';
+import { useLayout } from './hooks/useLayout';
 import styles from './MainLayout.module.css';
-
-const navigationItems = [
-  {
-    id: 'dashboard',
-    title: 'Dashboard',
-    icon: <Dashboard />,
-    path: '/dashboard',
-    tooltip: 'Dashboard',
-  },
-  {
-    id: 'candidates',
-    title: 'Candidates',
-    icon: <People />,
-    path: '/candidates',
-    tooltip: 'Candidates',
-  },
-  {
-    id: 'analytics',
-    title: 'Analytics',
-    icon: <Assessment />,
-    path: '/analytics',
-    tooltip: 'Analytics',
-  },
-  {
-    id: 'settings',
-    title: 'Settings',
-    icon: <Settings />,
-    path: '/settings',
-    tooltip: 'Settings',
-  },
-];
 
 interface MainLayoutProps {
   children: React.ReactNode;
+  defaultMode?: 'normal' | 'compact' | 'hidden';
+  onModeChange?: (mode: 'normal' | 'compact' | 'hidden') => void;
 }
 
-export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const handleNavigation = (path: string) => {
-    navigate(path);
-  };
-
-  const toggleSidebar = () => {
-    setIsSidebarExpanded(!isSidebarExpanded);
-  };
+export const MainLayout: React.FC<MainLayoutProps> = ({ children, defaultMode, onModeChange }) => {
+  const { t } = useTranslation('layout');
+  const {
+    mode,
+    isMobileMenuOpen,
+    activeItem,
+    handleModeChange,
+    handleMobileMenuToggle,
+    handleItemClick,
+  } = useLayout({ defaultMode, onModeChange });
 
   return (
     <div className={styles.layout}>
-      <Header className={styles.header} />
+      <Header
+        onMenuToggle={handleMobileMenuToggle}
+        onModeChange={handleModeChange}
+        currentMode={mode}
+      />
 
-      <div className={styles.main}>
-        {!isMobile && (
-          <Sidebar isExpanded={isSidebarExpanded} onToggle={toggleSidebar}>
-            <NavigationMenu
-              items={navigationItems}
-              isExpanded={isSidebarExpanded}
-              onItemClick={handleNavigation}
-            />
-          </Sidebar>
-        )}
+      <div className={styles.content}>
+        <Sidebar mode={mode} onModeChange={handleModeChange} className={styles.sidebar}>
+          <NavigationMenu activeItem={activeItem} onItemClick={handleItemClick} />
+        </Sidebar>
 
-        <main className={styles.content}>{children}</main>
+        <main className={styles.main}>{children}</main>
       </div>
 
-      {isMobile && (
-        <MobileNavigation
-          items={navigationItems}
-          onItemClick={handleNavigation}
-          currentPath={location.pathname}
-        />
-      )}
+      <MobileNavigation
+        isOpen={isMobileMenuOpen}
+        onClose={handleMobileMenuToggle}
+        activeItem={activeItem}
+        onItemClick={handleItemClick}
+      />
     </div>
   );
 };

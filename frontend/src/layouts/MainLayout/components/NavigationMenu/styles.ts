@@ -1,61 +1,44 @@
-import styled from '@emotion/styled';
-import { List, ListItem, ListItemIcon, ListItemText, Collapse } from '@mui/material';
-import { keyframes } from '@emotion/react';
+import { styled } from '@mui/material/styles';
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Collapse } from '@mui/material';
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateX(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-`;
+export const StyledList = styled(List)(({ theme }) => ({
+  padding: theme.spacing(1),
+  '& .MuiListItem-root': {
+    borderRadius: theme.shape.borderRadius,
+    marginBottom: theme.spacing(0.5),
+  },
+}));
 
-interface MenuContainerProps {
-  isExpanded: boolean;
-}
+export const StyledListItem = styled(ListItem)({
+  padding: 0,
+});
 
-export const MenuContainer = styled(List)<MenuContainerProps>`
-  padding: 8px;
-  width: 100%;
-`;
+export const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
+  padding: theme.spacing(1, 2),
+  '&.Mui-selected': {
+    backgroundColor: theme.palette.action.selected,
+    '&:hover': {
+      backgroundColor: theme.palette.action.selected,
+    },
+  },
+}));
 
-export const MenuItem = styled(ListItem)<{ level?: number }>`
-  border-radius: 8px;
-  margin-bottom: 4px;
-  padding-left: ${({ level = 0 }) => level * 16 + 8}px;
-  
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.04);
-  }
-`;
+export const StyledListItemIcon = styled(ListItemIcon)(({ theme }) => ({
+  minWidth: theme.spacing(4),
+  color: theme.palette.text.secondary,
+  '.Mui-selected &': {
+    color: theme.palette.primary.main,
+  },
+}));
 
-export const MenuItemIcon = styled(ListItemIcon)`
-  min-width: 40px;
-  color: #666;
-  transition: transform 0.2s ease;
-`;
+export const StyledListItemText = styled(ListItemText)({
+  margin: 0,
+  '& .MuiTypography-root': {
+    fontSize: '0.875rem',
+    fontWeight: 500,
+  },
+});
 
-export const MenuItemText = styled(ListItemText)`
-  opacity: ${({ isExpanded }: { isExpanded: boolean }) => (isExpanded ? 1 : 0)};
-  transition: opacity 0.2s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  animation: ${fadeIn} 0.2s ease;
-`;
-
-export const NestedList = styled(Collapse)`
-  margin-left: 8px;
-`;
-
-export const ExpandIcon = styled.span<{ isExpanded: boolean }>`
-  transform: rotate(${({ isExpanded }) => (isExpanded ? 90 : 0)}deg);
-  transition: transform 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-`; 
+export const StyledCollapse = styled(Collapse)(({ theme }) => ({
+  paddingLeft: theme.spacing(4),
+})); 
