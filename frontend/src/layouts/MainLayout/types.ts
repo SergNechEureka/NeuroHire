@@ -9,4 +9,16 @@ export interface MainLayoutProps {
   onModeChange?: (mode: SidebarMode) => void;
   title?: string;
   className?: string;
+}
+
+export interface LayoutState {
+  mode: SidebarMode;
+  isMobileMenuOpen: boolean;
+  activeItem: NavigationItem | null;
+}
+
+export interface LayoutActions {
+  handleModeChange: (mode: SidebarMode) => void;
+  handleMobileMenuToggle: () => void;
+  handleItemClick: (item: NavigationItem) => void;
 } 

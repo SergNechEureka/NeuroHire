@@ -1,3 +1,8 @@
 {
-  "title": "NeuroHire"
+  "layout": {
+    "title": "NeuroHire",
+    "toggleSidebar": "Переключить боковую панель",
+    "toggleMobileMenu": "Переключить мобильное меню",
+    "close": "Закрыть"
+  }
 } 

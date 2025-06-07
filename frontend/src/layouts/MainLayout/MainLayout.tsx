@@ -5,13 +5,14 @@ import { NavigationMenu } from './components/NavigationMenu';
 import { Sidebar } from './components/Sidebar';
 import { MobileNavigation } from './components/MobileNavigation';
 import { useLayout } from './hooks/useLayout';
-import styles from './MainLayout.module.css';
-
-interface MainLayoutProps {
-  children: React.ReactNode;
-  defaultMode?: 'normal' | 'compact' | 'hidden';
-  onModeChange?: (mode: 'normal' | 'compact' | 'hidden') => void;
-}
+import { MainLayoutProps } from './types';
+import {
+  layoutStyles,
+  contentStyles,
+  sidebarStyles,
+  mainStyles,
+  mobileSidebarHidden,
+} from './styles';
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ children, defaultMode, onModeChange }) => {
   const { t } = useTranslation('layout');
@@ -25,19 +26,23 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children, defaultMode, o
   } = useLayout({ defaultMode, onModeChange });
 
   return (
-    <div className={styles.layout}>
+    <div css={layoutStyles}>
       <Header
         onMenuToggle={handleMobileMenuToggle}
         onModeChange={handleModeChange}
         currentMode={mode}
       />
 
-      <div className={styles.content}>
-        <Sidebar mode={mode} onModeChange={handleModeChange} className={styles.sidebar}>
+      <div css={contentStyles}>
+        <Sidebar
+          mode={mode}
+          onModeChange={handleModeChange}
+          css={[sidebarStyles, mobileSidebarHidden]}
+        >
           <NavigationMenu activeItem={activeItem} onItemClick={handleItemClick} />
         </Sidebar>
 
-        <main className={styles.main}>{children}</main>
+        <main css={mainStyles}>{children}</main>
       </div>
 
       <MobileNavigation

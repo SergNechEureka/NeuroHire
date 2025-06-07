@@ -1,17 +1,37 @@
-import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { css } from '@emotion/react';
 
-export const Root = styled(Box)({
-  display: 'flex',
-  height: '100vh',
-  overflow: 'hidden',
-});
+export const layoutStyles = css`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--background-primary);
+`;
 
-export const Main = styled(Box)(({ theme }) => ({
-  flexGrow: 1,
-  height: '100%',
-  overflow: 'auto',
-  backgroundColor: theme.palette.background.default,
-  padding: theme.spacing(3),
-  paddingTop: theme.spacing(10),
-})); 
+export const contentStyles = css`
+  display: flex;
+  flex: 1;
+  position: relative;
+`;
+
+export const sidebarStyles = css`
+  position: sticky;
+  top: 0;
+  height: calc(100vh - var(--header-height));
+  transition: width var(--transition-duration) ease;
+`;
+
+export const mainStyles = css`
+  flex: 1;
+  padding: var(--spacing-lg);
+  overflow-x: hidden;
+
+  @media (max-width: 768px) {
+    padding: var(--spacing-md);
+  }
+`;
+
+export const mobileSidebarHidden = css`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`; 

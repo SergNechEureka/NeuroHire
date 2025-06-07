@@ -1,3 +1,8 @@
 {
-  "title": "NeuroHire"
+  "layout": {
+    "title": "NeuroHire",
+    "toggleSidebar": "Seitenleiste umschalten",
+    "toggleMobileMenu": "Mobiles Menü umschalten",
+    "close": "Schließen"
+  }
 } 
