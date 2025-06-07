@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import type { SerializedStyles } from '@emotion/react';
-import type { NavigationItem } from '../NavigationMenu/types';
 
 export type SidebarMode = 'normal' | 'compact';
 
