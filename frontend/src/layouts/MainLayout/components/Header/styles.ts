@@ -1,50 +1,40 @@
-import { styled } from '@mui/material/styles';
-import { AppBar, Toolbar, IconButton, InputBase, Box } from '@mui/material';
+import styled from 'styled-components';
 
-export const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
-  color: theme.palette.text.primary,
-  boxShadow: 'none',
-  borderBottom: `1px solid ${theme.palette.divider}`,
-}));
+export const HeaderContainer = styled.header`
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+`;
 
-export const StyledToolbar = styled(Toolbar)({
-  display: 'flex',
-  justifyContent: 'space-between',
-  padding: '0 16px',
-});
+export const Title = styled.h1`
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0;
+  color: #222;
+`;
 
-export const SearchContainer = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: theme.palette.action.hover,
-  '&:hover': {
-    backgroundColor: theme.palette.action.selected,
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
+export const RightContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
 
-export const SearchInput = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
-
-export const ActionsContainer = styled(Box)({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-}); 
+export const SearchInput = styled.input`
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  &:focus {
+    border-color: #1976d2;
+  }
+`; 

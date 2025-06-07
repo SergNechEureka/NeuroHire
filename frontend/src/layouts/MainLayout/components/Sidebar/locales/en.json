@@ -1,4 +1,6 @@
 {
-  "collapse": "Collapse menu",
-  "expand": "Expand menu"
+  "toggle": {
+    "expand": "Expand sidebar",
+    "collapse": "Collapse sidebar"
+  }
 } 

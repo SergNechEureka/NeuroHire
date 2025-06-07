@@ -1,4 +1,6 @@
 {
-  "collapse": "Menü einklappen",
-  "expand": "Menü ausklappen"
+  "toggle": {
+    "expand": "Seitenleiste erweitern",
+    "collapse": "Seitenleiste einklappen"
+  }
 } 

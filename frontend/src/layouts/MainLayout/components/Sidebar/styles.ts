@@ -1,24 +1,33 @@
-import { styled } from '@mui/material/styles';
-import { Box, IconButton } from '@mui/material';
+import styled from 'styled-components';
 
-export const SidebarContainer = styled(Box)({
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-});
+export const SidebarContainer = styled.div<{ isExpanded: boolean }>`
+  width: ${({ isExpanded }) => (isExpanded ? '260px' : '64px')};
+  height: 100vh;
+  background-color: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  transition: width 0.3s ease;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  overflow-x: hidden;
+  overflow-y: auto;
+`;
 
-export const SidebarHeader = styled(Box)({
-  padding: '16px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-});
-
-export const ToggleButton = styled(IconButton)({
-  marginLeft: 'auto',
-});
-
-export const SidebarContent = styled(Box)({
-  flex: 1,
-  overflow: 'auto',
-}); 
+export const ToggleButton = styled.button`
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  
+  &:hover {
+    color: #000;
+  }
+`; 

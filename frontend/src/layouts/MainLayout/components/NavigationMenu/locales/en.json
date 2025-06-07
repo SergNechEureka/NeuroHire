@@ -1,13 +1,11 @@
 {
-  "main": {
-    "title": "Main",
+  "navigation": {
+    "main": "Main",
     "candidates": "Candidates",
     "projects": "Projects",
-    "applications": "Applications"
-  },
-  "administration": {
-    "title": "Administration",
+    "applications": "Applications",
+    "administration": "Administration",
     "users": "Users",
-    "database": "DataBase"
+    "database": "Database"
   }
 } 

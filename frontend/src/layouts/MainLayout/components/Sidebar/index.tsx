@@ -1,27 +1,20 @@
-import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
-import { SidebarProps } from '../../types';
-import { SidebarContainer, SidebarHeader, ToggleButton, SidebarContent } from './styles';
+import type { SidebarProps } from './types';
+import { SidebarContainer, ToggleButton } from './styles';
 
-interface ExtendedSidebarProps extends SidebarProps {
-  children: ReactNode;
-}
-
-export const Sidebar = ({ isExpanded, onToggle, children }: ExtendedSidebarProps) => {
+export const Sidebar = ({ children, isExpanded, onToggle }: SidebarProps) => {
   const { t } = useTranslation();
 
   return (
-    <SidebarContainer>
-      <SidebarHeader>
-        <ToggleButton
-          onClick={onToggle}
-          aria-label={isExpanded ? t('sidebar.collapse') : t('sidebar.expand')}
-        >
-          {isExpanded ? <ChevronLeft /> : <ChevronRight />}
-        </ToggleButton>
-      </SidebarHeader>
-      <SidebarContent>{children}</SidebarContent>
+    <SidebarContainer isExpanded={isExpanded}>
+      <ToggleButton
+        onClick={onToggle}
+        aria-label={isExpanded ? t('toggle.collapse') : t('toggle.expand')}
+      >
+        {isExpanded ? <ChevronLeft /> : <ChevronRight />}
+      </ToggleButton>
+      {children}
     </SidebarContainer>
   );
 };

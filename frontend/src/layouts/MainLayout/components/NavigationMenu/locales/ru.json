@@ -1,12 +1,10 @@
 {
-  "main": {
-    "title": "Главное",
+  "navigation": {
+    "main": "Главное",
     "candidates": "Кандидаты",
     "projects": "Проекты",
-    "applications": "Заявки"
-  },
-  "administration": {
-    "title": "Администрирование",
+    "applications": "Заявки",
+    "administration": "Администрирование",
     "users": "Пользователи",
     "database": "База данных"
   }

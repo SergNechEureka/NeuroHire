@@ -1,22 +1,33 @@
 import { useTranslation } from 'react-i18next';
-import { Close as CloseIcon } from '@mui/icons-material';
-import { MobileNavigationProps } from '../../types';
-import { NavigationMenu } from '../NavigationMenu';
-import { MobileNavContainer, MobileNavHeader, CloseButton, MobileNavContent } from './styles';
+import type { MobileNavigationProps } from './types';
+import {
+  MobileNavContainer,
+  MobileNavList,
+  MobileNavItem,
+  MobileNavButton,
+  IconWrapper,
+} from './styles';
 
-export const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
+export const MobileNavigation = ({ items, onNavigate, currentPath }: MobileNavigationProps) => {
   const { t } = useTranslation();
 
   return (
     <MobileNavContainer>
-      <MobileNavHeader>
-        <CloseButton onClick={onClose} aria-label={t('mobile.close')}>
-          <CloseIcon />
-        </CloseButton>
-      </MobileNavHeader>
-      <MobileNavContent>
-        <NavigationMenu isExpanded={true} />
-      </MobileNavContent>
+      <MobileNavList>
+        {items.map((item) => (
+          <MobileNavItem key={item.id}>
+            <MobileNavButton
+              isActive={currentPath === item.path}
+              onClick={() => onNavigate(item.path)}
+              aria-label={t(`navigation.${item.id}`, item.id)}
+            >
+              <IconWrapper>{item.icon}</IconWrapper>
+              {/* Можно добавить подпись, если нужно: */}
+              {/* <span>{t(`navigation.${item.id}`, item.id)}</span> */}
+            </MobileNavButton>
+          </MobileNavItem>
+        ))}
+      </MobileNavList>
     </MobileNavContainer>
   );
 };
