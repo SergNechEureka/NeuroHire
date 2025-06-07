@@ -1,0 +1,13 @@
+{
+  "main": {
+    "title": "Главное",
+    "candidates": "Кандидаты",
+    "projects": "Проекты",
+    "applications": "Заявки"
+  },
+  "administration": {
+    "title": "Администрирование",
+    "users": "Пользователи",
+    "database": "База данных"
+  }
+} 

@@ -1,0 +1,13 @@
+{
+  "main": {
+    "title": "Main",
+    "candidates": "Candidates",
+    "projects": "Projects",
+    "applications": "Applications"
+  },
+  "administration": {
+    "title": "Administration",
+    "users": "Users",
+    "database": "DataBase"
+  }
+} 

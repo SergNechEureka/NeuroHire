@@ -1,0 +1,13 @@
+{
+  "main": {
+    "title": "Hauptmenü",
+    "candidates": "Kandidaten",
+    "projects": "Projekte",
+    "applications": "Bewerbungen"
+  },
+  "administration": {
+    "title": "Verwaltung",
+    "users": "Benutzer",
+    "database": "Datenbank"
+  }
+} 
