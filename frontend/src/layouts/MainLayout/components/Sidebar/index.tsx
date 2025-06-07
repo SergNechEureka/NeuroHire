@@ -1,17 +1,9 @@
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import { NavigationMenu } from '../NavigationMenu';
 import { StyledPaper, ToggleButton, Content } from './styles';
 import type { SidebarProps } from './types';
 
-export const Sidebar = ({
-  mode,
-  navigationItems,
-  onModeChange,
-  activeItemId,
-  onItemClick,
-  className,
-}: SidebarProps) => {
+export const Sidebar = ({ mode, onModeChange, children, className }: SidebarProps) => {
   const { t } = useTranslation('sidebar');
 
   const handleToggle = () => {
@@ -34,14 +26,7 @@ export const Sidebar = ({
         {mode === 'normal' ? <ChevronLeft /> : <ChevronRight />}
       </ToggleButton>
 
-      <Content>
-        <NavigationMenu
-          items={navigationItems}
-          mode={mode}
-          activeItemId={activeItemId}
-          onItemClick={onItemClick}
-        />
-      </Content>
+      <Content>{children}</Content>
     </StyledPaper>
   );
 };

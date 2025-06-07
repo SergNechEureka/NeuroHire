@@ -1,5 +1,8 @@
+import type { SidebarMode } from '../Sidebar/types';
+
 export interface HeaderProps {
   onMenuClick: () => void;
-  title?: string;
+  onModeChange: (mode: SidebarMode) => void;
+  currentMode: SidebarMode;
   className?: string;
 } 

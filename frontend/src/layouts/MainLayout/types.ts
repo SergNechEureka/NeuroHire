@@ -2,14 +2,14 @@ import type { ReactNode } from 'react';
 import type { NavigationItem } from './components/NavigationMenu/types';
 import type { SidebarMode } from './components/Sidebar/types';
 
-export interface MainLayoutProps {
+export type MainLayoutProps = {
   children: ReactNode;
   navigationItems: NavigationItem[];
   defaultMode?: SidebarMode;
   onModeChange?: (mode: SidebarMode) => void;
   title?: string;
   className?: string;
-}
+};
 
 export interface LayoutState {
   mode: SidebarMode;

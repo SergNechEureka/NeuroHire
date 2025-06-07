@@ -1,11 +1,11 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import styled from '@emotion/styled';
 import { Header } from './components/Header';
 import { NavigationMenu } from './components/NavigationMenu';
 import { Sidebar } from './components/Sidebar';
 import { MobileNavigation } from './components/MobileNavigation';
 import { useLayout } from './hooks/useLayout';
-import { MainLayoutProps } from './types';
+import type { MainLayoutProps } from './types';
 import {
   layoutStyles,
   contentStyles,
@@ -14,8 +14,16 @@ import {
   mobileSidebarHidden,
 } from './styles';
 
-export const MainLayout: React.FC<MainLayoutProps> = ({ children, defaultMode, onModeChange }) => {
-  const { t } = useTranslation('layout');
+const LayoutContainer = styled.div(layoutStyles);
+const ContentContainer = styled.div(contentStyles);
+const MainContent = styled.main(mainStyles);
+
+export const MainLayout: React.FC<MainLayoutProps> = ({
+  children,
+  navigationItems,
+  defaultMode,
+  onModeChange,
+}) => {
   const {
     mode,
     isMobileMenuOpen,
@@ -26,31 +34,37 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children, defaultMode, o
   } = useLayout({ defaultMode, onModeChange });
 
   return (
-    <div css={layoutStyles}>
+    <LayoutContainer>
       <Header
-        onMenuToggle={handleMobileMenuToggle}
+        onMenuClick={handleMobileMenuToggle}
         onModeChange={handleModeChange}
         currentMode={mode}
       />
 
-      <div css={contentStyles}>
+      <ContentContainer>
         <Sidebar
           mode={mode}
           onModeChange={handleModeChange}
           css={[sidebarStyles, mobileSidebarHidden]}
         >
-          <NavigationMenu activeItem={activeItem} onItemClick={handleItemClick} />
+          <NavigationMenu
+            items={navigationItems}
+            mode={mode}
+            activeItemId={activeItem?.id}
+            onItemClick={handleItemClick}
+          />
         </Sidebar>
 
-        <main css={mainStyles}>{children}</main>
-      </div>
+        <MainContent>{children}</MainContent>
+      </ContentContainer>
 
       <MobileNavigation
         isOpen={isMobileMenuOpen}
         onClose={handleMobileMenuToggle}
-        activeItem={activeItem}
+        navigationItems={navigationItems}
+        activeItemId={activeItem?.id}
         onItemClick={handleItemClick}
       />
-    </div>
+    </LayoutContainer>
   );
 };

@@ -20,6 +20,13 @@ export const MenuButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
+export const ModeButton = styled(IconButton)(({ theme }) => ({
+  marginLeft: 'auto',
+  [theme.breakpoints.up('md')]: {
+    display: 'none',
+  },
+}));
+
 export const Title = styled(Typography)(({ theme }) => ({
   flexGrow: 1,
   color: theme.palette.text.primary,
