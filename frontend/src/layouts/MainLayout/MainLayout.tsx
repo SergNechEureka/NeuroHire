@@ -17,6 +17,10 @@ import {
 const LayoutContainer = styled.div(layoutStyles);
 const ContentContainer = styled.div(contentStyles);
 const MainContent = styled.main(mainStyles);
+const StyledSidebar = styled(Sidebar)`
+  ${sidebarStyles}
+  ${mobileSidebarHidden}
+`;
 
 export const MainLayout: React.FC<MainLayoutProps> = ({
   children,
@@ -31,7 +35,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     handleModeChange,
     handleMobileMenuToggle,
     handleItemClick,
-  } = useLayout({ defaultMode, onModeChange });
+  } = useLayout({
+    defaultMode: defaultMode ?? 'normal',
+    onModeChange,
+  });
 
   return (
     <LayoutContainer>
@@ -42,18 +49,14 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       />
 
       <ContentContainer>
-        <Sidebar
-          mode={mode}
-          onModeChange={handleModeChange}
-          css={[sidebarStyles, mobileSidebarHidden]}
-        >
+        <StyledSidebar mode={mode} onModeChange={handleModeChange}>
           <NavigationMenu
             items={navigationItems}
             mode={mode}
-            activeItemId={activeItem?.id}
+            activeItemId={activeItem?.id ?? undefined}
             onItemClick={handleItemClick}
           />
-        </Sidebar>
+        </StyledSidebar>
 
         <MainContent>{children}</MainContent>
       </ContentContainer>
