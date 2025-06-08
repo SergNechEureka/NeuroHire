@@ -8,10 +8,10 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
 
@@ -43,8 +43,6 @@
 
     /* React Specific */
     "jsxImportSource": "react",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
     "allowJs": true,
     "checkJs": true,
 
@@ -57,7 +55,9 @@
     /* Paths */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "include": ["src"],
+      "exclude": ["node_modules", "dist", "src/node_modules", "src/dist"]
     }
   },
   "include": ["src"],
