@@ -26,7 +26,7 @@ export const Sidebar = ({ mode, onModeChange, children, className }: SidebarProp
         {mode === 'normal' ? <ChevronLeft /> : <ChevronRight />}
       </ToggleButton>
 
-      <Content>{children}</Content>
+      {children && <Content>{children}</Content>}
     </StyledPaper>
   );
 };

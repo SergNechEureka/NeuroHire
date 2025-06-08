@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.app.json",
+  "files": [
+    "src/components/MainPage/hooks/useMainPage.ts",
+    "src/components/MainPage/index.tsx",
+    "src/components/MainPage/types.ts",
+    "src/routes/appRoutes.tsx"
+  ]
+}

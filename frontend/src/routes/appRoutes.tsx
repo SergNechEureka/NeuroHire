@@ -1,86 +1,74 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import MainLayout from '../layouts/MainLayout';
-import MainPage from '../components/MainPage';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { MainLayout } from '../layouts/MainLayout';
+import { MainPage } from '../components/MainPage';
+import { CandidatesPage } from '../components/CandidatesPage';
+import { ProjectsPage } from '../components/ProjectsPage';
+import { ApplicationsPage } from '../components/ApplicationsPage';
+import { AdministrationPage } from '../components/AdministrationPage';
+import { UsersPage } from '../components/UsersPage';
+import { DatabasePage } from '../components/DatabasePage';
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { token } = useAuth();
-
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return <MainLayout>{children}</MainLayout>;
-};
-
-const AppRoutes: React.FC = () => {
+export const AppRoutes = () => {
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <MainPage />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/candidates"
-        element={
-          <ProtectedRoute>
-            <MainPage />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/projects"
-        element={
-          <ProtectedRoute>
-            <MainPage />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/applications"
-        element={
-          <ProtectedRoute>
-            <MainPage />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/administration"
-        element={
-          <ProtectedRoute>
-            <MainPage />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/users"
-        element={
-          <ProtectedRoute>
-            <MainPage />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/database"
-        element={
-          <ProtectedRoute>
-            <MainPage />
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <MainLayout>
+              <MainPage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/candidates"
+          element={
+            <MainLayout>
+              <CandidatesPage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/projects"
+          element={
+            <MainLayout>
+              <ProjectsPage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/applications"
+          element={
+            <MainLayout>
+              <ApplicationsPage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/administration"
+          element={
+            <MainLayout>
+              <AdministrationPage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <MainLayout>
+              <UsersPage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/database"
+          element={
+            <MainLayout>
+              <DatabasePage />
+            </MainLayout>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 };
-
-export default AppRoutes;

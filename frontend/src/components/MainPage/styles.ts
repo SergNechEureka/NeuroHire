@@ -1,23 +1,17 @@
 import { css } from '@emotion/react';
 
-export const mainPageStyles = {
+export const styles = {
   container: css`
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 100%;
-
-    @media (max-width: 768px) {
-      padding: 0;
-    }
+    padding: 24px;
   `,
   content: css`
     flex: 1;
-    padding: 20px;
-    overflow: auto;
-
-    @media (max-width: 768px) {
-      padding: 10px;
-    }
+    background: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   `,
 }; 

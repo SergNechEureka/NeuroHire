@@ -1,16 +1,24 @@
-import React from 'react';
+import { type ReactNode } from 'react';
 import { useMainPage } from './hooks/useMainPage';
-import { mainPageStyles } from './styles';
-import type { MainPageProps } from './types';
+import { MainLayout } from '../../layouts/MainLayout';
+import styled from '@emotion/styled';
+import { styles } from './styles';
 
-const MainPage: React.FC<MainPageProps> = ({ children }) => {
+interface MainPageProps {
+  children: ReactNode;
+}
+
+const Container = styled.div(styles.container);
+const Content = styled.div(styles.content);
+
+export const MainPage = ({ children }: MainPageProps) => {
   const { navigationItems } = useMainPage();
 
   return (
-    <div css={mainPageStyles.container}>
-      <div css={mainPageStyles.content}>{children}</div>
-    </div>
+    <MainLayout navigationItems={navigationItems}>
+      <Container>
+        <Content>{children}</Content>
+      </Container>
+    </MainLayout>
   );
 };
-
-export default MainPage;
