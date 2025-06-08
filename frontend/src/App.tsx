@@ -1,10 +1,10 @@
-import React from "react";
-import CandidatesTable from "./components/CandidatesTable";
-import CandidatePageLayout from "./components/CandidatePageLayout";
-import useCandidates from "./hooks/useCandidates";
-import LoginForm from "./components/auth/LoginForm";
-import ApplicationBar from "./ApplicationBar";
-import { useAuth, isTokenExpired } from "./AuthContext";
+import React from 'react';
+import CandidatesTable from './components/CandidatesTable';
+import CandidatePageLayout from './components/CandidatePageLayout';
+import useCandidates from './hooks/useCandidates';
+import LoginForm from './components/auth/LoginForm';
+import ApplicationBar from './ApplicationBar';
+import { useAuth, isTokenExpired } from './contexts/AuthContext';
 
 const App: React.FC = () => {
   const { token, handleLogin, handleLogout } = useAuth();

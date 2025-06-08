@@ -37,5 +37,14 @@
   "uploadStatusCompleted": "Completed",
   "uploadStatusError": "Error",
   "uploadSuccess": "All files uploaded successfully!",
-  "uploadError": "Some files failed to upload."
+  "uploadError": "Some files failed to upload.",
+  "navigation": {
+    "main": "Main",
+    "candidates": "Candidates",
+    "projects": "Projects",
+    "applications": "Applications",
+    "administration": "Administration",
+    "users": "Users",
+    "database": "Database"
+  }
 }

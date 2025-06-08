@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { Candidate } from "../types/models";
 import { fetchCandidates, deleteCandidates, deleteCandidate } from "../api/candidates";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 
 import type { Order } from "../types/common";
 

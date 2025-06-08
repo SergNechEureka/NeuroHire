@@ -1,0 +1,11 @@
+{
+  "navigation": {
+    "main": "Главная",
+    "candidates": "Кандидаты",
+    "projects": "Проекты",
+    "applications": "Заявки",
+    "administration": "Администрирование",
+    "users": "Пользователи",
+    "database": "База данных"
+  }
+} 
