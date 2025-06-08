@@ -7,15 +7,27 @@ import { ApplicationsPage } from '../components/ApplicationsPage';
 import { AdministrationPage } from '../components/AdministrationPage';
 import { UsersPage } from '../components/UsersPage';
 import { DatabasePage } from '../components/DatabasePage';
+import HomeIcon from '@mui/icons-material/Home';
+import PeopleIcon from '@mui/icons-material/People';
+import WorkIcon from '@mui/icons-material/Work';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import PersonIcon from '@mui/icons-material/Person';
+import StorageIcon from '@mui/icons-material/Storage';
 
 const navigationItems = [
-  { path: '/', label: 'Main' },
-  { path: '/candidates', label: 'Candidates' },
-  { path: '/projects', label: 'Projects' },
-  { path: '/applications', label: 'Applications' },
-  { path: '/administration', label: 'Administration' },
-  { path: '/users', label: 'Users' },
-  { path: '/database', label: 'Database' },
+  { id: 'main', path: '/', label: 'Main', icon: <HomeIcon /> },
+  { id: 'candidates', path: '/candidates', label: 'Candidates', icon: <PeopleIcon /> },
+  { id: 'projects', path: '/projects', label: 'Projects', icon: <WorkIcon /> },
+  { id: 'applications', path: '/applications', label: 'Applications', icon: <AssignmentIcon /> },
+  {
+    id: 'administration',
+    path: '/administration',
+    label: 'Administration',
+    icon: <AdminPanelSettingsIcon />,
+  },
+  { id: 'users', path: '/users', label: 'Users', icon: <PersonIcon /> },
+  { id: 'database', path: '/database', label: 'Database', icon: <StorageIcon /> },
 ];
 
 export const AppRoutes = () => {

@@ -8,7 +8,7 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -42,7 +42,7 @@
     "allowUnreachableCode": false,
 
     /* React Specific */
-    "jsxImportSource": "react",
+    "jsxImportSource": "@emotion/react",
     "allowJs": true,
     "checkJs": true,
 
@@ -55,9 +55,7 @@
     /* Paths */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "include": ["src"],
-      "exclude": ["node_modules", "dist", "src/node_modules", "src/dist"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["src"],
