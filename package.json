@@ -14,5 +14,8 @@
       "npm run --prefix frontend type-check",
       "npm run --prefix frontend lint:fix"
     ]
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
