@@ -40,12 +40,10 @@ import {
   FormControl,
   Alert,
   Snackbar,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { visuallyHidden } from '@mui/utils';
-import { useNavigate } from 'react-router-dom';
+
 
 interface CandidatesTableProps {
   candidates: Candidate[];
@@ -343,9 +341,6 @@ export default function CandidatesTable({
     country: '',
   });
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const uniqueValues = React.useMemo(() => {
     const languages = new Set<string>();
@@ -404,14 +399,6 @@ export default function CandidatesTable({
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [filteredCandidates, order, orderBy, page, rowsPerPage, getComparator],
   );
-
-  const getTableHeight = () => {
-    if (isMobile) return 'calc(100vh - 200px)';
-    if (isTablet) return 'calc(100vh - 180px)';
-    return 'calc(100vh - 160px)';
-  };
-
-  const navigate = useNavigate();
 
   if (loading) {
     return (
