@@ -6,7 +6,7 @@ import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import CandidatesTable from '../CandidatesTable';
 import useCandidates from '../../hooks/useCandidates';
 import type { NavigationItem } from '../../layouts/MainLayout/components/NavigationMenu/types';
-import CandidatePageLayout from '../CandidatePageLayout';
+import CandidateDetailsPage from '../CandidateDetailsPage';
 import { Box, Typography, Button } from '@mui/material';
 
 interface MainPageProps {
@@ -48,7 +48,7 @@ export const MainPage = ({ children, activeMenuItem }: MainPageProps) => {
       );
     }
     return (
-      <CandidatePageLayout
+      <CandidateDetailsPage
         onBack={() => navigate('/candidates')}
         selectedCandidate={candidate}
         candidates={tableProps.candidates}
