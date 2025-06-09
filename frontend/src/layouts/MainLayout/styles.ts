@@ -1,37 +1,38 @@
-import { css } from '@emotion/react';
+export const layoutStyles = {
+  display: 'flex',
+  flexDirection: 'column' as const,
+  minHeight: '100vh',
+  height: '100vh',
+  background: 'var(--color-bg-primary, #fff)',
+};
 
-export const layoutStyles = css`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: var(--background-primary);
-`;
+export const contentStyles = {
+  display: 'flex',
+  flex: 1,
+  minHeight: 0,
+  position: 'relative' as const,
+};
 
-export const contentStyles = css`
-  display: flex;
-  flex: 1;
-  position: relative;
-`;
+export const sidebarStyles = {
+  position: 'sticky' as const,
+  top: 0,
+  height: 'calc(100vh - var(--header-height, 64px))',
+  transition: 'width 0.3s',
+};
 
-export const sidebarStyles = css`
-  position: sticky;
-  top: 0;
-  height: calc(100vh - var(--header-height));
-  transition: width var(--transition-duration) ease;
-`;
+export const mainStyles = {
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column' as const,
+  minHeight: 0,
+  height: '100%',
+  paddingTop: '24px',
+  paddingBottom: '24px',
+  overflowX: 'hidden' as const,
+};
 
-export const mainStyles = css`
-  flex: 1;
-  padding: var(--spacing-lg);
-  overflow-x: hidden;
-
-  @media (max-width: 768px) {
-    padding: var(--spacing-md);
-  }
-`;
-
-export const mobileSidebarHidden = css`
-  @media (max-width: 768px) {
-    display: none;
-  }
-`; 
+export const mobileSidebarHidden = {
+  '@media (max-width: 768px)': {
+    display: 'none',
+  },
+}; 

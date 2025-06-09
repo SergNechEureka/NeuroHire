@@ -1,7 +1,6 @@
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { MainLayout } from '../layouts/MainLayout/exports';
 import { MainPage } from '../components/MainPage';
-import { CandidatesPage } from '../components/CandidatesPage';
 import { ProjectsPage } from '../components/ProjectsPage';
 import { ApplicationsPage } from '../components/ApplicationsPage';
 import { AdministrationPage } from '../components/AdministrationPage';
@@ -45,45 +44,64 @@ const navigationItems = [
 export const AppRoutes = () => {
   return (
     <BrowserRouter>
-      <Switch>
-        <Route exact path="/">
-          <MainLayout navigationItems={navigationItems} showHeader={false}>
-            <MainPage showHeader={false}>
-              <CandidatesPage />
-            </MainPage>
-          </MainLayout>
-        </Route>
-        <Route exact path="/candidates">
-          <MainLayout navigationItems={navigationItems} showHeader={false}>
-            <CandidatesPage />
-          </MainLayout>
-        </Route>
-        <Route exact path="/projects">
-          <MainLayout navigationItems={navigationItems} showHeader={false}>
-            <ProjectsPage />
-          </MainLayout>
-        </Route>
-        <Route exact path="/applications">
-          <MainLayout navigationItems={navigationItems} showHeader={false}>
-            <ApplicationsPage />
-          </MainLayout>
-        </Route>
-        <Route exact path="/administration">
-          <MainLayout navigationItems={navigationItems} showHeader={false}>
-            <AdministrationPage />
-          </MainLayout>
-        </Route>
-        <Route exact path="/users">
-          <MainLayout navigationItems={navigationItems} showHeader={false}>
-            <UsersPage />
-          </MainLayout>
-        </Route>
-        <Route exact path="/database">
-          <MainLayout navigationItems={navigationItems} showHeader={false}>
-            <DatabasePage />
-          </MainLayout>
-        </Route>
-      </Switch>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <MainLayout navigationItems={navigationItems} showHeader={false}>
+              <MainPage>{null}</MainPage>
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/candidates"
+          element={
+            <MainLayout navigationItems={navigationItems} showHeader={false}>
+              <MainPage>{null}</MainPage>
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/projects"
+          element={
+            <MainLayout navigationItems={navigationItems} showHeader={false}>
+              <ProjectsPage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/applications"
+          element={
+            <MainLayout navigationItems={navigationItems} showHeader={false}>
+              <ApplicationsPage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/administration"
+          element={
+            <MainLayout navigationItems={navigationItems} showHeader={false}>
+              <AdministrationPage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <MainLayout navigationItems={navigationItems} showHeader={false}>
+              <UsersPage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/database"
+          element={
+            <MainLayout navigationItems={navigationItems} showHeader={false}>
+              <DatabasePage />
+            </MainLayout>
+          }
+        />
+      </Routes>
     </BrowserRouter>
   );
 };

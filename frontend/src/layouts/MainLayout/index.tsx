@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { isValidElement, cloneElement } from 'react';
 import styled from '@emotion/styled';
 import { Header } from './components/Header';
 import { NavigationMenu } from './components/NavigationMenu';
@@ -14,9 +14,9 @@ import {
   mobileSidebarHidden,
 } from './styles';
 
-const LayoutContainer = styled.div(layoutStyles);
-const ContentContainer = styled.div(contentStyles);
-const MainContent = styled.main(mainStyles);
+const LayoutContainer = styled('div')(layoutStyles);
+const ContentContainer = styled('div')(contentStyles);
+const MainContent = styled('main')(mainStyles);
 const StyledSidebar = styled(Sidebar)`
   ${sidebarStyles}
   ${mobileSidebarHidden}
@@ -39,7 +39,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   } = useLayout({
     defaultMode: defaultMode ?? 'normal',
     onModeChange,
+    navigationItems,
   });
+
+  const childrenWithActiveMenuItem = isValidElement(children)
+    ? cloneElement(children, { activeMenuItem: activeItem })
+    : children;
 
   return (
     <LayoutContainer>
@@ -61,7 +66,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
           />
         </StyledSidebar>
 
-        <MainContent>{children}</MainContent>
+        <MainContent>{childrenWithActiveMenuItem}</MainContent>
       </ContentContainer>
 
       <MobileNavigation

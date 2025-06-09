@@ -1,13 +1,14 @@
 import { type ReactNode } from 'react';
-import { useMainPage } from './hooks/useMainPage';
-import { MainLayout } from '../../layouts/MainLayout/exports';
 import styled from '@emotion/styled';
 import { styles } from './styles';
 import { useTranslation } from 'react-i18next';
+import CandidatesTable from '../CandidatesTable';
+import useCandidates from '../../hooks/useCandidates';
+import type { NavigationItem } from '../../layouts/MainLayout/components/NavigationMenu/types';
 
 interface MainPageProps {
   children: ReactNode;
-  showHeader?: boolean;
+  activeMenuItem?: NavigationItem | null;
 }
 
 const Container = styled.div(styles.container);
@@ -16,22 +17,24 @@ const Welcome = styled.div(styles.welcome);
 const Title = styled.h1(styles.title);
 const Description = styled.p(styles.description);
 
-export const MainPage = ({ children, showHeader }: MainPageProps) => {
+export const MainPage = ({ children, activeMenuItem }: MainPageProps) => {
   const { t } = useTranslation();
-  const { navigationItems } = useMainPage();
+  const tableProps = useCandidates();
 
   return (
-    <MainLayout navigationItems={navigationItems} title={t('header:title')} showHeader={showHeader}>
-      <Container>
-        <Content>
+    <Container>
+      <Content>
+        {activeMenuItem?.id === 'candidates' ? (
+          <CandidatesTable {...tableProps} />
+        ) : (
           <Welcome>
             <Title>{t('mainPage.title')}</Title>
             <Description>{t('mainPage.welcome')}</Description>
             <Description>{t('mainPage.description')}</Description>
+            {children}
           </Welcome>
-          {children}
-        </Content>
-      </Container>
-    </MainLayout>
+        )}
+      </Content>
+    </Container>
   );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import LoginForm from './components/auth/LoginForm';
 import ApplicationBar from './ApplicationBar';
 import { useAuth, isTokenExpired } from './contexts/AuthContext';
-import { MainPage } from './components/MainPage';
+import { AppRoutes } from './routes/appRoutes';
 
 const App: React.FC = () => {
   const { token, handleLogin, handleLogout } = useAuth();
@@ -14,7 +14,7 @@ const App: React.FC = () => {
   return (
     <div>
       <ApplicationBar onLogout={handleLogout} />
-      <MainPage showHeader={false}>{null}</MainPage>
+      <AppRoutes />
     </div>
   );
 };
