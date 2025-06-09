@@ -1,8 +1,6 @@
-import { css } from '@emotion/react';
-
 export const container = {
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'column' as const,
   height: '100%',
   flex: 1,
   minHeight: 0,
@@ -11,13 +9,19 @@ export const container = {
 export const content = {
   flex: 1,
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'column' as const,
   minHeight: 0,
 };
 
 export const welcome = {
   margin: 'auto',
-  textAlign: 'center',
+  textAlign: 'center' as const,
+  display: 'flex',
+  flexDirection: 'column' as const,
+  alignItems: 'center',
+  justifyContent: 'center',
+  flex: 1,
+  gap: '16px',
 };
 
 export const title = {
@@ -34,7 +38,7 @@ export const description = {
 export const styles = {
   container: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column' as const,
     flex: 1,
     minHeight: 0,
     width: '100%',
@@ -42,7 +46,7 @@ export const styles = {
   },
   content: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column' as const,
     flex: 1,
     minHeight: 0,
     width: '100%',
@@ -50,12 +54,12 @@ export const styles = {
   },
   welcome: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column' as const,
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
     gap: '16px',
-    textAlign: 'center',
+    textAlign: 'center' as const,
   },
   title: {
     fontSize: '2rem',

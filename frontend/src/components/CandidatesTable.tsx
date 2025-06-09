@@ -45,6 +45,7 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { visuallyHidden } from '@mui/utils';
+import { useNavigate } from 'react-router-dom';
 
 interface CandidatesTableProps {
   candidates: Candidate[];
@@ -409,6 +410,8 @@ export default function CandidatesTable({
     if (isTablet) return 'calc(100vh - 180px)';
     return 'calc(100vh - 160px)';
   };
+
+  const navigate = useNavigate();
 
   if (loading) {
     return (

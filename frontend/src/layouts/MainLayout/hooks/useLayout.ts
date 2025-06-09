@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import type { NavigationItem } from '../components/NavigationMenu/types';
 import type { SidebarMode } from '../components/Sidebar/types';
 
@@ -48,6 +48,7 @@ export const useLayout = ({ defaultMode = 'normal', onModeChange, navigationItem
   const [activeItem, setActiveItem] = useState<NavigationItem | null>(null);
   const [expandedItemId, setExpandedItemId] = useState<string | null>(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleModeChange = useCallback((newMode: SidebarMode) => {
     setMode(newMode);
@@ -68,11 +69,13 @@ export const useLayout = ({ defaultMode = 'normal', onModeChange, navigationItem
       handleExpandItem(item.id);
       return;
     }
-
-    // Если это подпункт, устанавливаем его как активный
+    // Если у пункта есть path, делаем переход
+    if (item.path) {
+      navigate(item.path);
+    }
     setActiveItem(item);
     setIsMobileMenuOpen(false);
-  }, [handleExpandItem]);
+  }, [handleExpandItem, navigate]);
 
   // Инициализация после логина
   useEffect(() => {

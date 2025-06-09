@@ -64,6 +64,14 @@ export const AppRoutes = () => {
           }
         />
         <Route
+          path="/candidates/:id"
+          element={
+            <MainLayout navigationItems={navigationItems} showHeader={false}>
+              <MainPage>{null}</MainPage>
+            </MainLayout>
+          }
+        />
+        <Route
           path="/projects"
           element={
             <MainLayout navigationItems={navigationItems} showHeader={false}>

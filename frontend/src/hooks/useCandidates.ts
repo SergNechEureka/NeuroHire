@@ -2,6 +2,7 @@ import * as React from "react";
 import type { Candidate } from "../types/models";
 import { fetchCandidates, deleteCandidates, deleteCandidate } from "../api/candidates";
 import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 import type { Order } from "../types/common";
 
@@ -14,6 +15,7 @@ export default function useCandidates() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
   const { token } = useAuth();
+  const navigate = useNavigate();
 
   const fetchData = React.useCallback(async () => {
     try {
@@ -101,8 +103,8 @@ export default function useCandidates() {
   );
 
   const handleRowClick = React.useCallback((candidate: Candidate) => {
-    setSelectedCandidate(candidate);
-  }, []);
+    navigate(`/candidates/${candidate.candidate_id}`);
+  }, [navigate]);
 
   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
