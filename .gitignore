@@ -24,3 +24,6 @@ frontend_old/
 
 node_modules/
 chromadb_data/chroma.sqlite3
+typecheck.log
+temp.docx
+temp.pdf

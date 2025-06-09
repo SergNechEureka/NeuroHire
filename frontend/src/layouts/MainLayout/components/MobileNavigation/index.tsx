@@ -34,10 +34,11 @@ export const MobileNavigation = ({
       }}
       SlideProps={{
         onTouchStart: (e) => {
-          // Add touch start position tracking for swipe gestures
+          if (!e.touches?.[0]) return;
           const touch = e.touches[0];
           const startX = touch.clientX;
           const handleTouchMove = (moveEvent: TouchEvent) => {
+            if (!moveEvent.touches?.[0]) return;
             const moveX = moveEvent.touches[0].clientX;
             const diff = startX - moveX;
             if (diff > 100) {
