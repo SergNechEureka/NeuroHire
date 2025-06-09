@@ -2,6 +2,8 @@ import { Menu as MenuIcon, ViewSidebar as ViewSidebarIcon } from '@mui/icons-mat
 import { useTranslation } from 'react-i18next';
 import { StyledAppBar, MenuButton, Title, ModeButton } from './styles';
 import type { HeaderProps } from './types';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export const Header = ({
   title,
@@ -11,12 +13,16 @@ export const Header = ({
   className,
 }: HeaderProps) => {
   const { t } = useTranslation('header');
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <StyledAppBar position="fixed" className={className}>
-      <MenuButton color="inherit" aria-label={t('menu')} onClick={onMenuClick} edge="start">
-        <MenuIcon />
-      </MenuButton>
+      {isMobile && (
+        <MenuButton color="inherit" aria-label={t('menu')} onClick={onMenuClick} edge="start">
+          <MenuIcon />
+        </MenuButton>
+      )}
       <Title variant="h6" noWrap>
         {title || t('title')}
       </Title>

@@ -1,5 +1,0 @@
-Translate the following text into American English. Return the result strictly as a JSON object in the format:
-{ "translated_text": "<your translation>" }
-
-Text:
-{cv_text}
