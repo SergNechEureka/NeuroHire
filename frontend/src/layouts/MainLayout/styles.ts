@@ -1,22 +1,29 @@
 export const layoutStyles = {
   display: 'flex',
   flexDirection: 'column' as const,
-  minHeight: '100vh',
-  height: '100vh',
+  minHeight: 0,
+  height: '100%',
+  width: '100%',
   background: 'var(--color-bg-primary, #fff)',
 };
 
 export const contentStyles = {
   display: 'flex',
-  flex: 1,
+  flexDirection: 'row' as const,
+  height: '100%',
   minHeight: 0,
-  position: 'relative' as const,
+  width: '100%',
+  overflow: 'hidden',
 };
 
 export const sidebarStyles = {
+  height: 'calc(100vh - 80px)',
+  width: '15%',
+  minHeight: 0,
+  flexShrink: 1,
   position: 'sticky' as const,
   top: 0,
-  height: 'calc(100vh - var(--header-height, 64px))',
+  padding: 0,
   transition: 'width 0.3s',
 };
 
@@ -25,10 +32,10 @@ export const mainStyles = {
   display: 'flex',
   flexDirection: 'column' as const,
   minHeight: 0,
-  height: '100%',
-  paddingTop: '24px',
-  paddingBottom: '24px',
-  overflowX: 'hidden' as const,
+  width: '85%',
+  height: 'calc(100vh - 80px)',
+  overflow: 'hidden',
+  padding: 0,
 };
 
 export const mobileSidebarHidden = {

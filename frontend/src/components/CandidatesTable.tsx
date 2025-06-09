@@ -475,8 +475,10 @@ export default function CandidatesTable({
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        height: '93%',
-        width: '98%',
+        height: '100%',
+        width: '100%',
+        flex: 1,
+        minHeight: 0,
       }}
     >
       <Snackbar open={!!error} autoHideDuration={6000}>
@@ -490,6 +492,8 @@ export default function CandidatesTable({
           flexDirection: 'column',
           height: '100%',
           width: '100%',
+          flex: 1,
+          minHeight: 0,
         }}
       >
         <EnhancedTableToolbar
@@ -503,18 +507,14 @@ export default function CandidatesTable({
             flexDirection: 'column',
             flex: 1,
             minHeight: 0,
-            position: 'relative',
+            height: '100%',
           }}
         >
           <TableContainer
             sx={{
               flex: 1,
               minHeight: 0,
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
+              height: '100%',
             }}
           >
             <Table

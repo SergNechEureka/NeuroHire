@@ -2,7 +2,6 @@ import { styled } from '@mui/material/styles';
 import { Paper, IconButton } from '@mui/material';
 
 export const StyledPaper = styled(Paper)(({ theme }) => ({
-  height: '100%',
   display: 'flex',
   flexDirection: 'column',
   borderRight: `1px solid ${theme.palette.divider}`,
@@ -14,7 +13,7 @@ export const StyledPaper = styled(Paper)(({ theme }) => ({
 
 export const ToggleButton = styled(IconButton)(({ theme }) => ({
   position: 'absolute',
-  right: -12,
+  right: -19,
   top: theme.spacing(2),
   backgroundColor: theme.palette.background.paper,
   border: `1px solid ${theme.palette.divider}`,
@@ -24,8 +23,13 @@ export const ToggleButton = styled(IconButton)(({ theme }) => ({
   zIndex: 1,
 }));
 
-export const Content = styled('div')(({ theme }) => ({
+export const Content = styled('div')(() => ({
   flexGrow: 1,
-  overflow: 'auto',
-  paddingTop: theme.spacing(2),
+  flexShrink: 1,
+  flex: 1,
+  minHeight: 0,
+  height: '100%',
+  width: '98%',
+  display: 'flex',
+  flexDirection: 'column',
 })); 

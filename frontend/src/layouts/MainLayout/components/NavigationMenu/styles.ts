@@ -6,6 +6,10 @@ export const StyledList = styled(List)(({ theme }) => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
+  flex: 1,
+  minHeight: 0,
+  height: '100%',
+  overflow: 'auto',
   '& .MuiListItem-root': {
     borderRadius: theme.shape.borderRadius,
     marginBottom: theme.spacing(0.5),
@@ -48,7 +52,7 @@ export const StyledListItemText = styled(ListItemText)({
 
 export const StyledCollapse = styled(Collapse)(({ theme }) => ({
   paddingLeft: theme.spacing(4),
-  width: '100%',
+  width: '86%',
   '& .MuiList-root': {
     width: '100%',
     display: 'block',
