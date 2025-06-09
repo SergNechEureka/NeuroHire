@@ -39,7 +39,7 @@ export const MobileNavigation = ({
         </Typography>
 
         <NavigationMenu
-          items={navigationItems}
+          menuItems={navigationItems}
           mode="normal"
           activeItemId={activeItemId}
           onItemClick={handleItemClick}

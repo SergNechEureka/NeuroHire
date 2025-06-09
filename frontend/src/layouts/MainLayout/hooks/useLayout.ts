@@ -38,7 +38,8 @@ function findMainMenuItem(menuItems: NavigationItem[]): NavigationItem | null {
 
 function findFirstChildItem(menuItem: NavigationItem): NavigationItem | null {
   if (!menuItem.children || menuItem.children.length === 0) return null;
-  return menuItem.children[0] || null;
+  const firstChild = menuItem.children[0];
+  return firstChild ?? null;
 }
 
 export const useLayout = ({ defaultMode = 'normal', onModeChange, navigationItems = [] }: UseLayoutProps = {}): UseLayoutReturn => {
