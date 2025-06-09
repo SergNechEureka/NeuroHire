@@ -33,6 +33,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     mode,
     isMobileMenuOpen,
     activeItem,
+    expandedItemId,
     handleModeChange,
     handleMobileMenuToggle,
     handleItemClick,
@@ -59,10 +60,11 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       <ContentContainer>
         <StyledSidebar mode={mode} onModeChange={handleModeChange}>
           <NavigationMenu
-            items={navigationItems}
+            menuItems={navigationItems}
             mode={mode}
             activeItemId={activeItem?.id ?? undefined}
             onItemClick={handleItemClick}
+            defaultExpandedItemId={expandedItemId ?? undefined}
           />
         </StyledSidebar>
 

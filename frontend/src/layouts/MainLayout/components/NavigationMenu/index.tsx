@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import {
   StyledList,
@@ -11,21 +11,43 @@ import {
 import type { NavigationMenuProps, NavigationItem } from './types';
 
 export const NavigationMenu = ({
-  items,
+  menuItems = [],
   mode,
   activeItemId,
   onItemClick,
   className,
+  defaultExpandedItemId,
 }: NavigationMenuProps) => {
-  console.log('NavigationMenu items:', items);
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
+
+  // Инициализация развернутого состояния
+  useEffect(() => {
+    if (defaultExpandedItemId) {
+      setExpandedItems((prev) => ({
+        ...prev,
+        [defaultExpandedItemId]: true,
+      }));
+    } else if (menuItems.length > 0) {
+      const mainItem = menuItems.find((item) => item.isMainItem);
+      if (mainItem) {
+        setExpandedItems((prev) => ({
+          ...prev,
+          [mainItem.id]: true,
+        }));
+      }
+    }
+  }, [defaultExpandedItemId, menuItems]);
 
   const handleItemClick = (item: NavigationItem) => {
     if (item.children) {
-      setExpandedItems((prev) => ({
-        ...prev,
-        [item.id]: !prev[item.id],
-      }));
+      // Если это главный пункт меню, только разворачиваем/сворачиваем
+      if (item.isMainItem) {
+        setExpandedItems((prev) => ({
+          ...prev,
+          [item.id]: !prev[item.id],
+        }));
+        return;
+      }
     }
     onItemClick(item);
   };
@@ -43,12 +65,21 @@ export const NavigationMenu = ({
           sx={{
             justifyContent: mode === 'compact' ? 'center' : 'flex-start',
             minHeight: 48,
+            opacity: item.isMainItem ? 1 : 0.8,
+            '&:hover': {
+              opacity: 1,
+            },
           }}
         >
           <StyledListItemIcon>{item.icon}</StyledListItemIcon>
           {mode === 'normal' && (
             <>
-              <StyledListItemText primary={item.label} />
+              <StyledListItemText
+                primary={item.label}
+                primaryTypographyProps={{
+                  fontWeight: item.isMainItem ? 'bold' : 'normal',
+                }}
+              />
               {hasChildren && (isExpanded ? <ExpandLess /> : <ExpandMore />)}
             </>
           )}
@@ -64,5 +95,7 @@ export const NavigationMenu = ({
     );
   };
 
-  return <StyledList className={className}>{items.map((item) => renderMenuItem(item))}</StyledList>;
+  return (
+    <StyledList className={className}>{menuItems.map((item) => renderMenuItem(item))}</StyledList>
+  );
 };

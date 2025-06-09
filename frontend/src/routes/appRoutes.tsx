@@ -19,6 +19,7 @@ const navigationItems = [
     id: 'main',
     label: 'Main',
     icon: <HomeIcon />,
+    isMainItem: true,
     children: [
       { id: 'candidates', path: '/candidates', label: 'Candidates', icon: <PeopleIcon /> },
       { id: 'projects', path: '/projects', label: 'Projects', icon: <WorkIcon /> },
@@ -34,6 +35,7 @@ const navigationItems = [
     id: 'administration',
     label: 'Administration',
     icon: <AdminPanelSettingsIcon />,
+    isMainItem: true,
     children: [
       { id: 'users', path: '/users', label: 'Users', icon: <PersonIcon /> },
       { id: 'database', path: '/database', label: 'Database', icon: <StorageIcon /> },

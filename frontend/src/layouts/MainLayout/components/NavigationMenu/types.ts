@@ -6,12 +6,19 @@ export interface NavigationItem {
   icon: ReactNode;
   path?: string;
   children?: NavigationItem[];
+  isMainItem?: boolean;
 }
 
 export interface NavigationMenuProps {
-  items: NavigationItem[];
+  menuItems: NavigationItem[];
   mode: 'normal' | 'compact';
   activeItemId?: string;
   onItemClick: (item: NavigationItem) => void;
   className?: string;
+  defaultExpandedItemId?: string;
+}
+
+export interface NavigationMenuState {
+  expandedItems: Record<string, boolean>;
+  activeItemId: string | null;
 } 
