@@ -4,7 +4,7 @@ export interface NavigationItem {
   id: string;
   label: string;
   icon: ReactNode;
-  path: string;
+  path?: string;
   children?: NavigationItem[];
 }
 

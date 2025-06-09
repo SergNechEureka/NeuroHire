@@ -3,7 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { StyledAppBar, MenuButton, Title, ModeButton } from './styles';
 import type { HeaderProps } from './types';
 
-export const Header = ({ onMenuClick, onModeChange, currentMode, className }: HeaderProps) => {
+export const Header = ({
+  title,
+  onMenuClick,
+  onModeChange,
+  currentMode,
+  className,
+}: HeaderProps) => {
   const { t } = useTranslation('header');
 
   return (
@@ -12,11 +18,13 @@ export const Header = ({ onMenuClick, onModeChange, currentMode, className }: He
         <MenuIcon />
       </MenuButton>
       <Title variant="h6" noWrap>
-        {t('title')}
+        {title || t('title')}
       </Title>
       <ModeButton
         color="inherit"
-        onClick={() => onModeChange(currentMode === 'normal' ? 'compact' : 'normal')}
+        onClick={() =>
+          onModeChange && onModeChange(currentMode === 'normal' ? 'compact' : 'normal')
+        }
         aria-label={t('toggleMode')}
       >
         <ViewSidebarIcon />

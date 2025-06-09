@@ -17,6 +17,7 @@ export const NavigationMenu = ({
   onItemClick,
   className,
 }: NavigationMenuProps) => {
+  console.log('NavigationMenu items:', items);
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
 
   const handleItemClick = (item: NavigationItem) => {

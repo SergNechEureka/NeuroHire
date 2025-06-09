@@ -1,3 +1,4 @@
+export { MainLayout } from './index.tsx';
 export { Header } from './components/Header';
 export { NavigationMenu } from './components/NavigationMenu';
 export { Sidebar } from './components/Sidebar';

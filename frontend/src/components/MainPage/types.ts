@@ -6,9 +6,10 @@ export interface MainPageProps {
 
 export interface NavigationItem {
   id: string;
-  path: string;
+  path?: string;
   label: string;
   icon: ReactNode;
+  children?: NavigationItem[];
 }
 
 export type NavigationItems = NavigationItem[]; 

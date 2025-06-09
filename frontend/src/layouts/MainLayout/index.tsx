@@ -1,36 +1,76 @@
-import React, { type ReactNode, useState } from 'react';
-import { type NavigationItems } from '../../types/navigation';
+import React from 'react';
+import styled from '@emotion/styled';
+import { Header } from './components/Header';
+import { NavigationMenu } from './components/NavigationMenu';
 import { Sidebar } from './components/Sidebar';
-import { css } from '@emotion/react';
-import { type SidebarMode } from './components/Sidebar/types';
+import { MobileNavigation } from './components/MobileNavigation';
+import { useLayout } from './hooks/useLayout';
+import type { MainLayoutProps } from './types';
+import {
+  layoutStyles,
+  contentStyles,
+  sidebarStyles,
+  mainStyles,
+  mobileSidebarHidden,
+} from './styles';
 
-interface MainLayoutProps {
-  children: ReactNode;
-  navigationItems: NavigationItems;
-}
+const LayoutContainer = styled.div(layoutStyles);
+const ContentContainer = styled.div(contentStyles);
+const MainContent = styled.main(mainStyles);
+const StyledSidebar = styled(Sidebar)`
+  ${sidebarStyles}
+  ${mobileSidebarHidden}
+`;
 
-const styles = {
-  container: css`
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-  `,
-  content: css`
-    flex: 1;
-    overflow: auto;
-  `,
-};
-
-export const MainLayout: React.FC<MainLayoutProps> = ({ children, navigationItems }) => {
-  const [sidebarMode, setSidebarMode] = useState<SidebarMode>('normal');
+export const MainLayout: React.FC<MainLayoutProps> = ({
+  children,
+  navigationItems,
+  defaultMode,
+  onModeChange,
+  showHeader,
+}) => {
+  const {
+    mode,
+    isMobileMenuOpen,
+    activeItem,
+    handleModeChange,
+    handleMobileMenuToggle,
+    handleItemClick,
+  } = useLayout({
+    defaultMode: defaultMode ?? 'normal',
+    onModeChange,
+  });
 
   return (
-    <div css={styles.container}>
-      <Sidebar mode={sidebarMode} onModeChange={setSidebarMode}>
-        {/* Add navigation menu here */}
-      </Sidebar>
-      <main css={styles.content}>{children}</main>
-    </div>
+    <LayoutContainer>
+      {showHeader && (
+        <Header
+          onMenuClick={handleMobileMenuToggle}
+          onModeChange={handleModeChange}
+          currentMode={mode}
+        />
+      )}
+
+      <ContentContainer>
+        <StyledSidebar mode={mode} onModeChange={handleModeChange}>
+          <NavigationMenu
+            items={navigationItems}
+            mode={mode}
+            activeItemId={activeItem?.id ?? undefined}
+            onItemClick={handleItemClick}
+          />
+        </StyledSidebar>
+
+        <MainContent>{children}</MainContent>
+      </ContentContainer>
+
+      <MobileNavigation
+        isOpen={isMobileMenuOpen}
+        onClose={handleMobileMenuToggle}
+        navigationItems={navigationItems}
+        activeItemId={activeItem?.id}
+        onItemClick={handleItemClick}
+      />
+    </LayoutContainer>
   );
 };

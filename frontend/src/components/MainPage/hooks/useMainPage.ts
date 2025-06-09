@@ -18,44 +18,46 @@ export const useMainPage = () => {
     {
       id: 'main',
       label: t('navigation.main'),
-      path: '/',
       icon: React.createElement(DashboardIcon),
-    },
-    {
-      id: 'candidates',
-      label: t('navigation.candidates'),
-      path: '/candidates',
-      icon: React.createElement(PeopleIcon),
-    },
-    {
-      id: 'projects',
-      label: t('navigation.projects'),
-      path: '/projects',
-      icon: React.createElement(AssignmentIcon),
-    },
-    {
-      id: 'applications',
-      label: t('navigation.applications'),
-      path: '/applications',
-      icon: React.createElement(DescriptionIcon),
+      children: [
+        {
+          id: 'candidates',
+          label: t('navigation.candidates'),
+          path: '/candidates',
+          icon: React.createElement(PeopleIcon),
+        },
+        {
+          id: 'projects',
+          label: t('navigation.projects'),
+          path: '/projects',
+          icon: React.createElement(AssignmentIcon),
+        },
+        {
+          id: 'applications',
+          label: t('navigation.applications'),
+          path: '/applications',
+          icon: React.createElement(DescriptionIcon),
+        },
+      ],
     },
     {
       id: 'administration',
       label: t('navigation.administration'),
-      path: '/administration',
       icon: React.createElement(SettingsIcon),
-    },
-    {
-      id: 'users',
-      label: t('navigation.users'),
-      path: '/users',
-      icon: React.createElement(PersonIcon),
-    },
-    {
-      id: 'database',
-      label: t('navigation.database'),
-      path: '/database',
-      icon: React.createElement(StorageIcon),
+      children: [
+        {
+          id: 'users',
+          label: t('navigation.users'),
+          path: '/users',
+          icon: React.createElement(PersonIcon),
+        },
+        {
+          id: 'database',
+          label: t('navigation.database'),
+          path: '/database',
+          icon: React.createElement(StorageIcon),
+        },
+      ],
     },
   ];
 

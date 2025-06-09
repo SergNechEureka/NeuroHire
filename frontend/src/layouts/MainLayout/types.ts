@@ -9,6 +9,7 @@ export type MainLayoutProps = {
   onModeChange?: (mode: SidebarMode) => void;
   title?: string;
   className?: string;
+  showHeader?: boolean;
 };
 
 export interface LayoutState {
