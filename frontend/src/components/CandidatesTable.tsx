@@ -38,6 +38,10 @@ import {
   Select,
   MenuItem,
   FormControl,
+  Alert,
+  Snackbar,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { visuallyHidden } from '@mui/utils';
@@ -53,6 +57,7 @@ interface CandidatesTableProps {
   handleDeleteOne: (id: string) => void;
   handleRowClick: (candidate: Candidate) => void;
   loading: boolean;
+  error: string | null;
   fetchData: () => void;
   getComparator: (order: Order, orderBy: keyof Candidate) => (a: Candidate, b: Candidate) => number;
   handleRequestSort: (event: React.MouseEvent<unknown>, property: keyof Candidate) => void;
@@ -319,6 +324,7 @@ export default function CandidatesTable({
   handleRowClick,
   handleDeleteOne,
   loading,
+  error,
   fetchData,
   getComparator,
   selectedIds,
@@ -335,6 +341,10 @@ export default function CandidatesTable({
     language: '',
     country: '',
   });
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const uniqueValues = React.useMemo(() => {
     const languages = new Set<string>();
@@ -394,7 +404,56 @@ export default function CandidatesTable({
     [filteredCandidates, order, orderBy, page, rowsPerPage, getComparator],
   );
 
-  if (loading) return <div>Loading...</div>;
+  const getTableHeight = () => {
+    if (isMobile) return 'calc(100vh - 200px)';
+    if (isTablet) return 'calc(100vh - 180px)';
+    return 'calc(100vh - 160px)';
+  };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography variant="h6" color="text.secondary">
+          {t('loading')}
+        </Typography>
+      </Box>
+    );
+  }
+
+  if (candidates.length === 0) {
+    return (
+      <Box
+        sx={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 2,
+        }}
+      >
+        <Typography variant="h6" color="text.secondary">
+          {t('noCandidates')}
+        </Typography>
+        <Button
+          variant="contained"
+          startIcon={<CloudUploadIcon />}
+          onClick={() => setUploadOpen(true)}
+        >
+          {t('uploadCandidates')}
+        </Button>
+      </Box>
+    );
+  }
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - candidates.length) : 0;
 
@@ -414,22 +473,23 @@ export default function CandidatesTable({
   return (
     <Box
       sx={{
-        width: '100%',
-        height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        flex: 1,
-        minHeight: 0,
+        height: '93%',
+        width: '98%',
       }}
     >
+      <Snackbar open={!!error} autoHideDuration={6000}>
+        <Alert severity="error" sx={{ width: '100%' }}>
+          {error}
+        </Alert>
+      </Snackbar>
       <Paper
         sx={{
-          width: '100%',
-          mb: 2,
-          flex: 1,
-          minHeight: 0,
           display: 'flex',
           flexDirection: 'column',
+          height: '100%',
+          width: '100%',
         }}
       >
         <EnhancedTableToolbar
@@ -437,85 +497,105 @@ export default function CandidatesTable({
           onUploadClick={() => setUploadOpen(true)}
           onDeleteClick={() => handleDelete(selectedIds)}
         />
-        <TableContainer sx={{ flex: 1, minHeight: 0 }}>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+            minHeight: 0,
+            position: 'relative',
+          }}
+        >
+          <TableContainer
+            sx={{
+              flex: 1,
+              minHeight: 0,
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}
           >
-            <EnhancedTableHead
-              numSelected={selectedIds.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAll={handleSelectAll}
-              onRequestSort={handleRequestSort}
-              rowCount={candidates.length}
-              onSearch={handleSearch}
-              uniqueValues={uniqueValues}
-              filters={filters}
-            />
-            <TableBody>
-              {visibleRows.map((candidate, index) => {
-                const labelId = `enhanced-table-checkbox-${index}`;
-
-                return (
+            <Table
+              sx={{ minWidth: 750 }}
+              aria-labelledby="tableTitle"
+              size={dense ? 'small' : 'medium'}
+              stickyHeader
+            >
+              <EnhancedTableHead
+                numSelected={selectedIds.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAll={handleSelectAll}
+                onRequestSort={handleRequestSort}
+                rowCount={candidates.length}
+                onSearch={handleSearch}
+                uniqueValues={uniqueValues}
+                filters={filters}
+              />
+              <TableBody>
+                {visibleRows.map((candidate, index) => {
+                  const labelId = `enhanced-table-checkbox-${index}`;
+                  return (
+                    <TableRow
+                      key={candidate.candidate_id}
+                      hover
+                      aria-checked={selectedIds.includes(candidate.candidate_id)}
+                      selected={selectedIds.includes(candidate.candidate_id)}
+                      onClick={() => handleRowClick(candidate)}
+                      role="checkbox"
+                      sx={{ cursor: 'pointer' }}
+                      tabIndex={-1}
+                    >
+                      <TableCell padding="checkbox" onClick={(e) => e.stopPropagation()}>
+                        <Checkbox
+                          color="primary"
+                          checked={selectedIds.includes(candidate.candidate_id)}
+                          onChange={(e) => {
+                            e.stopPropagation();
+                            handleSelect(candidate.candidate_id);
+                          }}
+                          inputProps={{
+                            'aria-labelledby': labelId,
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell component="th" id={labelId} scope="row" padding="none">
+                        {candidate.candidate_name}
+                      </TableCell>
+                      <TableCell padding="none">{candidate.email}</TableCell>
+                      <TableCell padding="none">{candidate.country}</TableCell>
+                      <TableCell padding="none">{candidate.birth_date}</TableCell>
+                      <TableCell padding="none">{candidate.native_language}</TableCell>
+                      <TableCell>
+                        <IconButton
+                          aria-label={t('delete')}
+                          color="error"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteOne(candidate.candidate_id);
+                          }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+                {emptyRows > 0 && (
                   <TableRow
-                    key={candidate.candidate_id}
-                    hover
-                    aria-checked={selectedIds.includes(candidate.candidate_id)}
-                    selected={selectedIds.includes(candidate.candidate_id)}
-                    onClick={() => handleRowClick(candidate)}
-                    role="checkbox"
-                    sx={{ cursor: 'pointer' }}
-                    tabIndex={-1}
+                    style={{
+                      height: (dense ? 33 : 53) * emptyRows,
+                    }}
                   >
-                    <TableCell padding="checkbox" onClick={(e) => e.stopPropagation()}>
-                      <Checkbox
-                        color="primary"
-                        checked={selectedIds.includes(candidate.candidate_id)}
-                        onChange={(e) => {
-                          e.stopPropagation();
-                          handleSelect(candidate.candidate_id);
-                        }}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell component="th" id={labelId} scope="row" padding="none">
-                      {candidate.candidate_name}
-                    </TableCell>
-                    <TableCell padding="none">{candidate.email}</TableCell>
-                    <TableCell padding="none">{candidate.country}</TableCell>
-                    <TableCell padding="none">{candidate.birth_date}</TableCell>
-                    <TableCell padding="none">{candidate.native_language}</TableCell>
-                    <TableCell>
-                      <IconButton
-                        aria-label={t('delete')}
-                        color="error"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteOne(candidate.candidate_id);
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
+                    <TableCell colSpan={6} />
                   </TableRow>
-                );
-              })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
@@ -524,11 +604,17 @@ export default function CandidatesTable({
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          sx={{
+            borderTop: 1,
+            borderColor: 'divider',
+            backgroundColor: 'background.paper',
+          }}
         />
       </Paper>
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label={t('densePadding')}
+        sx={{ mt: 1 }}
       />
       <UploadDialog
         open={uploadOpen}

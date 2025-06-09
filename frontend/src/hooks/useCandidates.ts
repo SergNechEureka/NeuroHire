@@ -12,14 +12,21 @@ export default function useCandidates() {
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
   const [selectedCandidate, setSelectedCandidate] = React.useState<Candidate | null>(null);
   const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
   const { token } = useAuth();
 
-  const fetchData = React.useCallback(() => {
+  const fetchData = React.useCallback(async () => {
+    try {
       setLoading(true);
-      fetchCandidates().then(setCandidates).finally(() => setLoading(false)); 
-    },
-    []
-  );
+      setError(null);
+      const data = await fetchCandidates();
+      setCandidates(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch candidates');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   function getComparator<Key extends keyof Candidate>(
     order: Order,
@@ -66,25 +73,34 @@ export default function useCandidates() {
 
   const handleDelete = React.useCallback(
     async (ids: string[]) => {
-      await deleteCandidates(ids);
-      setCandidates((prev) => prev.filter((c) => !ids.includes(c.candidate_id)));
-      setSelectedIds((prev) => prev.filter((id) => !ids.includes(id)));
-      fetchData();
+      try {
+        setError(null);
+        await deleteCandidates(ids);
+        setCandidates((prev) => prev.filter((c) => !ids.includes(c.candidate_id)));
+        setSelectedIds((prev) => prev.filter((id) => !ids.includes(id)));
+        await fetchData();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to delete candidates');
+      }
     },
     [fetchData]
   );
 
   const handleDeleteOne = React.useCallback( 
     async (id: string) => {
-      await deleteCandidate(id);
-      setSelectedIds(prev => prev.filter(sid => sid !== id));
-      fetchData();
+      try {
+        setError(null);
+        await deleteCandidate(id);
+        setSelectedIds(prev => prev.filter(sid => sid !== id));
+        await fetchData();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to delete candidate');
+      }
     },
     [fetchData]
   );
 
   const handleRowClick = React.useCallback((candidate: Candidate) => {
-    console.log("This row was clicked:", candidate.candidate_id);
     setSelectedCandidate(candidate);
   }, []);
 
@@ -107,6 +123,7 @@ export default function useCandidates() {
 
   return {
     candidates,
+    error,
     fetchData,
     getComparator,
     handleDelete,

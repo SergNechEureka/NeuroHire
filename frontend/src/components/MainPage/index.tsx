@@ -2,6 +2,7 @@ import { type ReactNode } from 'react';
 import styled from '@emotion/styled';
 import { styles } from './styles';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import CandidatesTable from '../CandidatesTable';
 import useCandidates from '../../hooks/useCandidates';
 import type { NavigationItem } from '../../layouts/MainLayout/components/NavigationMenu/types';
@@ -19,12 +20,16 @@ const Description = styled.p(styles.description);
 
 export const MainPage = ({ children, activeMenuItem }: MainPageProps) => {
   const { t } = useTranslation();
+  const location = useLocation();
   const tableProps = useCandidates();
+
+  const shouldShowCandidatesTable =
+    activeMenuItem?.id === 'candidates' || location.pathname === '/candidates';
 
   return (
     <Container>
       <Content>
-        {activeMenuItem?.id === 'candidates' ? (
+        {shouldShowCandidatesTable ? (
           <CandidatesTable {...tableProps} />
         ) : (
           <Welcome>
