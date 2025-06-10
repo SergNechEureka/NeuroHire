@@ -1,4 +1,4 @@
-import type { Candidate } from "api./types/models";
+import type { Candidate } from "../types/models";
 
 export type Order = 'asc' | 'desc';
 

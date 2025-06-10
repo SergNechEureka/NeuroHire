@@ -21,7 +21,7 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { useUploadDialog } from 'api./hooks/upload/useUploadDialog';
+import { useUploadDialog } from '../hooks/upload/useUploadDialog';
 
 type UploadDialogProps = {
   open: boolean;

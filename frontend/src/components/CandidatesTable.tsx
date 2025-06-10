@@ -1,12 +1,12 @@
 import * as React from 'react';
-import type { Candidate } from 'api./types/models';
+import type { Candidate } from '../types/models';
 
 import type {
   EnhancedTableToolbarProps,
   HeadCell,
   EnhancedTableProps,
   Order,
-} from 'api./types/common';
+} from '../types/common';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';

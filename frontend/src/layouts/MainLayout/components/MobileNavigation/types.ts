@@ -1,4 +1,4 @@
-import type { NavigationItem } from 'api./NavigationMenu/types';
+import type { NavigationItem } from '../NavigationMenu/types';
 
 export interface MobileNavigationProps {
   isOpen: boolean;

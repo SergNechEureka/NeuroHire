@@ -21,7 +21,7 @@ import CandidateNavigation from './CandidateNavigation';
 import CandidateDetails from './CandidateDetails';
 import CandidateExperienceTable from './CandidateExperienceTable';
 import CandidateSkillsTable from './CandidateSkillsTable';
-import type { Candidate } from 'api./api./types/models';
+import type { Candidate } from '../../types/models';
 
 interface CandidateDetailsPageProps {
   onBack: () => void;

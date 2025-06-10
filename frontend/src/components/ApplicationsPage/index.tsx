@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { BasePage } from 'api./BasePage';
+import { BasePage } from '../BasePage';
 
 export const ApplicationsPage = () => {
   const { t } = useTranslation();

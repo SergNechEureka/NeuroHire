@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, ListItem, ListItemText, Divider, Typography } from '@mui/material';
 
-import type { CV } from 'api./api./types/models';
+import type { CV } from '../../types/models';
 
 interface CVsProps {
   onBack: () => void;

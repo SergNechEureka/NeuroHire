@@ -1,10 +1,10 @@
 import { Close as CloseIcon } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
-import { NavigationMenu } from 'api./NavigationMenu';
+import { NavigationMenu } from '../NavigationMenu';
 import { StyledDrawer, CloseButton, DrawerContent } from './styles';
 import type { MobileNavigationProps } from './types';
-import type { NavigationItem } from 'api./NavigationMenu/types';
+import type { NavigationItem } from '../NavigationMenu/types';
 
 export const MobileNavigation = ({
   isOpen,

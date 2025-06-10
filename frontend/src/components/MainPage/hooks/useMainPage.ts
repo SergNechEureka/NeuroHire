@@ -1,5 +1,5 @@
 import React from 'react';
-import { type NavigationItems } from 'api./types';
+import { type NavigationItems } from '../types';
 import { useTranslation } from 'react-i18next';
 import {
   Dashboard as DashboardIcon,

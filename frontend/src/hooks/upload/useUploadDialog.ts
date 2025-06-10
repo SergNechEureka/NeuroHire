@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
-import { uploadCVs, getUploadStatuses } from "api./api./api/cvs";
-import type { FileJob } from "api./api./types/common";
-import type { JobStatus } from "api./api./types/apis";
+import { uploadCVs, getUploadStatuses } from "../../api/cvs";
+import type { FileJob } from "../../types/common";
+import type { JobStatus } from "../../types/apis";
 
 type UploadDialogHookProps = {
   onClose: () => void;

@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { MainLayout } from 'api./layouts/MainLayout/exports';
-import { MainPage } from 'api./components/MainPage';
-import { ProjectsPage } from 'api./components/ProjectsPage';
-import { ApplicationsPage } from 'api./components/ApplicationsPage';
-import { AdministrationPage } from 'api./components/AdministrationPage';
-import { UsersPage } from 'api./components/UsersPage';
-import { DatabasePage } from 'api./components/DatabasePage';
+import { MainLayout } from '../layouts/MainLayout/exports';
+import { MainPage } from '../components/MainPage';
+import { ProjectsPage } from '../components/ProjectsPage';
+import { ApplicationsPage } from '../components/ApplicationsPage';
+import { AdministrationPage } from '../components/AdministrationPage';
+import { UsersPage } from '../components/UsersPage';
+import { DatabasePage } from '../components/DatabasePage';
 import HomeIcon from '@mui/icons-material/Home';
 import PeopleIcon from '@mui/icons-material/People';
 import WorkIcon from '@mui/icons-material/Work';

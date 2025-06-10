@@ -1,4 +1,4 @@
-import type { SidebarMode } from 'api./Sidebar/types';
+import type { SidebarMode } from '../Sidebar/types';
 
 export interface HeaderProps {
   title?: string;

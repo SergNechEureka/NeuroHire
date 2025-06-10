@@ -1,9 +1,9 @@
 // src/api/candidates.ts
 
 import axios from "axios";
-import type { CV, CVExperience, CVSkill } from "api./types/models";
-import type { JobStatus } from "api./types/apis";
-import type { FileJob } from "api./types/common";
+import type { CV, CVExperience, CVSkill } from "../types/models";
+import type { JobStatus } from "../types/apis";
+import type { FileJob } from "../types/common";
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
