@@ -112,7 +112,6 @@ pydantic_core==2.33.2
 Pygments==2.19.1
 PyJWT==2.10.1
 PyMuPDF==1.25.5
-pypandoc==1.15
 pypdfium2==4.30.1
 PyPika==0.48.9
 pyproject_hooks==1.2.0
