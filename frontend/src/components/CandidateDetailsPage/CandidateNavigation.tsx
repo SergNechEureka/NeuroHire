@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Paper, Typography, List, ListItemButton, TextField } from '@mui/material';
-import type { Candidate } from '../types/models';
+import type { Candidate } from '../../types/models';
 import { useTranslation } from 'react-i18next';
 
 interface CandidateNavigationProps {

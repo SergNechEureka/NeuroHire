@@ -67,7 +67,7 @@ export default function useCandidates() {
   const handleSelect = React.useCallback(
     (id: string) => {
       setSelectedIds((prev) =>
-        prev.includes(id) ? prev.filter((sid) => sid !== id) : [api..prev, id]
+        prev.includes(id) ? prev.filter((sid) => sid !== id) : [...prev, id]
       );
     },
     []

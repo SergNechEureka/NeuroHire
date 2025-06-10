@@ -24,14 +24,14 @@ export const NavigationMenu = ({
   useEffect(() => {
     if (defaultExpandedItemId) {
       setExpandedItems((prev) => ({
-        api..prev,
+        ...prev,
         [defaultExpandedItemId]: true,
       }));
     } else if (menuItems.length > 0) {
       const mainItem = menuItems.find((item) => item.isMainItem);
       if (mainItem) {
         setExpandedItems((prev) => ({
-          api..prev,
+          ...prev,
           [mainItem.id]: true,
         }));
       }
@@ -43,7 +43,7 @@ export const NavigationMenu = ({
       // Если это главный пункт меню, только разворачиваем/сворачиваем
       if (item.isMainItem) {
         setExpandedItems((prev) => ({
-          api..prev,
+          ...prev,
           [item.id]: !prev[item.id],
         }));
         return;

@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
-import { uploadCVs, getUploadStatuses } from "../api/cvs";
-import type { FileJob } from "../types/common";
-import type { JobStatus } from "../types/apis";
+import { uploadCVs, getUploadStatuses } from "../../api/cvs";
+import type { FileJob } from "../../types/common";
+import type { JobStatus } from "../../types/apis";
 
 type UploadDialogHookProps = {
   onClose: () => void;
@@ -118,16 +118,16 @@ export function useUploadDialog({ onClose, onUploadComplete, onUploadError, open
 
       const newJobs = currentJobs.map(job => {
         if (batchError) {
-          return { api..job, status: "Error", progress: -1, statusMessage: `Error: ${batchError}` };
+          return { ...job, status: "Error", progress: -1, statusMessage: `Error: ${batchError}` };
         }
         // Если job не в списке активных, не обновляем
         if (!jobIds.includes(job.jobId)) return job;
         const status = statuses[job.jobId];
         if (!status) {
-          return { api..job, status: "Error", progress: -1, statusMessage: "Error: job status not found (possibly deleted)" };
+          return { ...job, status: "Error", progress: -1, statusMessage: "Error: job status not found (possibly deleted)" };
         }
         return {
-          api..job,
+          ...job,
           status: status.status,
           statusMessage: status.status,
           progress: status.progress

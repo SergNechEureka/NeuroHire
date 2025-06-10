@@ -44,7 +44,6 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import { visuallyHidden } from '@mui/utils';
 
-
 interface CandidatesTableProps {
   candidates: Candidate[];
   selectedIds: string[];
@@ -341,7 +340,6 @@ export default function CandidatesTable({
     country: '',
   });
 
-
   const uniqueValues = React.useMemo(() => {
     const languages = new Set<string>();
     const countries = new Set<string>();
@@ -362,7 +360,7 @@ export default function CandidatesTable({
   }, [candidates]);
 
   const handleSearch = (type: 'name' | 'language' | 'country', value: string) => {
-    setFilters((prev) => ({ api..prev, [type]: value }));
+    setFilters((prev) => ({ ...prev, [type]: value }));
     setPage(0);
   };
 
@@ -394,7 +392,7 @@ export default function CandidatesTable({
 
   const visibleRows = React.useMemo(
     () =>
-      [api..filteredCandidates]
+      [...filteredCandidates]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [filteredCandidates, order, orderBy, page, rowsPerPage, getComparator],

@@ -10,7 +10,7 @@ export default tseslint.config(
   {
     extends: [
       js.configs.recommended,
-      api..tseslint.configs.recommended,
+      ...tseslint.configs.recommended,
       prettier
     ],
     files: ['**/*.{ts,tsx}'],
@@ -24,7 +24,7 @@ export default tseslint.config(
       'react-refresh': reactRefresh,
     },
     rules: {
-      api..reactHooks.configs.recommended.rules,
+      ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },

@@ -60,7 +60,7 @@ export const MainPage = ({ children, activeMenuItem }: MainPageProps) => {
     <Container>
       <Content>
         {shouldShowCandidatesTable ? (
-          <CandidatesTable {api..tableProps} />
+          <CandidatesTable {...tableProps} />
         ) : (
           <Welcome>
             <Title>{t('mainPage.title')}</Title>
