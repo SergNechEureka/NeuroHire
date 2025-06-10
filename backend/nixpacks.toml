@@ -6,6 +6,7 @@ nixPkgs = ["python312", "python312Packages.pip"]
 
 [phases.install]
 cmds = [
+  "nix-env -iA nixos.python312Packages.pip",
   "python3 -m ensurepip --upgrade",
   "python3 -m pip install --upgrade pip",
   "python3 -m pip install -r requirements.txt"
