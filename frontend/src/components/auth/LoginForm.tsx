@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Button, TextField, Typography, Alert, Paper } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import { useLoginForm } from '../../hooks/auth/useLoginForm';
+import { useLoginForm } from '../hooks/auth/useLoginForm';
 
 interface LoginFormProps {
   onLogin: (token: string) => void;

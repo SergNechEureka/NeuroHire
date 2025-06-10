@@ -1,6 +1,6 @@
 import React from 'react';
 import { Paper, Typography } from '@mui/material';
-import type { CVExperience } from '../../types/models';
+import type { CVExperience } from '../types/models';
 import { useTranslation } from 'react-i18next';
 
 interface CandidateExperienceTableProps {
