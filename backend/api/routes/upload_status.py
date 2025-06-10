@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends, Body
 from sqlalchemy.orm import Session
 
-from ..db import get_session
-from ..users.auth import current_active_user
-from ..users.models import User
+from api.db import get_session
+from api.users.auth import current_active_user
+from api.users.models import User
 
 # Global storage for upload job statuses (in-memory)
 UPLOAD_STATUS = {}

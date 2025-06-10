@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 from uuid import UUID
 
-from ..users.auth import fastapi_users, get_jwt_strategy
-from ..users.schemas import UserRead, UserCreate, UserUpdate
-from ..users.models import User
+from api.users.auth import fastapi_users, get_jwt_strategy
+from api.users.schemas import UserRead, UserCreate, UserUpdate
+from api.users.models import User
 from fastapi_users.authentication import AuthenticationBackend, Strategy, BearerTransport
 
 # Ensure get_jwt_strategy is correctly typed

@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from fastapi_users.db import SQLAlchemyUserDatabase
-from .models.base import Base
-from .users.models import User
+from api.models.base import Base
+from api.users.models import User
 
 load_dotenv()
 

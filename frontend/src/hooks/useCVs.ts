@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import type { CV } from "../types/models";
-import { fetchCandidateCVs, deleteCVs } from "../api/cvs";
+import type { CV } from "api./types/models";
+import { fetchCandidateCVs, deleteCVs } from "api./api/cvs";
 
 export function useCVs(candidateId: string | null) {
   const [cvs, setCVs] = useState<CV[]>([]);

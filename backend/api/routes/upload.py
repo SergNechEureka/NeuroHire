@@ -1,11 +1,11 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, BackgroundTasks, Depends
 from typing import List
-from ..services.file_utils import TempFile
-from ..services.process_cv import CVFileProcessor 
-from ..users.models import User
+from api.services.file_utils import TempFile
+from api.services.process_cv import CVFileProcessor 
+from api.users.models import User
 from sqlalchemy.orm import Session
-from ..users.auth import current_active_user
-from ..db import get_session
+from api.users.auth import current_active_user
+from api.db import get_session
 
 
 router = APIRouter()

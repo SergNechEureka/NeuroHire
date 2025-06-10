@@ -69,7 +69,7 @@ class VectorDBService:
         # Ensure the embedding is a flat list of floats
         if hasattr(query_embedding, "tolist"):
             query_embedding = query_embedding.tolist()
-        # If the embedding is a list of lists (e.g., [[...]]), flatten it
+        # If the embedding is a list of lists (e.g., [[api..]]), flatten it
         if isinstance(query_embedding, list) and len(query_embedding) == 1 and isinstance(query_embedding[0], (list, tuple)):
             query_embedding = list(map(float, query_embedding[0]))
         else:

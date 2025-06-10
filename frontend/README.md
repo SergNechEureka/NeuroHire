@@ -14,15 +14,15 @@ If you are developing a production application, we recommend updating the config
 ```js
 export default tseslint.config({
   extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
+    // Remove api..tseslint.configs.recommended and replace with this
+    api..tseslint.configs.recommendedTypeChecked,
     // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
+    api..tseslint.configs.strictTypeChecked,
     // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
+    api..tseslint.configs.stylisticTypeChecked,
   ],
   languageOptions: {
-    // other options...
+    // other optionsapi..
     parserOptions: {
       project: ['./tsconfig.node.json', './tsconfig.app.json'],
       tsconfigRootDir: import.meta.dirname,
@@ -45,10 +45,10 @@ export default tseslint.config({
     'react-dom': reactDom,
   },
   rules: {
-    // other rules...
+    // other rulesapi..
     // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
+    api..reactX.configs['recommended-typescript'].rules,
+    api..reactDom.configs.recommended.rules,
   },
 })
 ```

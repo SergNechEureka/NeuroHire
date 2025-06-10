@@ -1,10 +1,10 @@
 import * as React from "react";
-import type { Candidate } from "../types/models";
-import { fetchCandidates, deleteCandidates, deleteCandidate } from "../api/candidates";
-import { useAuth } from "../contexts/AuthContext";
+import type { Candidate } from "api./types/models";
+import { fetchCandidates, deleteCandidates, deleteCandidate } from "api./api/candidates";
+import { useAuth } from "api./contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-import type { Order } from "../types/common";
+import type { Order } from "api./types/common";
 
 export default function useCandidates() {
   const [candidates, setCandidates] = React.useState<Candidate[]>([]);
@@ -67,7 +67,7 @@ export default function useCandidates() {
   const handleSelect = React.useCallback(
     (id: string) => {
       setSelectedIds((prev) =>
-        prev.includes(id) ? prev.filter((sid) => sid !== id) : [...prev, id]
+        prev.includes(id) ? prev.filter((sid) => sid !== id) : [api..prev, id]
       );
     },
     []

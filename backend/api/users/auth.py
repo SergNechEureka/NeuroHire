@@ -13,7 +13,7 @@ from fastapi_users.authentication import (
 )
 from fastapi_users.db import SQLAlchemyUserDatabase
 
-from ..db import User, get_user_db
+from api.db import User, get_user_db
  
 load_dotenv()
 

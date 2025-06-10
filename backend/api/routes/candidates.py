@@ -3,10 +3,10 @@ from sqlmodel import Session
 from typing import List
 import uuid
 from pydantic import BaseModel
-from ..db import get_session
-from ..candidates_db.CandidatesRepository import CandidatesRepository
-from ..users.auth import current_active_user
-from ..users.models import User
+from api.db import get_session
+from api.candidates_db.CandidatesRepository import CandidatesRepository
+from api.users.auth import current_active_user
+from api.users.models import User
 
 router = APIRouter()
 class Body(BaseModel):

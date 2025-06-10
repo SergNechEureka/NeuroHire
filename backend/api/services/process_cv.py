@@ -9,11 +9,11 @@ import queue
 import time
 from typing import List, Dict
 
-from ..db import SessionLocal
-from ..routes.upload_status import set_status
-from ..routes.upload import BackgroundTasks
-from .file_utils import TempFile  
-from ..agents.cv_agent import CVProcessingAgent
+from api.db import SessionLocal
+from api.routes.upload_status import set_status
+from fastapi import BackgroundTasks
+from api.services.file_utils import TempFile  
+from api.agents.cv_agent import CVProcessingAgent
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

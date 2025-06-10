@@ -1,10 +1,10 @@
 # System prompt for the agent
-from ..agents.cv_tools import (
+from api.agents.cv_tools import (
     ParseCVTool,
 )
 
-from ..routes.upload_status import set_status
-from ..services.file_utils import TempFile  
+from api.routes.upload_status import set_status
+from api.services.file_utils import TempFile  
 
 class CVProcessingAgent:
     def process(self, file: TempFile, job_id: str) -> None:

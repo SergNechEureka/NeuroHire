@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
-from ..vector_db.VectorDBService import VectorDBService
-from ..candidates_db.CVRepository import CVRepository
-from ..users.models import User
-from ..users.auth import current_active_user
-from ..db import get_session
+from api.vector_db.VectorDBService import VectorDBService
+from api.candidates_db.CVRepository import CVRepository
+from api.users.models import User
+from api.users.auth import current_active_user
+from api.db import get_session
 
 router = APIRouter()
 

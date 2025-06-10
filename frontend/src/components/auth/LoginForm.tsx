@@ -1,47 +1,28 @@
-import React from "react";
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Alert,
-  Paper,
-} from "@mui/material";
-import { useTranslation } from "react-i18next";
+import React from 'react';
+import { Box, Button, TextField, Typography, Alert, Paper } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
-import { useLoginForm } from "../../hooks/auth/useLoginForm";
+import { useLoginForm } from 'api./api./hooks/auth/useLoginForm';
 
 interface LoginFormProps {
   onLogin: (token: string) => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
-  const {
-    username,
-    setUsername,
-    password,
-    setPassword,
-    error,
-    loading,
-    handleSubmit,
-  } = useLoginForm({ onLogin });
+  const { username, setUsername, password, setPassword, error, loading, handleSubmit } =
+    useLoginForm({ onLogin });
 
   const { t } = useTranslation();
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
-    >
+    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
       <Paper elevation={3} sx={{ p: 4, width: 400 }}>
         <Typography variant="h5" mb={3} align="center">
-          {t("login")}
+          {t('login')}
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
-            label={t("username")}
+            label={t('username')}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             fullWidth
@@ -50,7 +31,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
             autoFocus
           />
           <TextField
-            label={t("password")}
+            label={t('password')}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -71,7 +52,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
             disabled={loading}
             sx={{ mt: 2 }}
           >
-            {loading ? t("loggingIn") : t("login")}
+            {loading ? t('loggingIn') : t('login')}
           </Button>
         </form>
       </Paper>

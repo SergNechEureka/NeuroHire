@@ -10,15 +10,15 @@ import gc
 from abc import ABC, abstractmethod
 from typing import Any, Dict
 
-from ..services.file_utils import TempFile  
-from ..vector_db.utils import Embedder
-from ..services.LLMService import LLMService, GROQService, thogetherAIService, huggingFaceService, OpenAIService
-from ..vector_db.VectorDBService import VectorDBService
-from ..candidates_db.CVRepository import CVRepository
-from ..candidates_db.CandidatesRepository import CandidatesRepository
-from ..candidates_db.models import CVMeta, CVExperience, CVSkill, Candidate
-from ..db import get_session
-from ..services.langdetectSingleton import LangDetectSingleton
+from api.services.file_utils import TempFile  
+from api.vector_db.utils import Embedder
+from api.services.LLMService import LLMService, GROQService, thogetherAIService, huggingFaceService, OpenAIService
+from api.vector_db.VectorDBService import VectorDBService
+from api.candidates_db.CVRepository import CVRepository
+from api.candidates_db.CandidatesRepository import CandidatesRepository
+from api.candidates_db.models import CVMeta, CVExperience, CVSkill, Candidate
+from api.db import get_session
+from api.services.langdetectSingleton import LangDetectSingleton
 
 
 class BaseTool(ABC):
@@ -317,7 +317,7 @@ class SearchCandidateTool(BaseTool):
                 "cv_text_eng": cv_text
             },
             "job_status": {
-                "message": "Extracting candidate profile: Projects, Experience, Skills...",
+                "message": "Extracting candidate profile: Projects, Experience, Skillsapi..",
                 "percentage": 50,
             }
         }
@@ -397,7 +397,7 @@ class ExtractDataTool(BaseTool):
         return result
 
     async def _extract_metadata(self, cv_text_orig):
-        print("LLM extracts metadata from CV...")
+        print("LLM extracts metadata from CVapi..")
         sys_prompt_template = "cv_agent/ExtractDataTool/metadata_sys.txt"
         usr_prompt_template = "cv_agent/ExtractDataTool/metadata.txt"
 
@@ -433,7 +433,7 @@ class ExtractDataTool(BaseTool):
         return result
 
     async def _extract_experience(self, cv_text_orig):
-        print("LLM extracts experience from CV...")
+        print("LLM extracts experience from CVapi..")
 
         sys_prompt_template = "cv_agent/ExtractDataTool/experience_sys.txt"
         usr_prompt_template = "cv_agent/ExtractDataTool/experience.txt"
@@ -454,7 +454,7 @@ class ExtractDataTool(BaseTool):
         return result
 
     async def _extract_skills(self, cv_text_orig):
-        print("LLM extracts skills from CV...")
+        print("LLM extracts skills from CVapi..")
         sys_prompt_template = "cv_agent/ExtractDataTool/skill_sys.txt"
         usr_prompt_template = "cv_agent/ExtractDataTool/skill.txt"
 
@@ -546,7 +546,7 @@ class VectorizeTool(BaseTool):
             "next_tool": StoreDataTool(), 
             "tool_input": tool_input,
             "job_status": {
-                "message": "Updating DB...",
+                "message": "Updating DBapi..",
                 "percentage": 90,
                 }
         }

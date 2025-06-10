@@ -1,13 +1,7 @@
-import React from "react";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
-  Typography,
-} from "@mui/material";
+import React from 'react';
+import { List, ListItem, ListItemText, Divider, Typography } from '@mui/material';
 
-import type { CV } from "../../types/models";
+import type { CV } from 'api./api./types/models';
 
 interface CVsProps {
   onBack: () => void;
@@ -15,8 +9,7 @@ interface CVsProps {
 }
 
 const CandidateCVs: React.FC<CVsProps> = ({ cvs }) => {
-  if (!cvs || cvs.length === 0)
-    return <Typography variant="body2">No CVs available</Typography>;
+  if (!cvs || cvs.length === 0) return <Typography variant="body2">No CVs available</Typography>;
 
   return (
     <List>

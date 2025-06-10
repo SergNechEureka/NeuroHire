@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import type { NavigationItem } from '../components/NavigationMenu/types';
-import type { SidebarMode } from '../components/Sidebar/types';
+import type { NavigationItem } from 'api./components/NavigationMenu/types';
+import type { SidebarMode } from 'api./components/Sidebar/types';
 
 interface UseLayoutProps {
   defaultMode?: SidebarMode;

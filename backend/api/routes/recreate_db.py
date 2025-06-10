@@ -3,7 +3,7 @@ from renew_db import recreate_db
 
 router = APIRouter()
 
-from ..db import engine  # Make sure to import your engine object
+from api.db import engine  # Make sure to import your engine object
 
 @router.get("/recreate_db")
 async def route_recreate_db():

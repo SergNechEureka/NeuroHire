@@ -1,13 +1,7 @@
-import React, { useState, useMemo } from "react";
-import {
-  Paper,
-  Typography,
-  List,
-  ListItemButton,
-  TextField,
-} from "@mui/material";
-import type { Candidate } from "../../types/models";
-import { useTranslation } from "react-i18next";
+import React, { useState, useMemo } from 'react';
+import { Paper, Typography, List, ListItemButton, TextField } from '@mui/material';
+import type { Candidate } from 'api./api./types/models';
+import { useTranslation } from 'react-i18next';
 
 interface CandidateNavigationProps {
   candidates: Candidate[];
@@ -20,15 +14,12 @@ const CandidateNavigation: React.FC<CandidateNavigationProps> = ({
   selectedCandidateId,
   onSelect,
 }) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const { t } = useTranslation();
 
   const filtered = useMemo(
-    () =>
-      candidates.filter((c) =>
-        c.candidate_name.toLowerCase().includes(search.toLowerCase())
-      ),
-    [candidates, search]
+    () => candidates.filter((c) => c.candidate_name.toLowerCase().includes(search.toLowerCase())),
+    [candidates, search],
   );
 
   return (
@@ -36,7 +27,7 @@ const CandidateNavigation: React.FC<CandidateNavigationProps> = ({
       <TextField
         size="small"
         fullWidth
-        placeholder={t("searchByName")}
+        placeholder={t('searchByName')}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         sx={{ mb: 2 }}
@@ -50,9 +41,7 @@ const CandidateNavigation: React.FC<CandidateNavigationProps> = ({
           >
             <Typography
               fontWeight="bold"
-              color={
-                c.candidate_id === selectedCandidateId ? "primary" : undefined
-              }
+              color={c.candidate_id === selectedCandidateId ? 'primary' : undefined}
               noWrap
             >
               {c.candidate_name}
@@ -61,8 +50,8 @@ const CandidateNavigation: React.FC<CandidateNavigationProps> = ({
         ))}
         {filtered.length === 0 && (
           <Typography variant="body2" color="text.secondary" sx={{ p: 1 }}>
-            {t("noMatches")}
-      </Typography>
+            {t('noMatches')}
+          </Typography>
         )}
       </List>
     </Paper>

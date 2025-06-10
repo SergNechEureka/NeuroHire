@@ -3,10 +3,10 @@ import styled from '@emotion/styled';
 import { styles } from './styles';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
-import CandidatesTable from '../CandidatesTable';
-import useCandidates from '../../hooks/useCandidates';
-import type { NavigationItem } from '../../layouts/MainLayout/components/NavigationMenu/types';
-import CandidateDetailsPage from '../CandidateDetailsPage';
+import CandidatesTable from 'api./CandidatesTable';
+import useCandidates from 'api./api./hooks/useCandidates';
+import type { NavigationItem } from 'api./api./layouts/MainLayout/components/NavigationMenu/types';
+import CandidateDetailsPage from 'api./CandidateDetailsPage';
 import { Box, Typography, Button } from '@mui/material';
 
 interface MainPageProps {
@@ -60,7 +60,7 @@ export const MainPage = ({ children, activeMenuItem }: MainPageProps) => {
     <Container>
       <Content>
         {shouldShowCandidatesTable ? (
-          <CandidatesTable {...tableProps} />
+          <CandidatesTable {api..tableProps} />
         ) : (
           <Welcome>
             <Title>{t('mainPage.title')}</Title>

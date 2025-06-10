@@ -1,12 +1,12 @@
 import * as React from 'react';
-import type { Candidate } from '../types/models';
+import type { Candidate } from 'api./types/models';
 
 import type {
   EnhancedTableToolbarProps,
   HeadCell,
   EnhancedTableProps,
   Order,
-} from '../types/common';
+} from 'api./types/common';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -362,7 +362,7 @@ export default function CandidatesTable({
   }, [candidates]);
 
   const handleSearch = (type: 'name' | 'language' | 'country', value: string) => {
-    setFilters((prev) => ({ ...prev, [type]: value }));
+    setFilters((prev) => ({ api..prev, [type]: value }));
     setPage(0);
   };
 
@@ -394,7 +394,7 @@ export default function CandidatesTable({
 
   const visibleRows = React.useMemo(
     () =>
-      [...filteredCandidates]
+      [api..filteredCandidates]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [filteredCandidates, order, orderBy, page, rowsPerPage, getComparator],

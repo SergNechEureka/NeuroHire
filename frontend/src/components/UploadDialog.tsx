@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -14,14 +14,14 @@ import {
   Stack,
   Snackbar,
   Alert,
-} from "@mui/material";
-import { useTranslation } from "react-i18next";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import ReportProblemIcon from "@mui/icons-material/ReportProblem";
-import HourglassTopIcon from "@mui/icons-material/HourglassTop";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { useUploadDialog } from "../hooks/upload/useUploadDialog";
+} from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { useUploadDialog } from 'api./hooks/upload/useUploadDialog';
 
 type UploadDialogProps = {
   open: boolean;
@@ -33,17 +33,17 @@ type UploadDialogProps = {
 const getStatusProps = (status: string, progress: number) => {
   if (progress === 100) {
     return {
-      color: "success.main",
+      color: 'success.main',
       icon: <TaskAltIcon color="success" />,
     };
   }
-  if (status === "Error" || progress === -1) {
+  if (status === 'Error' || progress === -1) {
     return {
-      color: "error.main",
+      color: 'error.main',
       icon: <ReportProblemIcon color="error" />,
     };
   }
-  return { color: "info.main", icon: <HourglassTopIcon color="info" /> };
+  return { color: 'info.main', icon: <HourglassTopIcon color="info" /> };
 };
 
 const UploadDialog: React.FC<UploadDialogProps> = ({
@@ -76,27 +76,27 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case "Completed":
-        return t("uploadStatusCompleted");
-      case "Error":
-        return t("uploadStatusError");
+      case 'Completed':
+        return t('uploadStatusCompleted');
+      case 'Error':
+        return t('uploadStatusError');
       default:
-        return t("uploadStatusUploading");
+        return t('uploadStatusUploading');
     }
   };
 
   return (
     <Dialog open={open} onClose={handleDialogClose} fullWidth maxWidth="sm">
-      <DialogTitle>{t("uploadFiles")}</DialogTitle>
+      <DialogTitle>{t('uploadFiles')}</DialogTitle>
       <DialogContent>
         <Box
           p={2}
-          border={dragActive ? "2px solid #1976d2" : "2px dashed #888"}
+          border={dragActive ? '2px solid #1976d2' : '2px dashed #888'}
           borderRadius={2}
           textAlign="center"
-          bgcolor={dragActive ? "#e3f2fd" : "#222"}
+          bgcolor={dragActive ? '#e3f2fd' : '#222'}
           color="#eee"
-          sx={{ cursor: "pointer", transition: "all 0.2s" }}
+          sx={{ cursor: 'pointer', transition: 'all 0.2s' }}
           onDrop={handleFilesDrop}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -106,26 +106,20 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
             sx={{
               fontSize: 40,
               mb: 1,
-              color: dragActive ? "#1976d2" : undefined,
+              color: dragActive ? '#1976d2' : undefined,
             }}
           />
-          <Typography variant="subtitle1">{t("drag_and_drop")}</Typography>
-          <Stack
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            spacing={1}
-            mt={1}
-          >
+          <Typography variant="subtitle1">{t('drag_and_drop')}</Typography>
+          <Stack direction="row" justifyContent="center" alignItems="center" spacing={1} mt={1}>
             <InfoOutlinedIcon fontSize="small" color="info" />
             <Typography variant="caption" color="info.main">
-              {t("supportedFormats")} (max 500 KB)
+              {t('supportedFormats')} (max 500 KB)
             </Typography>
           </Stack>
           <input
             ref={inputRef}
             type="file"
-            style={{ display: "none" }}
+            style={{ display: 'none' }}
             multiple
             accept=".pdf,.doc,.docx"
             onChange={handleFilesChange}
@@ -135,17 +129,11 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
           {fileJobs.map((job) => {
             const { color, icon } = getStatusProps(job.status, job.progress);
             let textColor = undefined;
-            if (job.status === "Error" || job.progress === -1)
-              textColor = "error.main";
-            else if (job.progress === 100) textColor = "success.main";
+            if (job.status === 'Error' || job.progress === -1) textColor = 'error.main';
+            else if (job.progress === 100) textColor = 'success.main';
             return (
               <ListItem key={job.jobId || job.filename}>
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  spacing={1}
-                  sx={{ flex: 1 }}
-                >
+                <Stack direction="row" alignItems="center" spacing={1} sx={{ flex: 1 }}>
                   {icon}
                   <ListItemText
                     primary={job.filename}
@@ -155,23 +143,21 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
                 </Stack>
                 <Box width={150} mr={2}>
                   <LinearProgress
-                    variant={
-                      job.progress < 100 ? "determinate" : "indeterminate"
-                    }
+                    variant={job.progress < 100 ? 'determinate' : 'indeterminate'}
                     value={job.progress}
                     sx={{ height: 8, borderRadius: 2 }}
                     color={
-                      job.status === "Error"
-                        ? "error"
-                        : job.status === "Completed"
-                        ? "success"
-                        : "info"
+                      job.status === 'Error'
+                        ? 'error'
+                        : job.status === 'Completed'
+                          ? 'success'
+                          : 'info'
                     }
                   />
                 </Box>
                 <Typography
                   variant="body2"
-                  sx={{ color, minWidth: 40, textAlign: "right" }}
+                  sx={{ color, minWidth: 40, textAlign: 'right' }}
                 >{`${job.progress}%`}</Typography>
               </ListItem>
             );
@@ -180,21 +166,17 @@ const UploadDialog: React.FC<UploadDialogProps> = ({
       </DialogContent>
       <DialogActions>
         <Button variant="contained" color="primary" onClick={handleDialogClose}>
-          {t("close")}
+          {t('close')}
         </Button>
       </DialogActions>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={4000}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity={snackbarType}
-          sx={{ width: "100%" }}
-        >
-          {snackbarType === "success" ? t("uploadSuccess") : t("uploadError")}
+        <Alert onClose={handleSnackbarClose} severity={snackbarType} sx={{ width: '100%' }}>
+          {snackbarType === 'success' ? t('uploadSuccess') : t('uploadError')}
         </Alert>
       </Snackbar>
     </Dialog>

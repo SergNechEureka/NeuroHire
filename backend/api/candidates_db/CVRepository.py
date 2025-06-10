@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from typing import Sequence,List
 from .models import CVMeta, CVExperience, CVSkill
 from typing import Optional
-from ..vector_db.VectorDBService import VectorDBService
+from api.vector_db.VectorDBService import VectorDBService
 
 class CVRepository:
     def __init__(self, session: Session):

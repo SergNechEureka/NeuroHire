@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Candidate } from "../types/models";
+import type { Candidate } from "api./types/models";
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
