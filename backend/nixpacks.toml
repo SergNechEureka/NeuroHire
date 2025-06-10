@@ -1,5 +1,9 @@
 providers = ["python"]
 
+
+[phases.setup]
+nixPkgs = ["python312", "python312Packages.pip"]
+
 [phases.install]
 cmds = [
   "python -m pip install --upgrade pip",
