@@ -4,8 +4,8 @@ import { styles } from './styles';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import CandidatesTable from '../CandidatesTable';
-import useCandidates from '../hooks/useCandidates';
-import type { NavigationItem } from '../layouts/MainLayout/components/NavigationMenu/types';
+import useCandidates from '../../hooks/useCandidates';
+import type { NavigationItem } from '../../layouts/MainLayout/components/NavigationMenu/types';
 import CandidateDetailsPage from '../CandidateDetailsPage';
 import { Box, Typography, Button } from '@mui/material';
 
