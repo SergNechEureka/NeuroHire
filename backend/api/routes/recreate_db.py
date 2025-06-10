@@ -1,6 +1,5 @@
-from fastapi import APIRouter
-from ...renew_db import recreate_db
-from fastapi import HTTPException
+from fastapi import APIRouter, HTTPException
+from renew_db import recreate_db
 
 router = APIRouter()
 
