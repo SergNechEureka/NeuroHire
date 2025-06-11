@@ -1,25 +1,44 @@
 import os
 import imaplib
 import email
+import yaml
+
 from email.header import decode_header
 from email.utils import parseaddr
 from email import utils
 from datetime import datetime
 
 class MailClient:
-    def __init__(self, imap_server='imap.titan.email', imap_port=993):
+    conn = imaplib.IMAP4
+
+    def __init__(self):
         self.email_address = os.getenv("EMAIL_ADDRESS")
         self.password = os.getenv("EMAIL_PASSWORD")
-        self.imap_server = imap_server
-        self.imap_port = imap_port
-        self.conn = None
+
+        self.load_config()
+
+    
+    def load_config(self):
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(base_dir, "config.yaml")
+
+        with open(path, "r") as f:
+            config = yaml.safe_load(f)
+
+        self.imap_server = config["mail"].get("imap_host", "imap.titan.email")
+        self.imap_port = config["mail"].get("imap_port", "imap.titan.email")
+        self.imap_folder = config["mail"].get("imap_folder", "imap.titan.email")
 
     def login(self):
         if not self.email_address or not self.password:
             raise ValueError("EMAIL_ADDRESS and EMAIL_PASSWORD environment variables must be set")
         
-        self.conn = imaplib.IMAP4_SSL(self.imap_server, self.imap_port)
-        self.conn.login(self.email_address, self.password)
+        try:
+            self.conn = imaplib.IMAP4_SSL(self.imap_server, self.imap_port)
+            self.conn.login(self.email_address, self.password)
+
+        except Exception as e:
+            raise ConnectionError(f"Failed to connect to IMAP server: {e}")
 
     def logout(self):
         if self.conn:
@@ -109,11 +128,25 @@ class MailClient:
 
     def fetch_unseen(self):
         if not self.conn:
-            raise Exception("Not logged in")
-        self.conn.select("INBOX")
+            self.login()
+        else:
+            try:
+                # Test if connection is still alive
+                self.conn.noop()
+            except Exception:
+                self.login()
+
+        if not self.conn:
+            raise ConnectionError("IMAP connection is not established.")
+
+        self.conn.select(self.imap_folder)
+
         status, messages = self.conn.search(None, 'UNSEEN')
+
         email_ids = messages[0].split()
+
         result = []
+
         for eid in email_ids:
             _, msg_data = self.conn.fetch(eid, '(RFC822)')
             if msg_data and msg_data[0] is not None:

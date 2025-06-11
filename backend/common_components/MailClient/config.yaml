@@ -1,0 +1,4 @@
+mail:
+  imap_host: "imap.titan.email"
+  imap_port: 993
+  imap_folder: "INBOX"
