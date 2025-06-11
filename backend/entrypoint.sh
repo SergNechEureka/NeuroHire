@@ -2,7 +2,7 @@
 set -e
 
 if [ "$MODE" = "SCANNER" ]; then
-    exec python worker.py
+    exec python main.py
 elif [ "$MODE" = "API" ]; then
     exec uvicorn main:app --host 0.0.0.0 --port 5050
 else
