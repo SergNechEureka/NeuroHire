@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y pandoc
 
 COPY . /app
 
+RUN cd ..
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
