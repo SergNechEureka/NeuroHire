@@ -1,4 +1,0 @@
-providers = ["python"]
-
-[phases.build]
-nixPkgs = ["pandoc"]
